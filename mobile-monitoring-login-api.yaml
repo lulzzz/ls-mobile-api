@@ -1,0 +1,824 @@
+
+swagger: '2.0'
+# This is your document metadata
+info:
+  version: "1.0.0"
+  title: Mobile Monitoring API
+# the domain of the service
+host: api.monitoring.com
+schemes:
+  - http
+basePath: /v1/api
+# Describe your paths here
+produces:
+  - application/json
+paths:
+  # This is a path endpoint. Change it.
+  /auth/login:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        This endpoint allows users to login. The response include basic user details.
+      # parameter definition
+      parameters:
+        -
+          name: Authorization
+          in: header
+          description: Login credentials including username, password in encoded format.
+          required: true
+          type: string
+        -
+          name: udevice
+          in: header
+          description: user device detail.
+          required: true
+          type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        '200':
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             $ref: "#/definitions/UserDetail"
+          headers:
+            X-Access-Token:
+              description: access token
+              type: string
+            expires_in:
+              description:
+              type: integer
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+            
+  /auth/generateotp:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        This endpoint allows users to generate otp if he/she intends to reset password. Otp will be sent to user's registered mobile no.
+      # parameter definition
+      parameters:
+        -
+          name: body
+          in: body
+          description: user id of user whose password will change.
+          required: true
+          schema:
+            type: string
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: successful operation.
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            type: string
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+  
+  /auth/validateotp:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        This endpoint allows users to validate otp shared with him.
+      # parameter definition
+      parameters:
+        -
+          name: body
+          in: body
+          description: object with user id, otp.
+          required: true
+          schema:
+            $ref: "#/definitions/ValidateOtpModel"
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             type: string
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+  
+  /auth/resetpassword:
+    # This is a HTTP operation
+    post:
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        This endpoint allows users to reset the password
+      # parameter definition
+      parameters:
+        -
+          name: body
+          in: body
+          description: object wit user id, otp.
+          required: true
+          schema:
+            $ref: "#/definitions/PasswordModel"
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             type: string
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+             
+  /dashboards/inventory:
+    # This is a HTTP operation
+    get:
+      description: |
+        This endpoint gives invetory trends and active store trends.
+      parameters:
+        -
+          name: X-Access-Token
+          in: header
+          description: user security token.
+          required: true
+          type: string
+        -
+          name: incktag
+          in: query
+          description: store type which needs inclusion.
+          required: false
+          type: string
+        -
+          name: exktag
+          in: query
+          description: store type which needs exclusion.
+          required: false
+          type: string
+        -
+          name: mtag
+          in: query
+          description: material tag for result filtering.
+          required: false
+          type: string
+        -
+          name: mnm
+          in: query
+          description: material name for result filtering.
+          required: false
+          type: string
+        -
+          name: loc
+          in: query
+          type: string
+          description: domain location name(can be country or state or a district name).
+        - name: locty
+          in: query
+          type: string
+          description: domain location level(can be country or state or a district).
+        -
+          name: date
+          in: query
+          description: date will be in format dd/MM/yyyy
+          required: false
+          type: string
+        -
+          name: p
+          in: query
+          description: This is duration(in days) from now for which we need trends.
+          required: false
+          type: integer
+        -
+          name: refresh
+          in: query
+          description: This will determine whether cache result or db result should be returned.
+          required: false
+          type: integer
+      
+      responses:
+        # Response code
+        200:
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             $ref: "#/definitions/InventoryDashboardModel"
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+  
+  /dashboards/assets:
+    # This is a HTTP operation
+    get:
+      description: |
+        This endpoint gives asset working status trends.
+      parameters:
+        -
+          name: X-Access-Token
+          in: header
+          description: user security token.
+          required: true
+          type: string
+        -
+          name: ty
+          in: query
+          description: asset type for filtering results.
+          required: false
+          type: string
+        -
+          name: loc
+          in: query
+          type: string
+          description: domain location name(can be country or state or a district name).
+        - name: locty
+          in: query
+          type: string
+          description: domain location level(can be country or state or a district).
+        -
+          name: p
+          in: query
+          description: This is duration(in days) from now for which we need trends.
+          required: false
+          type: integer
+        -
+          name: exts
+          in: query
+          description: temprature state exclusion tag.
+          required: false
+          type: string
+        -
+          name: refresh
+          in: query
+          description: This will determine whether cache result or db result should be returned.
+          required: false
+          type: integer
+          
+      responses:
+        # Response code
+        200:
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             $ref: "#/definitions/AssetDashboardModel"
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+  
+  /dashboards/inventory/detail:
+    # This is a HTTP operation
+    get:
+      description: |
+        This endpoint gives invetory trends and active store trends.
+      parameters:
+        -
+          name: X-Access-Token
+          in: header
+          description: user security token.
+          required: true
+          type: string
+        -
+          name: groupby
+          in: query
+          description: this param details out the inventory result will be grouped by kiosk location or material.
+          required: true
+          type: integer
+        -
+          name: offset
+          in: query
+          description: page number.
+          required: true
+          type: integer
+        -
+          name: size
+          in: query
+          description: page size.
+          required: true
+          type: integer
+        -
+          name: refresh
+          in: query
+          description: This will determine whether cache result or db result should be returned.
+          required: false
+          type: integer
+        -
+          name: body
+          in: body
+          description: this will have filters which will be used to get the inventory data.
+          schema:
+            $ref: "#/definitions/InventoryFilterModel"
+      
+      responses:
+        # Response code
+        '200':
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            $ref: "#/definitions/PagedInventoryDashboardDetails"
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+  
+  
+  /inventory/entities/{entity_id}:
+    get:
+      description: |
+        This endpoint gives invetory detail for a given kiosk for all materials at that kiosk.
+      parameters:
+        -
+          name: X-Access-Token
+          in: header
+          description: user security token.
+          required: true
+          type: string
+        -
+          name: entity_id
+          in: path
+          description: entity id.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        # Response code
+        200:
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             type: array
+             items:
+              $ref: "#/definitions/PagedInventoryDetails"
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+             
+             
+  /inventory/materials/{material_id}:
+    get:
+      description: |
+        This endpoint gives invetory detail for a given matrial across all kiosks.
+      parameters:
+        -
+          name: X-Access-Token
+          in: header
+          description: user security token.
+          required: true
+          type: string
+        -
+          name: material_id
+          in: path
+          description: user security token.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        # Response code
+        200:
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             type: array
+             items:
+              $ref: "#/definitions/PagedInventoryDetails"
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+             
+  /events:
+    get:
+      description: |
+        This endpoint gives events summarization detail for tha logged in user.
+      parameters:
+        -
+          name: X-Access-Token
+          in: header
+          description: user security token.
+          required: true
+          type: string
+        -
+          name: incetags
+          in: query
+          description: event tags that needs to be included.
+          required: true
+          type: string
+        -
+          name: encetags
+          in: query
+          description: event tags that needs to be excluded.
+          required: true
+          type: string
+         
+      responses:
+        # Response code
+        '200':
+          description: successful operation
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+             type: array
+             items:
+              $ref: "#/definitions/PagedEventDetails"
+        default:
+          description: Unexpected error
+          schema:
+             $ref: "#/definitions/Error"
+  
+            
+definitions:
+  UserDetail:
+    type: object
+    properties:
+      fnm:
+        type: string
+      lnm:
+        type: string
+      email:
+        type: string
+      mobile:
+        type: string
+      domain:
+        $ref: "#/definitions/UserDomainDetail"
+      config:
+        $ref: "#/definitions/UserConfig"
+        
+  UserDomainDetail:
+    type: object
+    properties:
+      nm:
+        type: string
+      id:  
+        type: integer
+      loc:
+        $ref: "#/definitions/Location"
+        
+  UserConfig:
+    type: object
+    properties:
+      dboard:
+        $ref: "#/definitions/DashboardConfig"
+  
+  DashboardConfig:
+    type: object
+    properties:
+      dmtg:
+        description: dafault material tag
+        type: string
+      dimtg: 
+        description: default inventory material tag
+        type: string
+      detg: 
+        description: default entity tag
+        type: string
+      aper: 
+        description: activity period
+        type: string
+      dtt: 
+        description: default transaction type
+        type: string
+      edm: 
+        description: enable dashboard manager
+        type: boolean
+      atdd: 
+        description: aid disabled
+        type: boolean
+      exet: 
+        description: exclude entity tag
+        type: string
+      exts:
+        description: exclude temp status tag
+        type: string
+      dutg:
+        description: disable by user tag
+        type: string
+  
+  Location:
+    type: object
+    properties:
+      cntry:
+        type: string
+      state:
+        type: string
+      dist:
+        type: string  
+        
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+        
+  ValidateOtpModel:
+    type: object
+    properties:
+      userid:
+        type: string
+      otp:
+        type: string
+  
+  PasswordModel:
+    type: object
+    properties:
+      userid:
+        type: string
+      newpwd:
+        type: string
+        
+  InventoryFilterModel:
+    type: object
+    properties:
+      incktag:
+        type: string
+        description: store type which needs inclusion. 
+      exktag:
+        type: string
+        description: store type which needs exclusion.
+      mtag:
+        type: string
+        description: material tag for result filtering.
+      mnm:
+        type: string
+        description: material name for result filtering.
+      locnm:
+        type: string
+        description: domain location name(can be country or state or a district name).
+      locty:
+        type: string
+        description: domain location level(can be country or state or a district).
+      date:
+        type: string
+        description: date will be in format dd/MM/yyyy.
+      p:
+        type: integer
+        description: This is duration(in days) from now for which we need trends.
+        
+  InventoryDashboardModel:
+    type: object
+    properties:
+      tsc:
+        type: integer
+        format: int64
+        description: total store count
+      asc:
+        type: integer
+        format: int64
+        description: active store count
+      tc:
+        type: integer
+        format: int64
+        description: total inventory count
+      nc:
+        type: integer
+        format: int64
+        description: normal inventory count
+      gmc:
+        type: integer
+        format: int64
+        description: inventory count greater than max 
+      lmnc:
+        type: integer
+        format: int64
+        description: inventory count Less than min 
+      soc:
+        type: integer
+        format: int64
+        description: inventory count stock out 
+  
+  AssetDashboardModel:
+    type: object
+    properties:
+      tc:
+        type: integer
+        format: int64
+        description: total asset count 
+      nc:
+        type: integer
+        format: int64
+        description: normal asset count 
+      hc:
+        type: integer
+        format: int64    
+        description: high excursion asset count 
+      lc:
+        type: integer
+        format: int64
+        description: low excursion asset count 
+      u:
+        type: integer
+        format: int64 
+        description: unknown asset count 
+           
+  
+  InventoryDashboardDetail:
+    type: object
+    properties:
+      tsc:
+        type: integer
+        format: int64
+        description: total store count
+      asc:
+        type: integer
+        format: int64
+        description: active store count
+      tc:
+        type: integer
+        format: int64
+        description: total inventory count
+      nc:
+        type: integer
+        format: int64
+        description: normal inventory count
+      gmc:
+        type: integer
+        format: int64
+        description: inventory count greater than max 
+      lmnc:
+        type: integer
+        format: int64
+        description: inventory count Less than min 
+      soc:
+        type: integer
+        format: int64
+        description: inventory count stock out 
+      locname:
+        type: string
+      did:
+        type: integer
+        format: int64
+        description: domain id
+      dnm:
+        type: string
+        description: domain name
+      kId:
+        type: integer
+        format: int64
+        description: kiosk id
+      knm:
+        type: string
+        description: kiosk name
+      mId:
+        type: integer
+        format: int64
+        description: material id
+      mnm:
+        type: string
+        description: matrial name
+  
+  InventoryDetail:
+    type: object
+    properties:
+      mId:
+        type: integer
+        format: int64
+        description: material id
+      mnm:
+        type: string
+        description: matrial name
+      kId:
+        type: integer
+        format: int64
+        description: kiosk id
+      knm:
+        type: string
+        description: kiosk name
+        
+  EventDetail:
+    type: object
+    properties:
+      ety:
+        type: string 
+        description: event type (ex:- stock out, discard etc)
+      c:        
+        type: integer
+        description: event count
+      lc:
+        type: integer
+        description: number of locations(can be state, district or store) where events occurred.
+      mc:
+        type: integer
+        format: int64
+        decription: materials count
+      ac:
+        type: integer
+        description: asset count
+      lnm:
+        type: string
+        description: location name (can be domain/state/district name)
+      lmo:
+        type: string
+        description: location with most occurrence
+      llo:
+        type: string
+        description: location with least occurrence
+      html: 
+        type: string
+        description: event summarization template with all variables placed from aggregation engine. It is for display purpose.
+        
+  ResponseOtherAttribute:
+    required:
+      - restime
+    properties:
+      restime:
+        type: integer
+        description: api response time in seconds
+       
+  Paging:
+    required:
+      - total
+      - offset
+      - size
+    properties:
+      total:
+        type: integer
+      offset:
+        type: integer
+      size:
+        type: integer
+        
+  InventoryDashboardDetails:
+    title: Inventory dashboard detail
+    description: A list of inventory detail
+    required:
+      - items
+    properties:
+      items:
+        description: Array containg the list
+        type: array
+        items:
+          $ref: '#/definitions/InventoryDashboardDetail'
+          
+  InventoryDetails:
+    title: Inventory detail
+    description: A list of inventory detail
+    required:
+      - items
+    properties:
+      items:
+        description: Array containg the list
+        type: array
+        items:
+          $ref: '#/definitions/InventoryDetail'
+          
+  EventDetails:
+    title: Event detail
+    description: A list of event details
+    required:
+      - items
+    properties:
+      items:
+        description: Array containg the list
+        type: array
+        items:
+          $ref: '#/definitions/EventDetail'
+        example:
+          - ety: Stock Out
+            c: 100
+            lc: 3
+            mc: 12
+            lnm: Doe
+            lmo: jdoe123
+            llo: 1980-05-12
+            html: <div>100 stock outs of  3 materials across 5 distrocts  in Udaipur. <br/>Udaipur has the highest, Chittorgarh has the lowest.</div>
+  
+  PagedInventoryDashboardDetails:
+    allOf:
+      - $ref: '#/definitions/InventoryDashboardDetails'
+      - $ref: '#/definitions/Paging'
+      - $ref: '#/definitions/ResponseOtherAttribute'
+      
+  PagedInventoryDetails:
+    allOf:
+      - $ref: '#/definitions/InventoryDetails'
+      - $ref: '#/definitions/Paging'
+      - $ref: '#/definitions/ResponseOtherAttribute'
+  
+  PagedEventDetails:
+    allOf:
+      - $ref: '#/definitions/EventDetails'
+      - $ref: '#/definitions/Paging'
+      - $ref: '#/definitions/ResponseOtherAttribute'
+      
+  
+        
+
+ 
