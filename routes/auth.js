@@ -1,26 +1,25 @@
 'use strict';
 
-var router = require('express').Router();
-var logger = require('../lib/utils/log');
+var router = require('express').Router(),
+    logger = require('../lib/utils/log'),
+    request = require('request'),
+    config = require("../conf/index"),
+    uuid = require('uuid'),
+    config = require('../conf'),
+    urldecoder = require('../lib/utils/urldecoder'),
+    login = require('../lib/restclient/auth/login'),
+    generateotp = require('../lib/restclient/auth/generateotp'),
+    validateotp = require('../lib/restclient/auth/validateotp'),
+    resetpassword = require('../lib/restclient/auth/resetpassword');
 
-const request = require('request');
-var config = require("../conf/index");
-var uuid = require('uuid');
-var login = require('../lib/restclient/auth/login');
-var generateotp = require('../lib/restclient/auth/generateotp');
-var validateotp = require('../lib/restclient/auth/validateotp');
-var resetpassword = require('../lib/restclient/auth/resetpassword');
 
 router.use(function(req, res, next){
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    if (req.url === '/') {
-        req.url = req.originalUrl;
-    }
+    req.url = urldecoder.decodeurl(req);
     return next();
 });
 
 router.post('/auth/login', function (req, res, next) {
-
     logger.info("inside login method with headers" + JSON.stringify(req.headers));
     const cred  =  req.headers['authorization'];
     var tmp = cred.split(' ');   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
@@ -36,45 +35,69 @@ router.post('/auth/login', function (req, res, next) {
             logger.error("Error in login for user ",username);
             next(err);
         }
-        res.append('Content-Type','application/json');
         if(body) {
+            res.append('Content-Type','application/json');
             res.send(body);
         }
     });
 });
 
 router.post('/auth/generateotp', function(req,res,next) {
-
-    generateotp.generateOtp('kumarg',function (err,data) {
-        if (err) {
-            next(err);
-        }
-        res.append('Content-Type','application/json');
-        res.status(201).send(data);
-    });
+    if (typeof !(req.body == 'undefined') && typeof !(req.body.user == 'undefined')) {
+        var unm = req.body.user;
+        generateotp.generateOtp(unm, function (err, data) {
+            if (err) {
+                logger.error("Error in otp generation for user ",unm);
+                next(err);
+            }
+            if (data) {
+                res.append('Content-Type', 'application/json');
+                res.status(201).send(data);
+            }
+        });
+    } else {
+        res.status(400).send("Bad Request");
+    }
 });
 
-router.post('/auth/validateotp', function(req,res,next) {
-
-    validateotp.validateOtp('kumarg','880959',function (err,data) {
-        //follow this standard for proper error handling and response creation
-
-        if (err) {
-            next(err);
-        }
-        res.append('Content-Type','application/json');
-        res.status(202).send(data);
-    });
-});
+// router.post('/auth/validateotp', function(req,res,next) {
+//
+//     validateotp.validateOtp('kumarg','880959',function (err,data) {
+//         //follow this standard for proper error handling and response creation
+//
+//         if (err) {
+//             next(err);
+//         }
+//         if (data) {
+//             res.append('Content-Type', 'application/json');
+//             res.status(202).send(data);
+//         }
+//
+//     });
+// });
 
 router.post('/auth/resetpassword', function(req,res,next) {
-    resetpassword.resetPassword('kumarg','123456',function (err,data) {
-        if (err) {
-            next(err);
-        }
-        res.append('Content-Type','application/json');
-        res.status(201).send(data);
-    });
+    //get the req body
+    if (typeof !(req.body == 'undefined')) {
+        //body parsing
+        var unm = req.body.uid;
+        var pwd = req.body.npd;
+        var token = req.body.otp;
+        //reset password
+        resetpassword.resetPassword(unm, pwd, token,function (err, data) {
+            if (err) {
+                logger.error("Error in reset password for user ",unm);
+                next(err);
+            }
+            if (data) {
+                res.append('Content-Type', 'application/json');
+                res.status(201).send(data);
+            }
+        });
+
+    } else {
+        res.status(400).send("Bad Request");
+    }
 });
 
 module.exports = router;

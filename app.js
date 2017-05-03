@@ -1,19 +1,21 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var config = require("./conf/index");
-var route = require('./routes/index');
-var logger = require('./lib/utils/log');
-var interceptor = require('./lib/interceptor');
+'use strict';
+
+var express = require('express'),
+    path = require('path'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    config = require("./conf/index"),
+    route = require('./routes/index'),
+    logger = require('./lib/utils/log'),
+    interceptor = require('./lib/interceptor');
 //var rs = require('./lib/restclient/index')
+
 var app = express();
-
+//logging
 app.use(require('morgan')({ "stream": logger.stream }));
-
+//to parse request body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set('x-powered-by', false);
 
@@ -26,6 +28,13 @@ app.use('/',interceptor)
 
 app.use(route);
 
+// 404 handler
+// if control reaches here means no
+// appropriate req handler not found
+app.use(function(req,res) {
+  res.status(404).send('Resource Not Found');
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   // // set locals, only providing error in development
@@ -35,8 +44,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.send(JSON.stringify(err.message));
 });
-
-
 
 /*var server = app.listen(3000, function () {
   logger.info("Environment is :"+app.get('env'))
