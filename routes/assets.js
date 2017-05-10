@@ -27,6 +27,8 @@ router.get('/assets/alerts/recent/:vId/:dId', function (req, res, next) {
         if (err) {
             logger.error("Error while fetching the alerts for assets");
             next(err);
+            res.append('Content-Type', 'application/json');
+            res.status(200).send("Error while fetching data");
         } else if (data) {
             var obj = JSON.parse(data);
             var alertModel = new deviceRecentAlertModel();
