@@ -27,21 +27,22 @@ router.get('/assets/alerts/recent/:vId/:dId', function (req, res, next) {
         if (err) {
             logger.error("Error while fetching the alerts for assets");
             next(err);
+        } else if (data) {
+            var obj = JSON.parse(data);
+            var alertModel = new deviceRecentAlertModel();
+            obj.data.forEach(function (assetData) {
+                var deviceModel = new deviceAlertModel();
+                deviceModel.ft = assetData.ft;
+                deviceModel.st = assetData.tmpalm.st;
+                deviceModel.mpId = assetData.tmpalm.mpId;
+                deviceModel.temp = assetData.tmpalm.tmp;
+                alertModel.items.push(deviceModel);
+            });
+            alertModel.nPages = obj.nPages;
+            alertModel.size = obj.data.length;
+            res.append('Content-Type', 'application/json');
+            res.status(200).send(alertModel);
         }
-        var obj = JSON.parse(data);
-        var alertModel = new deviceRecentAlertModel();
-        obj.data.forEach(function (assetData) {
-            var deviceModel = new deviceAlertModel();
-            deviceModel.ft = assetData.ft;
-            deviceModel.st = assetData.tmpalm.st;
-            deviceModel.mpId = assetData.tmpalm.mpId;
-            deviceModel.temp = assetData.tmpalm.tmp;
-            alertModel.items.push(deviceModel);
-        });
-        alertModel.nPages = obj.nPages;
-        alertModel.size = obj.data.length;
-        res.append('Content-Type', 'application/json');
-        res.status(200).send(alertModel);
     });
 
 
