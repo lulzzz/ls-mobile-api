@@ -6,7 +6,7 @@ module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
     sectokenconfig : {
         url:'/m/auth/validatetoken',
-        method:'GET',
+        method:'POST',
         timeout:1000
     },
     loginconfig: authconfig,

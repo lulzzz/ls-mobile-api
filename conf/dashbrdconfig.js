@@ -30,5 +30,11 @@ module.exports = {
         method:'GET',
         timeout:1000,
         req_pld: 'query'
+    },
+    single_inv_detail : {
+        url: '/m/inventory/detail/',
+        method:'GET',
+        timeout:1000,
+        req_pld: 'query'
     }
 }
