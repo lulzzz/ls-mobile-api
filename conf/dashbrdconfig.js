@@ -30,5 +30,11 @@ module.exports = {
         method:'GET',
         timeout:1000,
         req_pld: 'query'
+    },
+    asset_alerts: {
+        url: '/assets/alerts/recent/',
+        method:'GET',
+        timeout:1000,
+        req_pld:'query'
     }
 }

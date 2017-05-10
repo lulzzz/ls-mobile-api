@@ -14,5 +14,5 @@ function assetDashboardQueryModel() {
     this.onlyTempData = undefined;
     this.locnm = undefined;
     this.aType = undefined;
-    this.token = undefined;
+    this.user = undefined;
 }
