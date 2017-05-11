@@ -108,6 +108,8 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
     queryModel.excludeETag = req.query.excludeETag;
     queryModel.skipCache = req.query.refresh;
     queryModel.onlyTempData = true;
+    queryModel.size = req.query.size;
+    queryModel.offset = req.query.offset;
     queryModel.user = req.headers['x-access-user'];
 
     assetDashboard.getAssetDashboard(queryModel, function (err, data) {
@@ -126,18 +128,21 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
             model.tl = tempData.tl != null ? tempData.tl : 0;
             model.tc = model.tn + model.th + model.tu + model.tl;
             model.restime = null;
-            var key = Object.keys(obj.temp);
-            for (var i = 0; i < key.length; i++) {
-                var a = obj.temp[key[i]];
-                var innerKeys = Object.keys(a);
-                var b = Object.values(a);
-                if (innerKeys != null) {
-                    for (var c = 0; c < b.length; c++) {
-                        b[c].locid = innerKeys[c];
+            model.l = obj.mLev;
+            model.sz = obj.size;
+            var eventKeys = Object.keys(obj.temp);
+            for (var i = 0; i < eventKeys.length; i++) {
+                var evntTempData = obj.temp[eventKeys[i]];
+                var locKeys = Object.keys(evntTempData);
+                var locTempData = Object.values(evntTempData);
+                if (locKeys != null) {
+                    for (var c = 0; c < locTempData.length; c++) {
+                        locTempData[c].lcid = locKeys[c];
+                        locTempData[c].lcnm = locKeys[c];
                     }
                 }
-                a = b;
-                obj.temp[key[i]] = a;
+                evntTempData = locTempData;
+                obj.temp[eventKeys[i]] = evntTempData;
             }
             model.items = obj.temp;
             res.append('Content-Type', 'application/json');

@@ -7,9 +7,16 @@
 module.exports = AssetQueryModel;
 
 function AssetQueryModel() {
-    var vId; // Vendor id/ manufacturer for an asset
-    var dId; // Device id
-    var page; // No of pages
-    var size; // Size of data to be fetched
-    var token; // x-access-token
+    this.vId = undefined; // Vendor id/ manufacturer for an asset
+    this.dId = undefined; // Device id
+    this.page = undefined; // No of pages
+    this.size = undefined; // Size of data to be fetched
+    this.auth = undefined; // basic authorization for TMS server
+    this.eid = undefined;
+    this.ty = undefined; // asset type
+    this.at = undefined; //alarm type
+    this.dur = undefined; // alarm duration
+    this.ws = undefined; // working status
+    this.awr = undefined; // asset with relationship
+    this.page = undefined; // pages
 }

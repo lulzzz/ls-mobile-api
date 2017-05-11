@@ -13,4 +13,6 @@ function DashboardModel() {
     this.tu = undefined; // total unknown count
     this.tc = undefined; // total count
     this.restime = undefined; // response time
+    this.sz = undefined;
+    this.o = undefined;
 }

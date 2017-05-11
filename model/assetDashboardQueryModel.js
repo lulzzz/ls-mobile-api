@@ -15,4 +15,6 @@ function assetDashboardQueryModel() {
     this.locnm = undefined;
     this.aType = undefined;
     this.user = undefined;
+    this.size = undefined;
+    this.offset = undefined;
 }

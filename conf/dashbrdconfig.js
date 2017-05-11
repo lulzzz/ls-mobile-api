@@ -32,9 +32,15 @@ module.exports = {
         req_pld: 'query'
     },
     asset_alerts: {
-        url: '/assets/alerts/recent/',
+        url: '/alarms/recent/',
         method:'GET',
         timeout:1000,
         req_pld:'query'
+    },
+    asset_detail: {
+        url: '/tags/',
+        method: 'GET',
+        timeout: 1000,
+        req_pld: 'query'
     }
 }
