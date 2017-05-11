@@ -51,12 +51,11 @@ router.get('/dashboards/assets', function (req, res, next) {
     queryModel.tPeriod = "D_0";
     queryModel.onlyTempData = true;
     queryModel.user = req.headers['x-access-user'];
+    queryModel.reqId = req.headers['x-request-id'];
     assetDashboard.getAssetDashboard(queryModel, function (err, data) {
         if (err) {
             logger.error('Error in getting asset overview dashboard' + err.message);
             next(err);
-            res.append('Content-Type', 'application/json');
-            res.status(404).send("Error in getting data");
         } else if (data != null) {
             var obj = JSON.parse(data);
             var model = new overviewDashboard();
@@ -111,13 +110,12 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
     queryModel.size = req.query.size;
     queryModel.offset = req.query.offset;
     queryModel.user = req.headers['x-access-user'];
+    queryModel.reqId = req.headers['x-request-id'];
 
     assetDashboard.getAssetDashboard(queryModel, function (err, data) {
         if (err) {
             logger.error('Error in getting asset detail dashboard: ' + err.message);
             next(err);
-            res.append('Content-Type', 'application/json');
-            res.status(404).send("Error in getting data");
         } else if (data != null) {
             var obj = JSON.parse(data);
             var model = new assetModel();

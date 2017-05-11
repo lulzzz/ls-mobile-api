@@ -53,11 +53,11 @@ router.get('/assets', function (req, res, next) {
        res.status(401).send("Basic authorization required");
     }
     queryModel.auth = req.header("Authorization");
+    queryModel.reqId = req.headers("x-request-id");
     assetService.getAssetsForDomain(queryModel,url, function (err, data) {
         if(err) {
             logger.error("Error while fetching the list of assets");
             next(err);
-            res.status(404).send("Error while fetching data");
         } else if(data) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
@@ -73,12 +73,11 @@ router.get('/assets/alerts/recent/:vId/:dId', function (req, res, next) {
     queryModel.page = req.query.page;
     queryModel.size = req.query.size;
     queryModel.token = req.header("x-access-token");
+    queryModel.reqId = req.headers("x-request-id");
     assetService.getRecentAlerts(queryModel, req, res, function (err, data) {
         if (err) {
             logger.error("Error while fetching the alerts for assets");
             next(err);
-            res.append('Content-Type', 'application/json');
-            res.status(200).send("Error while fetching data");
         } else if (data) {
             var obj = JSON.parse(data);
             var alertModel = new deviceRecentAlertModel();

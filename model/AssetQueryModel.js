@@ -19,4 +19,5 @@ function AssetQueryModel() {
     this.ws = undefined; // working status
     this.awr = undefined; // asset with relationship
     this.page = undefined; // pages
+    this.reqId = undefined;
 }

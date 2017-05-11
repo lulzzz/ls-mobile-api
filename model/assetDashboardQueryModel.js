@@ -17,4 +17,5 @@ function assetDashboardQueryModel() {
     this.user = undefined;
     this.size = undefined;
     this.offset = undefined;
+    this.reqId = undefined;
 }
