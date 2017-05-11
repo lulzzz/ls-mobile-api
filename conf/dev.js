@@ -4,6 +4,7 @@ var dashbrdconfig = require('./dashbrdconfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
+    tempurl: 'http://localhost:9000/v2',
     sectokenconfig : {
         url:'/m/auth/validatetoken',
         method:'POST',
