@@ -14,7 +14,7 @@ var router = require('express').Router(),
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    req.url = urldecoder.decodeURL(req);
+    req.url = urlDecoder.decodeURL(req);
     return next();
 });
 
