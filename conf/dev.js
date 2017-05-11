@@ -1,6 +1,7 @@
 'use strict';
 var authconfig = require('./authconfig');
 var dashbrdconfig = require('./dashbrdconfig');
+var searchconfig = require('./searchconfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',

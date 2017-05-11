@@ -8,7 +8,7 @@ var router = require('express').Router(),
     dashinvdetail = require('../lib/restclient/dashboard/dashboardinvdetail.js'),
     assetQueryModel = require('../model/assetDashboardQueryModel'),
     assetModel = require('../model/DashboardModel'),
-    overviewDashboard = require('../model/OverAllDashboard'),
+    //overviewDashboard = require('../model/OverAllDashboard'),
     InvDashQueryModel = require('../model/InvDashQueryModel');
 
 
