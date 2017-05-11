@@ -15,6 +15,7 @@ router.use('/inventory',require('./inventory'));
 router.use('/entitySearch',require('./entity'));
 router.use('/assets',require('./assets'));
 router.use('/events',require('./events'));
+router.use('/materialSearch',require('./material'));
 
 //routes common error handler
 router.use(function(err, req, res, next){
