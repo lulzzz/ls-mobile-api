@@ -13,3 +13,13 @@ function InvDashQueryModel () {
     var offset;
     var size;
 }
+
+function SingleInvDetailModel () {
+
+    this.dId = undefined;
+    this.entity_id = undefined;
+    this.material_id = undefined;
+    this.offset = undefined;
+    this.size = undefined;
+}(module.exports);
+
