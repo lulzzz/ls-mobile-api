@@ -30,11 +30,5 @@ module.exports = {
         method:'GET',
         timeout:1000,
         req_pld: 'query'
-    },
-    entity_search:{
-        url: '/entities/',
-        method:'GET',
-        timeout:1000,
-        req_pld: 'query'
     }
 }
