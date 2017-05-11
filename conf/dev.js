@@ -10,5 +10,6 @@ module.exports = {
         timeout:1000
     },
     loginconfig: authconfig,
-    dashconfig: dashbrdconfig
+    dashconfig: dashbrdconfig,
+    searchconfig: searchconfig
 };
