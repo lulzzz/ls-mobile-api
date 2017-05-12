@@ -2,14 +2,14 @@
 
 var router = require('express').Router(),
     logger = require('../lib/utils/log'),
-    urldecoder = require('../lib/utils/urlDecoder'),
+    urlDecoder = require('../lib/utils/urldecoder'),
     InvDetailQueryModel = require('../model/InvDetailQueryModel'),
     SingleInvDetailModel = require('../model/InvDetailQueryModel'),
     invdetail = require('../lib/restclient/inventory/invdetail');
 
 router.use(function(req, res, next){
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    req.url = urldecoder.decodeURL(req);
+    req.url = urlDecoder.decodeurl(req);
     return next();
 });
 

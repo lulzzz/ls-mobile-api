@@ -7,11 +7,11 @@ var deviceRecentAlertModel = require('../model/DeviceRecentAlertsModel');
 var assetService = require('../lib/restclient/dashboard/asset');
 var path = require("path");
 var deviceAlertModel = require(path.resolve('./model/DeviceAlertModel'));
-var urlDecoder = require('../lib/utils/urlDecoder');
+var urlDecoder = require('../lib/utils/urldecoder');
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    req.url = urlDecoder.decodeURL(req);
+    req.url = urlDecoder.decodeurl(req);
     return next();
 });
 

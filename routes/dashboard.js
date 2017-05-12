@@ -2,19 +2,19 @@
 
 var router = require('express').Router(),
     logger = require('../lib/utils/log'),
-    urldecoder = require('../lib/utils/urlDecoder'),
+    urlDecoder = require('../lib/utils/urldecoder'),
     dashinv = require('../lib/restclient/dashboard/dashboardinv.js'),
     assetDashboard = require('../lib/restclient/dashboard/assetOverviewDashboard.js'),
     dashinvdetail = require('../lib/restclient/dashboard/dashboardinvdetail.js'),
     assetQueryModel = require('../model/assetDashboardQueryModel'),
     assetModel = require('../model/DashboardModel'),
-    //overviewDashboard = require('../model/OverAllDashboard'),
-    InvDashQueryModel = require('../model/InvDashQueryModel');
+    InvDashQueryModel = require('../model/InvDashQueryModel'),
+    InvDetailResModel = require('../model/InvDetailResModel');
 
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    req.url = urlDecoder.decodeURL(req);
+    req.url = urlDecoder.decodeurl(req);
     return next();
 });
 
@@ -91,11 +91,43 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
         if (err) {
             logger.error('Error in inventory detail dashboard: ' + err.message)
             next(err);
-        } else if (data) {
+        } else if (data){
+            var v = transformInvDetailResponse(data);
             res.append('Content-Type', 'application/json');
-            res.status(200).send(data);
+            res.status(200).send(v);
         }
     });
+    function transformInvDetailResponse(data) {
+        var d = JSON.parse(data);
+        var resmodel = new InvDetailResModel();
+        if (d.items instanceof Array) {
+            for (var i in d.items) {
+                var item = d.items[i];
+                if (item.nc != undefined && item.nc > 0) {
+                    resmodel.n.push(item);
+                }
+                if (item.soc != undefined && item.soc > 0) {
+                    resmodel.so.push(item);
+                }
+                if (item.gmc != undefined && item.gmc > 0) {
+                    resmodel.mx.push(item);
+                }
+                if (item.lmnc != undefined && item.lmnc > 0) {
+                    resmodel.mn.push(item);
+                }
+            }
+        }
+        if (d.total != undefined) {
+            resmodel.total = d.total;
+        }
+        if (d.offset != undefined) {
+            resmodel.offset = d.offset;
+        }
+        if (d.size != undefined) {
+            resmodel.size = d.size;
+        }
+        return resmodel;
+    }
 });
 
 router.get('/dashboards/assets/detail', function (req, res, next) {

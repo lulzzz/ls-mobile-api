@@ -1,6 +1,7 @@
 'use strict';
 var authconfig = require('./authconfig');
 var dashbrdconfig = require('./dashbrdconfig');
+var searchconfig = require('./searchconfig');
 
 module.exports = {
     baseurl: 'http://<statging-host>:<statging-port>/s2/api',
@@ -11,5 +12,6 @@ module.exports = {
         timeout:1000
     },
     loginconfig: authconfig,
-    dashconfig: dashbrdconfig
+    dashconfig: dashbrdconfig,
+    searchconfig: searchconfig
 };

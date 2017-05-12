@@ -9,6 +9,12 @@ module.exports = {
         method:'GET',
         timeout:1000,
         req_pld: 'query'
+    },
+    material_search:{
+        url: '/materials/',
+        method:'GET',
+        timeout:1000,
+        req_pld: 'query'
     }
 }
 
