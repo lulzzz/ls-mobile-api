@@ -58,7 +58,7 @@ router.get('/dashboards/assets', function (req, res, next) {
             next(err);
         } else if (data != null) {
             var obj = JSON.parse(data);
-            var model = new overviewDashboard();
+            var model = new  assetModel();
             var value = obj.tempDomain;
             model.tn = value.tn != null ? value.tn : 0;
             model.th = value.th != null ? value.th : 0;
