@@ -161,10 +161,14 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
             model.l = obj.mLev;
             model.sz = obj.size;
             var eventKeys = Object.keys(obj.temp);
+            debugger
             for (var i = 0; i < eventKeys.length; i++) {
                 var evntTempData = obj.temp[eventKeys[i]];
                 var locKeys = Object.keys(evntTempData);
-                var locTempData = Object.values(evntTempData);
+                //var locTempData = Object.values(evntTempData);
+                var locTempData = Object.keys(evntTempData).map(function(key) {
+                    return evntTempData[key];
+                });
                 if (locKeys != null) {
                     for (var c = 0; c < locTempData.length; c++) {
                         locTempData[c].lcid = locKeys[c];
