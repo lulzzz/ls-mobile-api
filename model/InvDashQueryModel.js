@@ -15,4 +15,6 @@ function InvDashQueryModel () {
     var date;
     var groupby;
     var refresh;
+    var user;
+    var reqId;
 }

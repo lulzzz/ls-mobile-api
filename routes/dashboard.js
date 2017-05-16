@@ -31,6 +31,8 @@ router.get('/dashboards/inventory', function (req, res, next) {
     queryModel.p = req.query.p;
     queryModel.date = req.query.date;
     queryModel.refresh = req.query.refresh;
+    queryModel.user = req.headers['x-access-user'];
+    queryModel.reqId = req.headers['x-request-id'];
 
     dashinv.getInvDashboard(queryModel, req, res, function (err, data) {
         if (err) {
@@ -86,6 +88,8 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
     queryModel.date = req.query.date;
     queryModel.refresh = req.query.refresh;
     queryModel.groupby = req.query.groupby;
+    queryModel.user = req.headers['x-access-user'];
+    queryModel.reqId = req.headers['x-request-id'];
 
     dashinvdetail.getInvDetailDashboard(queryModel, req, res, function (err, data) {
         if (err) {
@@ -161,7 +165,6 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
             model.l = obj.mLev;
             model.sz = obj.size;
             var eventKeys = Object.keys(obj.temp);
-            debugger
             for (var i = 0; i < eventKeys.length; i++) {
                 var evntTempData = obj.temp[eventKeys[i]];
                 var locKeys = Object.keys(evntTempData);
