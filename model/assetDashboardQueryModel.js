@@ -12,7 +12,7 @@ function assetDashboardQueryModel() {
     this.excludeETag = undefined;
     this.skipCache = undefined;
     this.onlyTempData = undefined;
-    this.locnm = undefined;
+    this.filter = undefined;
     this.aType = undefined;
     this.user = undefined;
     this.size = undefined;
