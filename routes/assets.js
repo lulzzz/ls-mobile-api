@@ -6,13 +6,13 @@ var router = require('express').Router(),
     deviceRecentAlertModel = require('../model/DeviceRecentAlertsModel'),
     assetService = require('../lib/restclient/assets/asset'),
     deviceAlertModel = require('../model/DeviceAlertModel'),
-    urlDecoder = require('../lib/utils/urlDecoder'),
+    urlDecoder = require('../lib/utils/urldecoder'),
     assetBuilder = require('../lib/restclient/assets/assetRespBuilder'),
     queryBuilder = require('../lib/restclient/assets/assetQueryBuilder');
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    req.url = urlDecoder.decodeURL(req);
+    req.url = urlDecoder.decodeurl(req);
     return next();
 });
 
