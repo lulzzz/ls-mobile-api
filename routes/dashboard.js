@@ -2,21 +2,19 @@
 
 var router = require('express').Router(),
     logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urlDecoder'),
+    urlDecoder = require('../lib/utils/urldecoder'),
     dashinv = require('../lib/restclient/dashboard/dashboardinv.js'),
     assetDashboard = require('../lib/restclient/dashboard/assetOverviewDashboard.js'),
     dashinvdetail = require('../lib/restclient/dashboard/dashboardinvdetail.js'),
     assetQueryModel = require('../model/assetDashboardQueryModel'),
     assetModel = require('../model/DashboardModel'),
-    overviewDashboard = require('../model/DashboardModel'),
-    InvDashQueryModel = require('../model/InvDashQueryModel');
     InvDashQueryModel = require('../model/InvDashQueryModel'),
-    //InvDetailResModel = require('../model/InvDetailResModel');
+    InvDetailResModel = require('../model/InvDetailResModel');
 
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
-    req.url = urlDecoder.decodeURL(req);
+    req.url = urlDecoder.decodeurl(req);
     return next();
 });
 
@@ -62,7 +60,7 @@ router.get('/dashboards/assets', function (req, res, next) {
             next(err);
         } else if (data != null) {
             var obj = JSON.parse(data);
-            var model = new overviewDashboard();
+            var model = new assetModel();
             var value = obj.tempDomain;
             model.tn = value.tn != null ? value.tn : 0;
             model.th = value.th != null ? value.th : 0;
@@ -170,7 +168,9 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
             for (var i = 0; i < eventKeys.length; i++) {
                 var evntTempData = obj.temp[eventKeys[i]];
                 var locKeys = Object.keys(evntTempData);
-                var locTempData = Object.values(evntTempData);
+                var locTempData = Object.keys(evntTempData).map(function(key) {
+                    return evntTempData[key];
+                });
                 if (locKeys != null) {
                     for (var c = 0; c < locTempData.length; c++) {
                         locTempData[c].lcid = locKeys[c];
