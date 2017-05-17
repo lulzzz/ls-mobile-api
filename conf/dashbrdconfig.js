@@ -52,7 +52,7 @@ module.exports = {
     assets: {
         url: '/assets/list/',
         method: 'POST',
-        timeout: 5000,
+        timeout: 3000,
         req_pld: 'query'
     }
 }
