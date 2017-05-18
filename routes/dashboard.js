@@ -6,8 +6,8 @@ var router = require('express').Router(),
     dashboardService = require('../lib/restclient/dashboard/dashboardService'),
     InvDashQueryModel = require('../model/InvDashQueryModel'),
     InvDetailResModel = require('../model/InvDetailResModel'),
-    queryBuilder = require('../lib/restclient/dashboard/dashboardQueryBuilder'),
-    dashboardResModel = require('../lib/restclient/dashboard/dashboardResModel');
+    queryBuilder = require('../builder/dashboardQueryBuilder'),
+    dashboardResModel = require('../builder/dashboardResBuilder');
 
 
 router.use(function (req, res, next) {

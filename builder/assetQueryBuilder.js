@@ -5,7 +5,7 @@
 (function(assetQueryBuilder) {
     "use strict";
     //assetQueryModel = require('../model/AssetQueryModel')
-    var model = require('../../../model/AssetQueryModel');
+    var model = require('../model/AssetQueryModel');
     assetQueryBuilder.buildTempDataParams = function(req, res) {
         var queryModel = new model();
         if(req.query.eid) {
