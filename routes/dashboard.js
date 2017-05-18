@@ -6,8 +6,8 @@ var router = require('express').Router(),
     dashboardService = require('../lib/restclient/dashboard/dashboardService'),
     InvDashQueryModel = require('../model/InvDashQueryModel'),
     InvDetailResModel = require('../model/InvDetailResModel'),
-    queryBuilder = require('../builder/dashboardQueryBuilder'),
-    dashboardResModel = require('../builder/dashboardResBuilder');
+    queryBuilder = require('../lib/builder/dashboardQueryBuilder'),
+    dashboardResModel = require('../lib/builder/dashboardResBuilder');
 
 
 router.use(function (req, res, next) {
@@ -19,7 +19,6 @@ router.use(function (req, res, next) {
 router.get('/dashboards/inventory', function (req, res, next) {
 
     var queryModel = new InvDashQueryModel();
-    queryModel.dId = req.query.dId;
     queryModel.incetags = req.query.incetags;
     queryModel.exetags = req.query.exetags;
     queryModel.mtags = req.query.mtags;
@@ -62,7 +61,6 @@ router.get('/dashboards/assets', function (req, res) {
 router.get('/dashboards/inventory/detail', function (req, res, next) {
 
     var queryModel = new InvDashQueryModel();
-    queryModel.dId = req.query.dId;
     queryModel.incetags = req.query.incetags;
     queryModel.exetags = req.query.exetags;
     queryModel.mtags = req.query.mtags;
@@ -114,6 +112,9 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
         }
         if (d.size != undefined) {
             resmodel.size = d.size;
+        }
+        if (d.level != undefined) {
+            resmodel.l = d.level;
         }
         return resmodel;
     }

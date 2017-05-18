@@ -7,8 +7,8 @@ var router = require('express').Router(),
     assetService = require('../lib/restclient/assets/asset'),
     deviceAlertModel = require('../model/DeviceAlertModel'),
     urlDecoder = require('../lib/utils/urldecoder'),
-    assetBuilder = require('../builder/assetRespBuilder'),
-    queryBuilder = require('../builder/assetQueryBuilder');
+    assetBuilder = require('../lib/builder/assetRespBuilder'),
+    queryBuilder = require('../lib/builder/assetQueryBuilder');
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
