@@ -4,7 +4,7 @@
 
 (function(dashboardQueryBuilder) {
     "use strict";
-    var model = require('../../../model/assetDashboardQueryModel');
+    var model = require('../model/assetDashboardQueryModel');
 
     dashboardQueryBuilder.buildAssetDashboardParams = function(req) {
         var queryModel = new model();

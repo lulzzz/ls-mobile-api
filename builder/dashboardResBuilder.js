@@ -2,12 +2,12 @@
  * Created by smriti on 18/05/17.
  */
 
-(function(dashboardResModel) {
+(function(dashboardResBuilder) {
     "use strict";
 
-    var assetModel = require('../../../model/DashboardModel');
+    var assetModel = require('../model/DashboardModel');
 
-    dashboardResModel.buildAssetDashboardModel = function(tempData) {
+    dashboardResBuilder.buildAssetDashboardModel = function(tempData) {
         var data = tempData.tempDomain;
         var model = new assetModel();
         model.tn = data.tn != null ? parseInt(data.tn) : 0;
@@ -23,7 +23,7 @@
         return model;
     };
 
-    dashboardResModel.buildAssetDashbDetailModel = function(tempData) {
+    dashboardResBuilder.buildAssetDashbDetailModel = function(tempData) {
         var data = tempData.temp;
         var model = new assetModel();
         var eventKeys = Object.keys(data);
