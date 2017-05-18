@@ -11,7 +11,7 @@ function assetDashboardQueryModel() {
     this.tPeriod = undefined;
     this.excludeETag = undefined;
     this.skipCache = undefined;
-    this.onlyTempData = undefined;
+    this.onlyTempData = true;
     this.filter = undefined;
     this.aType = undefined;
     this.user = undefined;

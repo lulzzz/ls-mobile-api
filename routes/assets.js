@@ -49,7 +49,7 @@ router.get('/assets', function (req, res, next) {
 
 });
 
-router.get('/assets/alerts/recent/:vId/:dId', function (req, res, next) {
+router.get('/assets/detail', function (req, res, next) {
     var queryModel = new assetQueryModel();
     queryModel.vId = req.params.vId;
     queryModel.dId = req.params.dId;

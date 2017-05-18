@@ -15,4 +15,5 @@ function DashboardModel() {
     this.restime = undefined; // response time
     this.sz = undefined;
     this.o = undefined;
+    this.l = undefined;
 }
