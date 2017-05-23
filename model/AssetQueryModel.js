@@ -2,7 +2,7 @@
  * Created by smriti on 5/2/17.
  */
 
-'use strict'
+'use strict';
 
 module.exports = AssetQueryModel;
 
@@ -20,4 +20,7 @@ function AssetQueryModel() {
     this.awr = undefined; // asset with relationship
     this.page = undefined; // pages
     this.reqId = undefined;
+    this.data = undefined;
+    this.offset = undefined;
+    this.url = "";
 }

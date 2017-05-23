@@ -12,4 +12,5 @@ function InvDetailResModel () {
     this.total = 0;
     this.offset = 0;
     this.size = 0;
+    this.l = '';
 }
