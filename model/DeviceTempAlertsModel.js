@@ -4,10 +4,12 @@
 
 "use strict";
 
-module.exports = DeviceRecentAlertsModel;
+module.exports = DeviceTempAlertsModel;
 
-function DeviceRecentAlertsModel() {
+function DeviceTempAlertsModel() {
     this.items = [];
     this.nPages = undefined;
     this.size = undefined;
+    this.temp = [];
+    this.tPages = undefined;
 }

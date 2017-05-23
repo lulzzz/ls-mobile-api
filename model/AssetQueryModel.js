@@ -19,6 +19,12 @@ function AssetQueryModel() {
     this.ws = undefined; // working status
     this.awr = undefined; // asset with relationship
     this.page = undefined; // pages
+    this.mpid = undefined; // monitoring points/sensor Id
+    this.sint = undefined; // sampling intervals
+    this.sd = undefined; // start date in millis
+    this.ed = undefined; // end date in millis
+    this.oa = false; // only recent alert data
+    this.ot = false; // only asset temperature data
     this.reqId = undefined;
     this.data = undefined;
     this.offset = undefined;

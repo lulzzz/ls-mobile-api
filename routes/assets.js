@@ -2,10 +2,7 @@
 
 var router = require('express').Router(),
     logger = require('../lib/utils/log'),
-    assetQueryModel = require('../model/AssetQueryModel'),
-    deviceRecentAlertModel = require('../model/DeviceRecentAlertsModel'),
     assetService = require('../lib/restclient/assets/asset'),
-    deviceAlertModel = require('../model/DeviceAlertModel'),
     urlDecoder = require('../lib/utils/urldecoder'),
     assetBuilder = require('../lib/builder/assetRespBuilder'),
     queryBuilder = require('../lib/builder/assetQueryBuilder');
@@ -49,37 +46,60 @@ router.get('/assets', function (req, res, next) {
 
 });
 
-router.get('/assets/detail', function (req, res, next) {
-    var queryModel = new assetQueryModel();
-    queryModel.vId = req.params.vId;
-    queryModel.dId = req.params.dId;
-    queryModel.page = req.query.page;
-    queryModel.size = req.query.size;
-    queryModel.token = req.header("x-access-token");
-    queryModel.reqId = req.header("x-request-id");
-    assetService.getRecentAlerts(queryModel, req, res, function (err, data) {
+router.get('/assets/detail', function (req, res) {
+    var queryModel = queryBuilder.buildTempAlertParams(req),
+        count = 0, alertData, tempData;
+
+    // fetch recent alerts and temperature for assets
+    getRecentAlerts(queryModel, processData);
+    getTemperatures(queryModel, processData);
+
+    // callback method
+    function processData(results, type) {
+       if(type == 'oa') {
+           if(results) {
+               alertData = results;
+               count++;
+           } else {
+               res.status(400).send("Error while fetching the data");
+           }
+       } else if(type == 'ot') {
+           if(results) {
+               tempData = results;
+               count++;
+           } else {
+               res.status(400).send("Error while fetching the data");
+           }
+       }
+        if(count > 1) {
+            alertData.temp = tempData.temp;
+            res.status(200).send(alertData);
+        }
+    }
+});
+
+function getRecentAlerts(queryModel, callback) {
+   assetService.getRecentAlerts(queryModel, function (err, data) {
         if (err) {
             logger.error("Error while fetching the alerts for assets");
-            next(err);
+            callback(null, 'oa');
         } else if (data) {
-            var obj = JSON.parse(data);
-            var alertModel = new deviceRecentAlertModel();
-            obj.data.forEach(function (assetData) {
-                var deviceModel = new deviceAlertModel();
-                deviceModel.ft = assetData.ft;
-                deviceModel.st = assetData.tmpalm.st;
-                deviceModel.mpId = assetData.tmpalm.mpId;
-                deviceModel.temp = assetData.tmpalm.tmp;
-                alertModel.items.push(deviceModel);
-            });
-            alertModel.nPages = obj.nPages;
-            alertModel.size = obj.data.length;
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(alertModel);
+            var assetData = JSON.parse(data);
+            callback(assetBuilder.buildRecentAlertModel(assetData), 'oa');
         }
     });
+}
 
-
-});
+function getTemperatures(queryModel, callback) {
+    assetService.getTemperatureData(queryModel, function (err, data) {
+        if (err) {
+            logger.error("Error while fetching temperature data for assets");
+            callback(null, 'ot');
+        } else if (data) {
+            var assetData = JSON.parse(data);
+            callback(assetBuilder.buildAssetTempDataModel(assetData, queryModel), 'ot');
+        }
+    });
+}
 
 module.exports = router;
