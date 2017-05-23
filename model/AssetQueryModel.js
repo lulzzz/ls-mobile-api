@@ -7,8 +7,8 @@
 module.exports = AssetQueryModel;
 
 function AssetQueryModel() {
-    this.vId = undefined; // Vendor id/ manufacturer for an asset
-    this.dId = undefined; // Device id
+    this.vid = undefined; // Vendor id/ manufacturer for an asset
+    this.did = undefined; // Device id
     this.page = undefined; // No of pages
     this.size = undefined; // Size of data to be fetched
     this.auth = undefined; // basic authorization for TMS server

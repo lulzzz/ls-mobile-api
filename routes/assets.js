@@ -5,7 +5,8 @@ var router = require('express').Router(),
     assetService = require('../lib/restclient/assets/asset'),
     urlDecoder = require('../lib/utils/urldecoder'),
     assetBuilder = require('../lib/builder/assetRespBuilder'),
-    queryBuilder = require('../lib/builder/assetQueryBuilder');
+    queryBuilder = require('../lib/builder/assetQueryBuilder'),
+    Promise = require('bluebird');
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -34,12 +35,12 @@ router.get('/assets', function (req, res, next) {
                 if (err) {
                     logger.error("Error while fetching the data");
                     next(err);
-               } else if(data) {
-                   var assetData = JSON.parse(data);
-                   var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
-                   res.append('Content-Type', 'application/json');
-                   res.status(200).send(assets);
-               }
+                } else if (data) {
+                    var assetData = JSON.parse(data);
+                    var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
+                    res.append('Content-Type', 'application/json');
+                    res.status(200).send(assets);
+                }
             });
         }
     });
@@ -47,59 +48,48 @@ router.get('/assets', function (req, res, next) {
 });
 
 router.get('/assets/detail', function (req, res) {
-    var queryModel = queryBuilder.buildTempAlertParams(req),
-        count = 0, alertData, tempData;
+    var queryModel = queryBuilder.buildTempAlertParams(req);
 
     // fetch recent alerts and temperature for assets
-    getRecentAlerts(queryModel, processData);
-    getTemperatures(queryModel, processData);
+    var a = getRecentAlerts(queryModel),
+        b = getTemperatures(queryModel);
+    Promise.all([a, b]).then(function (result) {
+        logger.info("Received asset details successfully");
+        result[0].temp = result[1].temp;
+        res.status(200).send(result[0]);
+    }).catch(function (err)  {
+        logger.error("Error while fetching asset details " + "\n" + err.stack);
+        res.status(400).send("Error while fetching asset details");
+    });
 
-    // callback method
-    function processData(results, type) {
-       if(type == 'oa') {
-           if(results) {
-               alertData = results;
-               count++;
-           } else {
-               res.status(400).send("Error while fetching the data");
-           }
-       } else if(type == 'ot') {
-           if(results) {
-               tempData = results;
-               count++;
-           } else {
-               res.status(400).send("Error while fetching the data");
-           }
-       }
-        if(count > 1) {
-            alertData.temp = tempData.temp;
-            res.status(200).send(alertData);
-        }
-    }
 });
 
-function getRecentAlerts(queryModel, callback) {
-   assetService.getRecentAlerts(queryModel, function (err, data) {
-        if (err) {
-            logger.error("Error while fetching the alerts for assets");
-            callback(null, 'oa');
-        } else if (data) {
-            var assetData = JSON.parse(data);
-            callback(assetBuilder.buildRecentAlertModel(assetData), 'oa');
-        }
-    });
+function getRecentAlerts(queryModel) {
+    return new Promise(function (resolve, reject) {
+        assetService.getRecentAlerts(queryModel, function (err, data) {
+            if (err) {
+                logger.error("Error while fetching the alerts for assets");
+                reject(err);
+            } else if (data) {
+                var assetData = JSON.parse(data);
+                resolve(assetBuilder.buildRecentAlertModel(assetData))
+            }
+        })
+    })
 }
 
-function getTemperatures(queryModel, callback) {
-    assetService.getTemperatureData(queryModel, function (err, data) {
-        if (err) {
-            logger.error("Error while fetching temperature data for assets");
-            callback(null, 'ot');
-        } else if (data) {
-            var assetData = JSON.parse(data);
-            callback(assetBuilder.buildAssetTempDataModel(assetData, queryModel), 'ot');
-        }
-    });
+function getTemperatures(queryModel) {
+    return new Promise(function (resolve, reject) {
+        assetService.getTemperatureData(queryModel, function (err, data) {
+            if (err) {
+                logger.error("Error while fetching temperature data for assets");
+                reject(err);
+            } else if (data) {
+                var assetData = JSON.parse(data);
+                resolve(assetBuilder.buildAssetTempDataModel(assetData, queryModel));
+            }
+        });
+    })
 }
 
 module.exports = router;
