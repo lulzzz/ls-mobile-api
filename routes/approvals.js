@@ -15,27 +15,29 @@ router.use(function (req, res, next) {
     return next();
 });
 
-router.get('/approvals', function (req, res) {
+router.get('/approvals', function (req, res, next) {
     var model = queryBuilder.getQueryParams(req);
     approvalService.getApprovals(model, req, function (err, data) {
         if (err) {
             logger.error("Error while fetching the approvals for approver:" + model.approver_id);
-            res.status(400).send("Error while fetching the approvals for approver:" + model.approver_id);
+            next(err);
         } else if (data) {
             res.status(200).send(data);
         }
+        res.status(400).send("Error while fetching the approvals for approver:" + model.approver_id);
     });
 });
 
-router.post('/approvals', function(req,res) {
-    approvalService.createApprovals(req, function(err, data) {
-        if(err) {
+router.post('/approvals', function (req, res, next) {
+    approvalService.createApprovals(req, function (err, data) {
+        if (err) {
             logger.error("Error while creating approvals" + "\n" + err.stack);
-            res.status(400).send("Error while creating approvals");
+            next(err);
         } else if (data) {
             logger.info("Approval " + data + " created successfully");
             res.status(200).send(data);
         }
+        res.status(400).send("Error while creating approvals");
     })
- });
+});
 module.exports = router;
