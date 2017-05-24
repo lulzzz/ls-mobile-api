@@ -5,9 +5,9 @@
 module.exports = {
     asset_alerts: {
         url: '/v2/alarms/recent/',
-        method:'GET',
-        timeout:1000,
-        req_pld:'query'
+        method: 'GET',
+        timeout: 1000,
+        req_pld: 'query'
     },
     asset_detail: {
         url: '/v2/tags/',

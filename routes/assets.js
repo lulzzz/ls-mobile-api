@@ -57,7 +57,7 @@ router.get('/assets/detail', function (req, res) {
         logger.info("Received asset details successfully");
         result[0].temp = result[1].temp;
         res.status(200).send(result[0]);
-    }).catch(function (err)  {
+    }).catch(function (err) {
         logger.error("Error while fetching asset details " + "\n" + err.stack);
         res.status(400).send("Error while fetching asset details");
     });

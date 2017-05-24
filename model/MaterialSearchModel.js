@@ -3,7 +3,7 @@
  */
 module.exports = MaterialSearchModel;
 
-function MaterialSearchModel () {
+function MaterialSearchModel() {
 
     this.dId = undefined;
     this.tags = undefined;

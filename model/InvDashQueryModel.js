@@ -2,7 +2,7 @@
 
 module.exports = InvDashQueryModel;
 
-function InvDashQueryModel () {
+function InvDashQueryModel() {
 
     var dId;
     var incetags;

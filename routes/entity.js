@@ -9,7 +9,7 @@ var router = require('express').Router(),
     EntitySearchModel = require('../model/EntitySearchModel'),
     entitySearch = require('../lib/restclient/entity/entitySearch');
 
-router.use(function(req, res, next){
+router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
     req.url = urlDecoder.decodeurl(req);
     return next();
@@ -26,9 +26,9 @@ router.get('/entitySearch', function (req, res, next) {
     queryModel.size = req.query.size;
     queryModel.user = req.headers['x-access-user'];
 
-    entitySearch.getAllEntities(queryModel,req,res,function (err,data) {
+    entitySearch.getAllEntities(queryModel, req, res, function (err, data) {
         if (err) {
-            logger.error('Error in getting entity list '+err.message)
+            logger.error('Error in getting entity list ' + err.message)
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');

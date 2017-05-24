@@ -78,7 +78,7 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
         if (err) {
             logger.error('Error in inventory detail dashboard: ' + err.message)
             next(err);
-        } else if (data){
+        } else if (data) {
             var v = transformInvDetailResponse(data);
             res.append('Content-Type', 'application/json');
             res.status(200).send(v);

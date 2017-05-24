@@ -9,7 +9,7 @@ var router = require('express').Router(),
     MaterialSearchModel = require('../model/MaterialSearchModel'),
     materialSearch = require('../lib/restclient/material/materialSearch');
 
-router.use(function(req, res, next){
+router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
     req.url = urlDecoder.decodeurl(req);
     return next();
@@ -25,9 +25,9 @@ router.get('/materialSearch', function (req, res, next) {
     queryModel.size = req.query.size;
     queryModel.user = req.headers['x-access-user'];
 
-    materialSearch.getAllMaterials(queryModel,req,res,function (err,data) {
+    materialSearch.getAllMaterials(queryModel, req, res, function (err, data) {
         if (err) {
-            logger.error('Error in getting material list '+err.message)
+            logger.error('Error in getting material list ' + err.message)
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');
