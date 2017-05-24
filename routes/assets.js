@@ -9,7 +9,6 @@ var router = require('express').Router(),
     Promise = require('bluebird');
 
 router.use(function (req, res, next) {
-    //changing url to original url as url is getting changed--need to find the reason & fix.
     req.url = urlDecoder.decodeurl(req);
     return next();
 });
@@ -43,6 +42,7 @@ router.get('/assets', function (req, res, next) {
                 }
             });
         }
+        res.status(400).send("Error while fetching assets");
     });
 
 });
@@ -59,7 +59,7 @@ router.get('/assets/detail', function (req, res) {
         res.status(200).send(result[0]);
     }).catch(function (err) {
         logger.error("Error while fetching asset details " + "\n" + err.stack);
-        res.status(400).send("Error while fetching asset details");
+        res.status(400).send("Error while fetching the asset details");
     });
 
 });

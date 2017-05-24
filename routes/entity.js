@@ -34,6 +34,7 @@ router.get('/entitySearch', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(400).send("Error while fetching the entity list in domain " + queryModel.dId);
     });
 
 });

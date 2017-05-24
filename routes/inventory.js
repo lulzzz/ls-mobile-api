@@ -33,6 +33,7 @@ router.get('/inventory', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(400).send("Error while fetching the inventory stock view in domain " + queryModel.dId);
     });
 
 });
@@ -54,6 +55,8 @@ router.get('/inventory/detail', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(400).send("Error while fetching the inventory details for entity: " +
+            queryModel.eid + " in domain " + queryModel.dId);
     });
 
 });

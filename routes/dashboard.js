@@ -39,22 +39,24 @@ router.get('/dashboards/inventory', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(400).send("Error while fetching the inventory dashboard");
     });
 });
 
 
-router.get('/dashboards/assets', function (req, res) {
+router.get('/dashboards/assets', function (req, res, next) {
     var model = queryBuilder.buildAssetDashboardParams(req);
     dashboardService.getAssetDashboard(model, function (err, data) {
         if (err) {
             logger.error('Error in getting asset overview dashboard' + err.message);
-            res.status(400).send("Error while fetching data" + err.message);
+            next(err);
         } else if (data != null) {
             var tempData = JSON.parse(data);
             model = dashboardResModel.buildAssetDashboardModel(tempData);
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }
+        res.status(400).send("Error while fetching dashboard data");
     });
 });
 
@@ -83,55 +85,57 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(v);
         }
+        res.status(400).send("Error while fetching inventory detail dashboard");
     });
     function transformInvDetailResponse(data) {
-        var d = JSON.parse(data);
-        var resmodel = new InvDetailResModel();
-        if (d.items instanceof Array) {
-            for (var i in d.items) {
-                var item = d.items[i];
-                if (item.nc != undefined && item.nc > 0) {
-                    resmodel.n.push(item);
-                }
-                if (item.soc != undefined && item.soc > 0) {
-                    resmodel.so.push(item);
-                }
-                if (item.gmc != undefined && item.gmc > 0) {
-                    resmodel.mx.push(item);
-                }
-                if (item.lmnc != undefined && item.lmnc > 0) {
-                    resmodel.mn.push(item);
-                }
+    var d = JSON.parse(data);
+    var resmodel = new InvDetailResModel();
+    if (d.items instanceof Array) {
+        for (var i in d.items) {
+            var item = d.items[i];
+            if (item.nc != undefined && item.nc > 0) {
+                resmodel.n.push(item);
+            }
+            if (item.soc != undefined && item.soc > 0) {
+                resmodel.so.push(item);
+            }
+            if (item.gmc != undefined && item.gmc > 0) {
+                resmodel.mx.push(item);
+            }
+            if (item.lmnc != undefined && item.lmnc > 0) {
+                resmodel.mn.push(item);
             }
         }
-        if (d.total != undefined) {
-            resmodel.total = d.total;
-        }
-        if (d.offset != undefined) {
-            resmodel.offset = d.offset;
-        }
-        if (d.size != undefined) {
-            resmodel.size = d.size;
-        }
-        if (d.level != undefined) {
-            resmodel.l = d.level;
-        }
-        return resmodel;
     }
+    if (d.total != undefined) {
+        resmodel.total = d.total;
+    }
+    if (d.offset != undefined) {
+        resmodel.offset = d.offset;
+    }
+    if (d.size != undefined) {
+        resmodel.size = d.size;
+    }
+    if (d.level != undefined) {
+        resmodel.l = d.level;
+    }
+    return resmodel;
+}
 });
 
-router.get('/dashboards/assets/detail', function (req, res) {
+router.get('/dashboards/assets/detail', function (req, res, next) {
     var model = queryBuilder.buildAssetDashboardParams(req);
     dashboardService.getAssetDashboard(model, function (err, data) {
         if (err) {
             logger.error('Error in getting asset detail dashboard: ' + err.message);
-            res.status(400).send("Error while fetching asset dashboard data" + err.message);
+            next(err);
         } else if (data != null) {
             var tempData = JSON.parse(data);
             model = dashboardResModel.buildAssetDashbDetailModel(tempData);
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }
+        res.status(400).send("Error while fetching the asset dashboard data");
     });
 });
 
