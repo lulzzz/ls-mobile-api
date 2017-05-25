@@ -16,7 +16,7 @@ router.use('/entitySearch',require('./entity'));
 router.use('/assets',require('./assets'));
 router.use('/events',require('./events'));
 router.use('/materialSearch',require('./material'));
-router.use('/userDevice/*',require('./userDevice'));
+router.use('/userdevice/*',require('./userdevice'));
 
 //routes common error handler
 router.use(function(err, req, res, next){

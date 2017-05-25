@@ -15,18 +15,16 @@ router.use(function(req, res, next){
     return next();
 });
 
-router.post('/userDevice/create', function (req, res, next) {
-
+router.post('/userdevice', function (req, res, next) {
     var queryModel = new UserDeviceModel();
     queryModel.userid = req.query.userid;
     queryModel.token = req.query.token;
     queryModel.appname = req.query.appname;
     queryModel.createdOn = req.query.createdOn;
     queryModel.updatedOn = req.query.updatedOn;
-    queryModel.deleted = req.query.deleted;
     queryModel.user = req.headers['x-access-user'];
 
-    userdeviceConfig.createUserDevice(queryModel,req,res,function (err,data) {
+    userdeviceConfig.addEditUserDevice(queryModel,req,res,function (err,data) {
         if (err) {
             logger.error('Error in getting material list '+err.message)
             next(err);
@@ -35,21 +33,18 @@ router.post('/userDevice/create', function (req, res, next) {
             res.status(200).send(data);
         }
     });
-
 });
 
-router.post('/userDevice/update', function (req, res, next) {
-
+router.get('/userdevice/gettoken', function (req, res, next) {
     var queryModel = new UserDeviceModel();
     queryModel.userid = req.query.userid;
     queryModel.token = req.query.token;
     queryModel.appname = req.query.appname;
     queryModel.createdOn = req.query.createdOn;
     queryModel.updatedOn = req.query.updatedOn;
-    queryModel.deleted = req.query.deleted;
     queryModel.user = req.headers['x-access-user'];
 
-    userdeviceConfig.updateUserDevice(queryModel,req,res,function (err,data) {
+    userdeviceConfig.getUDToken(queryModel,req,res,function (err,data) {
         if (err) {
             logger.error('Error in getting material list '+err.message)
             next(err);
@@ -58,6 +53,5 @@ router.post('/userDevice/update', function (req, res, next) {
             res.status(200).send(data);
         }
     });
-
 });
 module.exports = router;

@@ -9,5 +9,4 @@ function UserDeviceModel () {
     this.token = undefined;
     this.createdOn = undefined;
     this.updatedOn = undefined;
-    this.deleted = undefined;
 }
