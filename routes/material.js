@@ -4,10 +4,11 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    queryBuilder = require('../lib/builder/materialQueryBuilder'),
-    materialSearch = require('../lib/restclient/material/materialSearch');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log', '')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    queryBuilder = require(path.resolve('./lib/builder/materialQueryBuilder', '')),
+    materialSearch = require(path.resolve('./lib/restclient/material/materialSearch', ''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -27,7 +28,7 @@ router.get('/materialSearch', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
-        res.status(400).send("Error while fetching the material list in domain "+ queryModel.dId);
+        res.status(400).send("Error while fetching the material list in domain " + model.dId);
     });
 
 });

@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4054518a-ce07-4e61-8b01-f2670b117b34" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/model/UserDeviceModel.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/builder/entityQueryBuilder.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/builder/inventoryQueryBuilder.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/builder/materialQueryBuilder.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/builder/userDeviceQueryBuilder.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/restclient/userdevice/userdevice.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/routes/userdevice.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf/userdeviceconfig.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/EntitySearchModel.js" afterPath="$PROJECT_DIR$/model/EntitySearchModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/InvDetailQueryModel.js" afterPath="$PROJECT_DIR$/model/InvDetailQueryModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/InvDetailResModel.js" afterPath="$PROJECT_DIR$/model/InvDetailResModel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/MaterialSearchModel.js" afterPath="$PROJECT_DIR$/model/MaterialSearchModel.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/UserDeviceModel.js" afterPath="$PROJECT_DIR$/model/UserDeviceModel.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/assets/asset.js" afterPath="$PROJECT_DIR$/lib/restclient/assets/asset.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/builder/assetQueryBuilder.js" afterPath="$PROJECT_DIR$/lib/builder/assetQueryBuilder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/builder/assetRespBuilder.js" afterPath="$PROJECT_DIR$/lib/builder/assetRespBuilder.js" />
@@ -28,19 +17,27 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/dashboard/dashboardService.js" afterPath="$PROJECT_DIR$/lib/restclient/dashboard/dashboardService.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/dev.js" afterPath="$PROJECT_DIR$/conf/dev.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/entity.js" afterPath="$PROJECT_DIR$/routes/entity.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/builder/entityQueryBuilder.js" afterPath="$PROJECT_DIR$/lib/builder/entityQueryBuilder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/entity/entitySearch.js" afterPath="$PROJECT_DIR$/lib/restclient/entity/entitySearch.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/interceptor/index.js" afterPath="$PROJECT_DIR$/lib/interceptor/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/index.js" afterPath="$PROJECT_DIR$/lib/restclient/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/index.js" afterPath="$PROJECT_DIR$/routes/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/inventory/invdetail.js" afterPath="$PROJECT_DIR$/lib/restclient/inventory/invdetail.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/inventory.js" afterPath="$PROJECT_DIR$/routes/inventory.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/builder/inventoryQueryBuilder.js" afterPath="$PROJECT_DIR$/lib/builder/inventoryQueryBuilder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/material.js" afterPath="$PROJECT_DIR$/routes/material.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/builder/materialQueryBuilder.js" afterPath="$PROJECT_DIR$/lib/builder/materialQueryBuilder.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/material/materialSearch.js" afterPath="$PROJECT_DIR$/lib/restclient/material/materialSearch.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/production.js" afterPath="$PROJECT_DIR$/conf/production.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/restclient.js" afterPath="$PROJECT_DIR$/lib/restclient/restclient.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/staging.js" afterPath="$PROJECT_DIR$/conf/staging.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/tokenvalidator.js" afterPath="$PROJECT_DIR$/lib/restclient/tokenvalidator.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/builder/userDeviceQueryBuilder.js" afterPath="$PROJECT_DIR$/lib/builder/userDeviceQueryBuilder.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/restclient/userdevice/userdevice.js" afterPath="$PROJECT_DIR$/lib/restclient/userdevice/userdevice.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/userdevice.js" afterPath="$PROJECT_DIR$/routes/userdevice.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/userdeviceconfig.js" afterPath="$PROJECT_DIR$/conf/userdeviceconfig.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mobile-api-gateway.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -277,6 +274,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -285,10 +283,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mobileAPI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mobileAPI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -684,12 +691,20 @@
       <workItem from="1493007618969" duration="2142000" />
       <workItem from="1493271834041" duration="16000" />
       <workItem from="1493359543455" duration="289000" />
-      <workItem from="1495782522137" duration="25000" />
+      <workItem from="1495782522137" duration="93000" />
+      <workItem from="1495782685659" duration="302000" />
     </task>
+    <task id="LOCAL-00001" summary="Merge remote-tracking branch 'origin/REFACTOR' into LSMOB-12&#10;&#10;# Conflicts:&#10;#&#9;conf/dev.js&#10;#&#9;conf/production.js&#10;#&#9;conf/staging.js&#10;#&#9;lib/builder/dashboardQueryBuilder.js&#10;">
+      <created>1495782732074</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1495782732074</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113733000" />
+    <option name="totallyTimeSpent" value="114103000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-253" y="-1080" width="1920" height="1080" extended-state="0" />
@@ -697,6 +712,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296146" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46091205" sideWeight="0.50646204" order="9" side_tool="true" content_ui="tabs" />
@@ -717,7 +733,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34801137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -772,6 +787,10 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge remote-tracking branch 'origin/REFACTOR' into LSMOB-12&#10;&#10;# Conflicts:&#10;#&#9;conf/dev.js&#10;#&#9;conf/production.js&#10;#&#9;conf/staging.js&#10;#&#9;lib/builder/dashboardQueryBuilder.js&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/REFACTOR' into LSMOB-12&#10;&#10;# Conflicts:&#10;#&#9;conf/dev.js&#10;#&#9;conf/production.js&#10;#&#9;conf/staging.js&#10;#&#9;lib/builder/dashboardQueryBuilder.js&#10;" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -793,6 +812,70 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/restclient/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/InvDashQueryModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="15" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interceptor/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/interceptor/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="44" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">

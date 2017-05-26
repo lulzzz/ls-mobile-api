@@ -3,10 +3,10 @@
 var router = require('express').Router(),
     path = require("path"),
     logger = require(path.resolve('./lib/utils/log', '')),
-    assetService = require(path.resolve('./lib/restclient/assets/asset','')),
-    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
-    assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder','')),
-    queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder','')),
+    assetService = require(path.resolve('./lib/restclient/assets/asset', '')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder', '')),
+    queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder', '')),
     Promise = require('bluebird');
 
 router.use(function (req, res, next) {

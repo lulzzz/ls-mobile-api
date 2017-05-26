@@ -1,13 +1,13 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    dashboardService = require('../lib/restclient/dashboard/dashboardService'),
-    InvDashQueryModel = require('../model/InvDashQueryModel'),
-    InvDetailResModel = require('../model/InvDetailResModel'),
-    queryBuilder = require('../lib/builder/dashboardQueryBuilder'),
-    dashboardResModel = require('../lib/builder/dashboardResBuilder');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log', '')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    dashboardService = require(path.resolve('./lib/restclient/dashboard/dashboardService', '')),
+    InvDetailResModel = require(path.resolve('./model/InvDetailResModel', '')),
+    queryBuilder = require(path.resolve('./lib/builder/dashboardQueryBuilder', '')),
+    dashboardResModel = require(path.resolve('./lib/builder/dashboardResBuilder', ''));
 
 
 router.use(function (req, res, next) {
@@ -61,39 +61,39 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
         res.status(400).send("Error while fetching inventory detail dashboard");
     });
     function transformInvDetailResponse(data) {
-    var d = JSON.parse(data);
-    var resmodel = new InvDetailResModel();
-    if (d.items instanceof Array) {
-        for (var i in d.items) {
-            var item = d.items[i];
-            if (item.nc != undefined && item.nc > 0) {
-                resmodel.n.push(item);
-            }
-            if (item.soc != undefined && item.soc > 0) {
-                resmodel.so.push(item);
-            }
-            if (item.gmc != undefined && item.gmc > 0) {
-                resmodel.mx.push(item);
-            }
-            if (item.lmnc != undefined && item.lmnc > 0) {
-                resmodel.mn.push(item);
+        var d = JSON.parse(data);
+        var resmodel = new InvDetailResModel();
+        if (d.items instanceof Array) {
+            for (var i in d.items) {
+                var item = d.items[i];
+                if (item.nc != undefined && item.nc > 0) {
+                    resmodel.n.push(item);
+                }
+                if (item.soc != undefined && item.soc > 0) {
+                    resmodel.so.push(item);
+                }
+                if (item.gmc != undefined && item.gmc > 0) {
+                    resmodel.mx.push(item);
+                }
+                if (item.lmnc != undefined && item.lmnc > 0) {
+                    resmodel.mn.push(item);
+                }
             }
         }
+        if (d.total != undefined) {
+            resmodel.total = d.total;
+        }
+        if (d.offset != undefined) {
+            resmodel.offset = d.offset;
+        }
+        if (d.size != undefined) {
+            resmodel.size = d.size;
+        }
+        if (d.level != undefined) {
+            resmodel.l = d.level;
+        }
+        return resmodel;
     }
-    if (d.total != undefined) {
-        resmodel.total = d.total;
-    }
-    if (d.offset != undefined) {
-        resmodel.offset = d.offset;
-    }
-    if (d.size != undefined) {
-        resmodel.size = d.size;
-    }
-    if (d.level != undefined) {
-        resmodel.l = d.level;
-    }
-    return resmodel;
-}
 });
 
 router.get('/dashboards/assets/detail', function (req, res, next) {

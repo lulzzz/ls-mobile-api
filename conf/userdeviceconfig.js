@@ -4,16 +4,16 @@
 'use strict';
 
 module.exports = {
-    userDevice_addEdit:{
+    userDevice_addEdit: {
         url: '/userdevice',
-        method:'POST',
-        timeout:1000,
+        method: 'POST',
+        timeout: 1000,
         req_pld: 'query'
     },
-    userDevice_getToken:{
+    userDevice_getToken: {
         url: '/userdevice/gettoken',
-        method:'GET',
-        timeout:1000,
+        method: 'GET',
+        timeout: 1000,
         req_pld: 'query'
     }
 }
