@@ -1,11 +1,12 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    assetService = require('../lib/restclient/assets/asset'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    assetBuilder = require('../lib/builder/assetRespBuilder'),
-    queryBuilder = require('../lib/builder/assetQueryBuilder'),
+    path = require("path"),
+    logger = require(path.resolve('./lib/utils/log', '')),
+    assetService = require(path.resolve('./lib/restclient/assets/asset','')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
+    assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder','')),
+    queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder','')),
     Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -24,9 +25,9 @@ router.get('/assets', function (req, res, next) {
             var asset = [];
             var tempData = obj.data;
             tempData.forEach(function (data) {
-                var assetData = [];
-                assetData.push(data.vId);
-                assetData.push(data.dId);
+                var assetData = {};
+                assetData.vId = data.vId;
+                assetData.dId = data.dId;
                 asset.push(assetData);
             });
             model = queryBuilder.buildAssetListingParams(req, asset);
@@ -40,9 +41,9 @@ router.get('/assets', function (req, res, next) {
                     res.append('Content-Type', 'application/json');
                     res.status(200).send(assets);
                 }
+                res.status(500).send("Error while fetching the data");
             });
         }
-        res.status(400).send("Error while fetching assets");
     });
 
 });
