@@ -1,28 +1,28 @@
 'use strict';
 
 module.exports = {
-    login : {
+    login: {
         url: '/m/auth/login',
-        method:'POST',
-        timeout:1000,
+        method: 'POST',
+        timeout: 1000,
         req_pld: 'body'
     },
-    generateotp : {
+    generateotp: {
         url: '/m/auth/generateotp',
-        method:'POST',
-        timeout:1000,
+        method: 'POST',
+        timeout: 1000,
         req_pld: 'body'
     },
-    validateotp : {
+    validateotp: {
         url: '/m/auth/validateotp',
-        method:'POST',
-        timeout:1000,
+        method: 'POST',
+        timeout: 1000,
         req_pld: 'body'
     },
-    resetpassword : {
+    resetpassword: {
         url: '/m/auth/resetpassword',
-        method:'POST',
-        timeout:1000,
+        method: 'POST',
+        timeout: 1000,
         req_pld: 'body'
     }
-}
+};

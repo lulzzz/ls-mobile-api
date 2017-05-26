@@ -19,10 +19,10 @@ function UserDomainDetail() {
     var loc;
 }
 
-function UserConfig () {
+function UserConfig() {
     var dboard = DashboardConfig;
 }
-function DashboardConfig () {
+function DashboardConfig() {
     var dmtgs;
     var aper;
     var dtt;

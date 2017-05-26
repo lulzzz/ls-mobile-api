@@ -4,16 +4,16 @@
 'use strict';
 
 module.exports = {
-    entity_search:{
+    entity_search: {
         url: '/entities/',
-        method:'GET',
-        timeout:1000,
+        method: 'GET',
+        timeout: 1000,
         req_pld: 'query'
     },
-    material_search:{
+    material_search: {
         url: '/materials/',
-        method:'GET',
-        timeout:1000,
+        method: 'GET',
+        timeout: 1000,
         req_pld: 'query'
     }
 }
