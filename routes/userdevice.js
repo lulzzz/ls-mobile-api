@@ -4,10 +4,11 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    UserDeviceModel = require('../model/UserDeviceModel'),
-    userdeviceConfig = require('../lib/restclient/userdevice/userdevice');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log','')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
+    queryBuilder = require(path.resolve('./lib/builder/userDeviceQueryBuilder','')),
+    userdeviceConfig = require(path.resolve('./lib/restclient/userdevice/userdevice',''));
 
 router.use(function(req, res, next){
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -16,42 +17,30 @@ router.use(function(req, res, next){
 });
 
 router.post('/userdevice', function (req, res, next) {
-    var queryModel = new UserDeviceModel();
-    queryModel.userid = req.query.userid;
-    queryModel.token = req.query.token;
-    queryModel.appname = req.query.appname;
-    queryModel.createdOn = req.query.createdOn;
-    queryModel.updatedOn = req.query.updatedOn;
-    queryModel.user = req.headers['x-access-user'];
-
-    userdeviceConfig.addEditUserDevice(queryModel,req,res,function (err,data) {
+    var model = queryBuilder.buildAddEditParams(req);
+    userdeviceConfig.addEditUserDevice(model,req,res,function (err,data) {
         if (err) {
-            logger.error('Error in getting material list '+err.message)
+            logger.error('Error in storing user device '+err.message);
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(500).send("Error in storing user device");
     });
 });
 
 router.get('/userdevice/gettoken', function (req, res, next) {
-    var queryModel = new UserDeviceModel();
-    queryModel.userid = req.query.userid;
-    queryModel.token = req.query.token;
-    queryModel.appname = req.query.appname;
-    queryModel.createdOn = req.query.createdOn;
-    queryModel.updatedOn = req.query.updatedOn;
-    queryModel.user = req.headers['x-access-user'];
-
-    userdeviceConfig.getUDToken(queryModel,req,res,function (err,data) {
+    var model = queryBuilder.buildGetTokenParams(req);
+    userdeviceConfig.getUDToken(model,req,res,function (err,data) {
         if (err) {
-            logger.error('Error in getting material list '+err.message)
+            logger.error('Error in getting user device token '+err.message);
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(500).send("Error in fetching user device token");
     });
 });
 module.exports = router;

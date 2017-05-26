@@ -1,100 +1,92 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    request = require('request'),
-    config = require("../conf/index"),
-    uuid = require('uuid'),
-    config = require('../conf'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    login = require('../lib/restclient/auth/login'),
-    generateotp = require('../lib/restclient/auth/generateotp'),
-    validateotp = require('../lib/restclient/auth/validateotp'),
-    resetpassword = require('../lib/restclient/auth/resetpassword');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log','')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
+    authService = require(path.resolve('./lib/restclient/auth/authService',''));
 
-
-router.use(function(req, res, next){
+router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
     req.url = urlDecoder.decodeurl(req);
     return next();
 });
 
 router.post('/auth/login', function (req, res, next) {
+
     logger.info("inside login method with headers" + JSON.stringify(req.headers));
-    const cred  =  req.headers['authorization'];
-    var tmp = cred.split(' ');   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
-    var buf = new Buffer(tmp[1], 'base64'); // create a buffer and tell it the data coming in is base64
-    var plain_auth = buf.toString();        // read it back out as a string
+    const cred = req.headers['authorization'];
+    var tmp = cred.split(' '),   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
+        buf = new Buffer(tmp[1], 'base64'), // create a buffer and tell it the data coming in is base64
+        plain_auth = buf.toString();        // read it back out as a string
     logger.info("Decoded Authorization ", plain_auth);
     // At this point plain_auth = "username:password"
-    var creds = plain_auth.split(':');      // split on a ':'
-    var username = creds[0];
-    var password = creds[1];
-    login.login(username,password,res,function(err,body){
+    var creds = plain_auth.split(':'),      // split on a ':'
+        username = creds[0],
+        password = creds[1];
+
+    authService.login(username, password, res, function (err, body) {
         if (err) {
-            logger.error("Error in login for user ",username);
+            logger.error("Error in login for user ", username);
             next(err);
-        }
-        if(body) {
-            res.append('Content-Type','application/json');
+        } else if (body) {
+            res.append('Content-Type', 'application/json');
             res.send(body);
         }
+        res.status(500).send("Error while logging in for user " + username);
     });
 });
 
-router.post('/auth/generateotp', function(req,res,next) {
+router.post('/auth/generateotp', function (req, res, next) {
+
     if (typeof !(req.body == 'undefined') && typeof !(req.body.user == 'undefined')) {
         var unm = req.body.user;
-        generateotp.generateOtp(unm, function (err, data) {
+
+        authService.generateOtp(unm, function (err, data) {
             if (err) {
-                logger.error("Error in otp generation for user ",unm);
+                logger.error("Error in otp generation for user ", unm);
                 next(err);
-            }
-            if (data) {
+            } else if (data) {
                 res.append('Content-Type', 'application/json');
                 res.status(201).send(data);
             }
+            res.status(500).send("Error while generating the otp");
         });
     } else {
         res.status(400).send("Bad Request");
     }
 });
 
-// router.post('/auth/validateotp', function(req,res,next) {
-//
-//     validateotp.validateOtp('kumarg','880959',function (err,data) {
-//         //follow this standard for proper error handling and response creation
-//
-//         if (err) {
-//             next(err);
-//         }
-//         if (data) {
-//             res.append('Content-Type', 'application/json');
-//             res.status(202).send(data);
-//         }
-//
-//     });
-// });
+/*router.post('/auth/validateotp', function (req, res, next) {
 
-router.post('/auth/resetpassword', function(req,res,next) {
-    //get the req body
+    authService.validateOtp('kumarg', '880959', function (err, data) {
+        if (err) {
+            next(err);
+        } else if (data) {
+            res.append('Content-Type', 'application/json');
+            res.status(202).send(data);
+        }
+        res.status(500).send("Error in validating otp");
+    });
+});*/
+
+router.post('/auth/resetpassword', function (req, res, next) {
+
     if (typeof !(req.body == 'undefined')) {
-        //body parsing
-        var unm = req.body.uid;
-        var pwd = req.body.npd;
-        var token = req.body.otp;
-        //reset password
-        resetpassword.resetPassword(unm, pwd, token,function (err, data) {
+        var unm = req.body.uid,
+            pwd = req.body.npd,
+            token = req.body.otp;
+
+        authService.resetPassword(unm, pwd, token, function (err, data) {
             if (err) {
-                logger.error("Error in reset password for user ",unm);
+                logger.error("Error in reset password for user ", unm);
                 next(err);
-            }
-            if (data) {
+            } else if (data) {
                 res.append('Content-Type', 'application/json');
                 res.status(201).send(data);
             }
+            res.status(500).send("Error while resetting the password");
         });
-
     } else {
         res.status(400).send("Bad Request");
     }

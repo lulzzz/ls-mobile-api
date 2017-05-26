@@ -1,13 +1,13 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    dashboardService = require('../lib/restclient/dashboard/dashboardService'),
-    InvDashQueryModel = require('../model/InvDashQueryModel'),
-    InvDetailResModel = require('../model/InvDetailResModel'),
-    queryBuilder = require('../lib/builder/dashboardQueryBuilder'),
-    dashboardResModel = require('../lib/builder/dashboardResBuilder');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log', '')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    dashboardService = require(path.resolve('./lib/restclient/dashboard/dashboardService', '')),
+    InvDetailResModel = require(path.resolve('./model/InvDetailResModel', '')),
+    queryBuilder = require(path.resolve('./lib/builder/dashboardQueryBuilder', '')),
+    dashboardResModel = require(path.resolve('./lib/builder/dashboardResBuilder', ''));
 
 
 router.use(function (req, res, next) {
@@ -17,21 +17,8 @@ router.use(function (req, res, next) {
 });
 
 router.get('/dashboards/inventory', function (req, res, next) {
-
-    var queryModel = new InvDashQueryModel();
-    queryModel.incetags = req.query.incetags;
-    queryModel.exetags = req.query.exetags;
-    queryModel.mtags = req.query.mtags;
-    queryModel.mnm = req.query.mnm;
-    queryModel.loc = req.query.loc;
-    queryModel.locty = req.query.locty;
-    queryModel.p = req.query.p;
-    queryModel.date = req.query.date;
-    queryModel.refresh = req.query.refresh;
-    queryModel.user = req.headers['x-access-user'];
-    queryModel.reqId = req.headers['x-request-id'];
-
-    dashboardService.getInvDashboard(queryModel, req, res, function (err, data) {
+    var model = queryBuilder.buildInvDashboardParams(req);
+    dashboardService.getInvDashboard(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory dashboard: ' + err.message)
             next(err);
@@ -39,50 +26,39 @@ router.get('/dashboards/inventory', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
+        res.status(400).send("Error while fetching the inventory dashboard");
     });
 });
 
 
-router.get('/dashboards/assets', function (req, res) {
+router.get('/dashboards/assets', function (req, res, next) {
     var model = queryBuilder.buildAssetDashboardParams(req);
     dashboardService.getAssetDashboard(model, function (err, data) {
         if (err) {
             logger.error('Error in getting asset overview dashboard' + err.message);
-            res.status(400).send("Error while fetching data" + err.message);
+            next(err);
         } else if (data != null) {
             var tempData = JSON.parse(data);
             model = dashboardResModel.buildAssetDashboardModel(tempData);
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }
+        res.status(400).send("Error while fetching dashboard data");
     });
 });
 
 router.get('/dashboards/inventory/detail', function (req, res, next) {
-
-    var queryModel = new InvDashQueryModel();
-    queryModel.incetags = req.query.incetags;
-    queryModel.exetags = req.query.exetags;
-    queryModel.mtags = req.query.mtags;
-    queryModel.mnm = req.query.mnm;
-    queryModel.loc = req.query.loc;
-    queryModel.locty = req.query.locty;
-    queryModel.p = req.query.p;
-    queryModel.date = req.query.date;
-    queryModel.refresh = req.query.refresh;
-    queryModel.groupby = req.query.groupby;
-    queryModel.user = req.headers['x-access-user'];
-    queryModel.reqId = req.headers['x-request-id'];
-
-    dashboardService.getInvDetailDashboard(queryModel, req, res, function (err, data) {
+    var model = queryBuilder.buildInvDetailDashboardParams(req);
+    dashboardService.getInvDetailDashboard(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory detail dashboard: ' + err.message)
             next(err);
-        } else if (data){
+        } else if (data) {
             var v = transformInvDetailResponse(data);
             res.append('Content-Type', 'application/json');
             res.status(200).send(v);
         }
+        res.status(400).send("Error while fetching inventory detail dashboard");
     });
     function transformInvDetailResponse(data) {
         var d = JSON.parse(data);
@@ -120,18 +96,19 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
     }
 });
 
-router.get('/dashboards/assets/detail', function (req, res) {
+router.get('/dashboards/assets/detail', function (req, res, next) {
     var model = queryBuilder.buildAssetDashboardParams(req);
     dashboardService.getAssetDashboard(model, function (err, data) {
         if (err) {
             logger.error('Error in getting asset detail dashboard: ' + err.message);
-            res.status(400).send("Error while fetching asset dashboard data" + err.message);
+            next(err);
         } else if (data != null) {
             var tempData = JSON.parse(data);
             model = dashboardResModel.buildAssetDashbDetailModel(tempData);
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }
+        res.status(400).send("Error while fetching the asset dashboard data");
     });
 });
 

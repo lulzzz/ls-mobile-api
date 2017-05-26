@@ -5,7 +5,7 @@
 
 module.exports = EntitySearchModel;
 
-function EntitySearchModel () {
+function EntitySearchModel() {
 
     this.dId = undefined;
     this.eId = undefined;
@@ -14,5 +14,6 @@ function EntitySearchModel () {
     this.offset = undefined;
     this.size = undefined;
     this.user = undefined;
-    
+    this.reqId = undefined;
+
 }

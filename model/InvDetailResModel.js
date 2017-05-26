@@ -3,8 +3,7 @@
 module.exports = InvDetailResModel;
 
 
-
-function InvDetailResModel () {
+function InvDetailResModel() {
     this.n = [];
     this.so = [];
     this.mn = [];
@@ -13,4 +12,6 @@ function InvDetailResModel () {
     this.offset = 0;
     this.size = 0;
     this.l = '';
+    this.user = undefined;
+    this.reqId = undefined;
 }

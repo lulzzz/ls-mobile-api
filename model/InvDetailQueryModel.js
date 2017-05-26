@@ -1,25 +1,29 @@
 'use strict';
 
 module.exports = InvDashQueryModel;
+module.exports = SingleInvDetailModel;
 
-function InvDashQueryModel () {
+function InvDashQueryModel() {
 
-    var dId;
-    var entity_id;
-    var material_id;
-    var abty;
-    var mtags;
-    var etags;
-    var offset;
-    var size;
+    this.dId = undefined;
+    this.entity_id = undefined;
+    this.material_id = undefined;
+    this.abty = undefined;
+    this.mtags = undefined;
+    this.etags = undefined;
+    this.offset = undefined;
+    this.size = undefined;
+    this.user = undefined;
+    this.reqId = undefined;
 }
 
-function SingleInvDetailModel () {
+function SingleInvDetailModel() {
 
     this.dId = undefined;
     this.entity_id = undefined;
     this.material_id = undefined;
     this.offset = undefined;
     this.size = undefined;
-}(module.exports);
+}
+(module.exports);
 

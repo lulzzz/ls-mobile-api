@@ -15,7 +15,5 @@ function assetDashboardQueryModel() {
     this.filter = undefined;
     this.aType = undefined;
     this.user = undefined;
-    this.size = undefined;
-    this.offset = undefined;
     this.reqId = undefined;
 }

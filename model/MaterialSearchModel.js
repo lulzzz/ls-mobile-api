@@ -3,7 +3,7 @@
  */
 module.exports = MaterialSearchModel;
 
-function MaterialSearchModel () {
+function MaterialSearchModel() {
 
     this.dId = undefined;
     this.tags = undefined;
@@ -11,5 +11,7 @@ function MaterialSearchModel () {
     this.offset = undefined;
     this.size = undefined;
     this.user = undefined;
+    this.user = undefined;
+    this.reqId = undefined;
 
 }
