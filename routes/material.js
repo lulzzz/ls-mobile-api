@@ -22,7 +22,7 @@ router.get('/materialSearch', function (req, res, next) {
 
     materialSearch.getAllMaterials(model, req, res, function (err, data) {
         if (err) {
-            logger.error('Error in getting material list ' + err.message)
+            logger.error('Error in getting material list ' + err.message);
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');

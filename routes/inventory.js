@@ -18,7 +18,7 @@ router.get('/inventory', function (req, res, next) {
 
     invdetail.getInvDetail(queryModel, req, res, function (err, data) {
         if (err) {
-            logger.error('Error in inventory stock view: ' + err.message)
+            logger.error('Error in inventory stock view: ' + err.message);
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');
@@ -35,7 +35,7 @@ router.get('/inventory/detail', function (req, res, next) {
 
     invdetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
         if (err) {
-            logger.error('Error in inventory stock view: ' + err.message)
+            logger.error('Error in inventory stock view: ' + err.message);
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');
