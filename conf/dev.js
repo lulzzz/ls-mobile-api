@@ -2,6 +2,7 @@
 var authconfig = require('./authconfig');
 var dashbrdconfig = require('./dashbrdconfig');
 var searchconfig = require('./searchconfig');
+var userdeviceconfig = require('./userdeviceconfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
@@ -13,5 +14,6 @@ module.exports = {
     },
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
-    searchconfig: searchconfig
+    searchconfig: searchconfig,
+    userdeviceconfig: userdeviceconfig
 };
