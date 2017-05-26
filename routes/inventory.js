@@ -5,6 +5,7 @@ var router = require('express').Router(),
     urlDecoder = require('../lib/utils/urldecoder'),
     InvDetailQueryModel = require('../model/InvDetailQueryModel'),
     SingleInvDetailModel = require('../model/InvDetailQueryModel'),
+    queryBuilder = require('../lib/builder/inventoryQueryBuilder'),
     invdetail = require('../lib/restclient/inventory/invdetail');
 
 router.use(function (req, res, next) {

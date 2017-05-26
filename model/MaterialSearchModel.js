@@ -11,5 +11,7 @@ function MaterialSearchModel() {
     this.offset = undefined;
     this.size = undefined;
     this.user = undefined;
+    this.user = undefined;
+    this.reqId = undefined;
 
 }

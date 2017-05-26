@@ -16,6 +16,6 @@ module.exports = {
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,
-    userdeviceconfig: userdeviceconfig
+    userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig
 };
