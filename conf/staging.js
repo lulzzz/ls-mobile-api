@@ -1,7 +1,8 @@
 'use strict';
-var authconfig = require('./authconfig'),
-    dashbrdconfig = require('./dashbrdconfig'),
-    searchconfig = require('./searchconfig');
+var authconfig = require('./authconfig');
+var dashbrdconfig = require('./dashbrdconfig');
+var searchconfig = require('./searchconfig');
+var userdeviceconfig = require('./userdeviceconfig');
 
 module.exports = {
     baseurl: 'http://<statging-host>:<statging-port>/s2/api',
@@ -14,5 +15,6 @@ module.exports = {
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,
-    assetConfig: assetConfig
+    assetConfig: assetConfig,
+    userdeviceconfig:userdeviceconfig
 };

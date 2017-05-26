@@ -6,6 +6,7 @@
 var router = require('express').Router(),
     logger = require('../lib/utils/log'),
     urlDecoder = require('../lib/utils/urldecoder'),
+    queryBuilder = require('../lib/builder/entityQueryBuilder'),
     EntitySearchModel = require('../model/EntitySearchModel'),
     entitySearch = require('../lib/restclient/entity/entitySearch');
 
@@ -17,16 +18,8 @@ router.use(function (req, res, next) {
 
 router.get('/entitySearch', function (req, res, next) {
 
-    var queryModel = new EntitySearchModel();
-    queryModel.dId = req.query.dId;
-    queryModel.eid = req.query.entity_id;
-    queryModel.tags = req.query.tags;
-    queryModel.q = req.query.q;
-    queryModel.offset = req.query.offset;
-    queryModel.size = req.query.size;
-    queryModel.user = req.headers['x-access-user'];
-
-    entitySearch.getAllEntities(queryModel, req, res, function (err, data) {
+    var model = queryBuilder.buildEntitySearchParams(req);
+    entitySearch.getAllEntities(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in getting entity list ' + err.message)
             next(err);
@@ -36,7 +29,6 @@ router.get('/entitySearch', function (req, res, next) {
         }
         res.status(400).send("Error while fetching the entity list in domain " + queryModel.dId);
     });
-
 });
 
 module.exports = router;

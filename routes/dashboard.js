@@ -17,21 +17,8 @@ router.use(function (req, res, next) {
 });
 
 router.get('/dashboards/inventory', function (req, res, next) {
-
-    var queryModel = new InvDashQueryModel();
-    queryModel.incetags = req.query.incetags;
-    queryModel.exetags = req.query.exetags;
-    queryModel.mtags = req.query.mtags;
-    queryModel.mnm = req.query.mnm;
-    queryModel.loc = req.query.loc;
-    queryModel.locty = req.query.locty;
-    queryModel.p = req.query.p;
-    queryModel.date = req.query.date;
-    queryModel.refresh = req.query.refresh;
-    queryModel.user = req.headers['x-access-user'];
-    queryModel.reqId = req.headers['x-request-id'];
-
-    dashboardService.getInvDashboard(queryModel, req, res, function (err, data) {
+    var model = queryBuilder.buildInvDashboardParams(req);
+    dashboardService.getInvDashboard(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory dashboard: ' + err.message)
             next(err);
@@ -61,22 +48,8 @@ router.get('/dashboards/assets', function (req, res, next) {
 });
 
 router.get('/dashboards/inventory/detail', function (req, res, next) {
-
-    var queryModel = new InvDashQueryModel();
-    queryModel.incetags = req.query.incetags;
-    queryModel.exetags = req.query.exetags;
-    queryModel.mtags = req.query.mtags;
-    queryModel.mnm = req.query.mnm;
-    queryModel.loc = req.query.loc;
-    queryModel.locty = req.query.locty;
-    queryModel.p = req.query.p;
-    queryModel.date = req.query.date;
-    queryModel.refresh = req.query.refresh;
-    queryModel.groupby = req.query.groupby;
-    queryModel.user = req.headers['x-access-user'];
-    queryModel.reqId = req.headers['x-request-id'];
-
-    dashboardService.getInvDetailDashboard(queryModel, req, res, function (err, data) {
+    var model = queryBuilder.buildInvDetailDashboardParams(req);
+    dashboardService.getInvDetailDashboard(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory detail dashboard: ' + err.message)
             next(err);

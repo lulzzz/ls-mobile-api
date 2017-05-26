@@ -1,8 +1,9 @@
 'use strict';
-var authconfig = require('./authconfig'),
-    dashbrdconfig = require('./dashbrdconfig'),
-    searchconfig = require('./searchconfig'),
-    assetConfig = require('./assetConfig');
+var authconfig = require('./authconfig');
+var dashbrdconfig = require('./dashbrdconfig');
+var searchconfig = require('./searchconfig');
+var assetConfig = require('./assetConfig');
+var userdeviceconfig = require('./userdeviceconfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
@@ -15,5 +16,6 @@ module.exports = {
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,
+    userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig
 };
