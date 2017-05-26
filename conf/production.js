@@ -2,7 +2,8 @@
 var authconfig = require('./authconfig'),
     dashbrdconfig = require('./dashbrdconfig'),
     searchconfig = require('./searchconfig'),
-    userdeviceconfig = require('./userdeviceconfig');
+    userdeviceconfig = require('./userdeviceconfig'),
+    approvalConfig = require('./approvalConfig');
 
 module.exports = {
     baseurl: 'http://<statging-host>:<statging-port>/s2/api',
@@ -16,5 +17,6 @@ module.exports = {
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,
     userdeviceconfig: userdeviceconfig,
-    assetConfig: assetConfig
+    assetConfig: assetConfig,
+    approvalConfig: approvalConfig
 };

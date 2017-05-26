@@ -3,7 +3,8 @@ var authconfig = require('./authconfig'),
     dashbrdconfig = require('./dashbrdconfig'),
     searchconfig = require('./searchconfig'),
     assetConfig = require('./assetConfig'),
-    userdeviceconfig = require('./userdeviceconfig');
+    userdeviceconfig = require('./userdeviceconfig'),
+    approvalConfig = require('./approvalConfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
@@ -17,5 +18,6 @@ module.exports = {
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,
     userdeviceconfig: userdeviceconfig,
-    assetConfig: assetConfig
+    assetConfig: assetConfig,
+    approvalConfig: approvalConfig
 };
