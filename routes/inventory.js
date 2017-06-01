@@ -16,17 +16,8 @@ router.use(function (req, res, next) {
 
 router.get('/inventory', function (req, res, next) {
 
-    var queryModel = new InvDetailQueryModel();
-    queryModel.dId = req.query.dId;
-    queryModel.eid = req.query.entity_id;
-    queryModel.mid = req.query.material_id;
-    queryModel.mtags = req.query.mtags;
-    queryModel.etags = req.query.etags;
-    queryModel.abty = req.query.abty;
-    queryModel.offset = req.query.offset;
-    queryModel.size = req.query.size;
-
-    invdetail.getInvDetail(queryModel, req, res, function (err, data) {
+    var model = queryBuilder.buildInvParams(req);
+    invdetail.getInvDetail(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory stock view: ' + err.message)
             next(err);
@@ -40,14 +31,9 @@ router.get('/inventory', function (req, res, next) {
 
 router.get('/inventory/detail', function (req, res, next) {
 
-    var queryModel = new SingleInvDetailModel();
-    queryModel.dId = req.query.dId;
-    queryModel.eid = req.query.entity_id;
-    queryModel.mid = req.query.material_id;
-    queryModel.offset = req.query.offset;
-    queryModel.size = req.query.size;
+    var model = queryBuilder.buildInvDetailParams(req);
 
-    invdetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
+    invdetail.getSingleInvDetail(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory stock view: ' + err.message)
             next(err);
