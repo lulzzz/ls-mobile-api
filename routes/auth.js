@@ -1,9 +1,10 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    authService = require('../lib/restclient/auth/authService');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log','')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
+    authService = require(path.resolve('./lib/restclient/auth/authService',''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -15,14 +16,14 @@ router.post('/auth/login', function (req, res, next) {
 
     logger.info("inside login method with headers" + JSON.stringify(req.headers));
     const cred = req.headers['authorization'];
-    var tmp = cred.split(' ');   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
-    var buf = new Buffer(tmp[1], 'base64'); // create a buffer and tell it the data coming in is base64
-    var plain_auth = buf.toString();        // read it back out as a string
+    var tmp = cred.split(' '),   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
+        buf = new Buffer(tmp[1], 'base64'), // create a buffer and tell it the data coming in is base64
+        plain_auth = buf.toString();        // read it back out as a string
     logger.info("Decoded Authorization ", plain_auth);
     // At this point plain_auth = "username:password"
-    var creds = plain_auth.split(':');      // split on a ':'
-    var username = creds[0];
-    var password = creds[1];
+    var creds = plain_auth.split(':'),      // split on a ':'
+        username = creds[0],
+        password = creds[1];
 
     authService.login(username, password, res, function (err, body) {
         if (err) {
@@ -72,9 +73,9 @@ router.post('/auth/generateotp', function (req, res, next) {
 router.post('/auth/resetpassword', function (req, res, next) {
 
     if (typeof !(req.body == 'undefined')) {
-        var unm = req.body.uid;
-        var pwd = req.body.npd;
-        var token = req.body.otp;
+        var unm = req.body.uid,
+            pwd = req.body.npd,
+            token = req.body.otp;
 
         authService.resetPassword(unm, pwd, token, function (err, data) {
             if (err) {

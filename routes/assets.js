@@ -1,11 +1,12 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    assetService = require('../lib/restclient/assets/asset'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    assetBuilder = require('../lib/builder/assetRespBuilder'),
-    queryBuilder = require('../lib/builder/assetQueryBuilder'),
+    path = require("path"),
+    logger = require(path.resolve('./lib/utils/log', '')),
+    assetService = require(path.resolve('./lib/restclient/assets/asset', '')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder', '')),
+    queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder', '')),
     Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -23,26 +24,28 @@ router.get('/assets', function (req, res, next) {
             var obj = JSON.parse(data);
             var asset = [];
             var tempData = obj.data;
-            tempData.forEach(function (data) {
-                var assetData = [];
-                assetData.push(data.vId);
-                assetData.push(data.dId);
-                asset.push(assetData);
-            });
-            model = queryBuilder.buildAssetListingParams(req, asset);
-            assetService.getAssetsListingsData(model, function (err, data) {
-                if (err) {
-                    logger.error("Error while fetching the data");
-                    next(err);
-                } else if (data) {
-                    var assetData = JSON.parse(data);
-                    var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
-                    res.append('Content-Type', 'application/json');
-                    res.status(200).send(assets);
-                }
-            });
+            if (tempData) {
+                tempData.forEach(function (data) {
+                    var assetData = {};
+                    assetData.vId = data.vId;
+                    assetData.dId = data.dId;
+                    asset.push(assetData);
+                });
+                model = queryBuilder.buildAssetListingParams(req, asset);
+                assetService.getAssetsListingsData(model, function (err, data) {
+                    if (err) {
+                        logger.error("Error while fetching the data");
+                        next(err);
+                    } else if (data) {
+                        var assetData = JSON.parse(data);
+                        var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
+                        res.append('Content-Type', 'application/json');
+                        res.status(200).send(assets);
+                    }
+                    res.status(500).send("Error while fetching the data");
+                });
+            }
         }
-        res.status(400).send("Error while fetching assets");
     });
 
 });
@@ -71,8 +74,12 @@ function getRecentAlerts(queryModel) {
                 logger.error("Error while fetching the alerts for assets");
                 reject(err);
             } else if (data) {
-                var assetData = JSON.parse(data);
-                resolve(assetBuilder.buildRecentAlertModel(assetData))
+                var assetData = assetBuilder.buildRecentAlertModel(JSON.parse(data));
+                if(assetData) {
+                    resolve(assetData);
+                } else {
+                    reject("Error while fetching the alerts for assets");
+                }
             }
         })
     })
@@ -85,8 +92,12 @@ function getTemperatures(queryModel) {
                 logger.error("Error while fetching temperature data for assets");
                 reject(err);
             } else if (data) {
-                var assetData = JSON.parse(data);
-                resolve(assetBuilder.buildAssetTempDataModel(assetData, queryModel));
+                var assetData = assetBuilder.buildAssetTempDataModel(JSON.parse(data), queryModel);
+                if(assetData) {
+                    resolve(assetData);
+                } else {
+                    reject("Error while fetching temperature data for assets");
+                }
             }
         });
     })
