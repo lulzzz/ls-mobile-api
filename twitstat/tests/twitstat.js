@@ -10,7 +10,7 @@ describe('twitstat', function () {
     var request;
     before(function () {
         request = sinon.stub();
-        twitstat = proxyquire('../lib/twitstat', {'request': request});
+        twitstat = proxyquire('../twitstat/lib/twitstat.js', {'request': request});
     });
 
     it('should report a LOW popularity when given url is shared less than 10 times', function (done) {
