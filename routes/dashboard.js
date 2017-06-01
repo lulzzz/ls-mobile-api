@@ -26,7 +26,6 @@ router.get('/dashboards/inventory', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
-        res.status(400).send("Error while fetching the inventory dashboard");
     });
 });
 
@@ -43,7 +42,6 @@ router.get('/dashboards/assets', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }
-        res.status(400).send("Error while fetching dashboard data");
     });
 });
 
@@ -58,7 +56,6 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(v);
         }
-        res.status(400).send("Error while fetching inventory detail dashboard");
     });
     function transformInvDetailResponse(data) {
     var d = JSON.parse(data);
@@ -108,7 +105,6 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }
-        res.status(400).send("Error while fetching the asset dashboard data");
     });
 });
 
