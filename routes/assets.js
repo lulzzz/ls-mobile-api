@@ -32,19 +32,21 @@ router.get('/assets', function (req, res, next) {
                     asset.push(assetData);
                 });
                 model = queryBuilder.buildAssetListingParams(req, asset);
-                assetService.getAssetsListingsData(model, function (err, data) {
-                    if (err) {
-                        logger.error("Error while fetching the data");
-                        next(err);
-                    } else if (data) {
-                        var assetData = JSON.parse(data);
-                        var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
-                        res.append('Content-Type', 'application/json');
-                        res.status(200).send(assets);
-                    }
-                    res.status(500).send("Error while fetching the data");
-                });
             }
+            assetService.getAssetsListingsData(model, function (err, data) {
+                if (err) {
+                    logger.error("Error while fetching the data");
+                    next(err);
+                } else if (data) {
+                    var assetData = JSON.parse(data);
+                    var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
+                    res.append('Content-Type', 'application/json');
+                    res.status(200).send(assets);
+                }
+                else {
+                    res.status(500).send("Error while fetching the data");
+                }
+            });
         }
     });
 
@@ -75,7 +77,7 @@ function getRecentAlerts(queryModel) {
                 reject(err);
             } else if (data) {
                 var assetData = assetBuilder.buildRecentAlertModel(JSON.parse(data));
-                if(assetData) {
+                if (assetData) {
                     resolve(assetData);
                 } else {
                     reject("Error while fetching the alerts for assets");
@@ -93,7 +95,7 @@ function getTemperatures(queryModel) {
                 reject(err);
             } else if (data) {
                 var assetData = assetBuilder.buildAssetTempDataModel(JSON.parse(data), queryModel);
-                if(assetData) {
+                if (assetData) {
                     resolve(assetData);
                 } else {
                     reject("Error while fetching temperature data for assets");

@@ -2,7 +2,10 @@
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-switch ('development') {
+switch ('local') {
+    case 'local':
+        module.exports = require('./local');
+        break;
     case 'development':
         module.exports = require('./dev');
         break;

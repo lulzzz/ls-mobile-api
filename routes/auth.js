@@ -2,9 +2,9 @@
 
 var router = require('express').Router(),
     path = require('path'),
-    logger = require(path.resolve('./lib/utils/log','')),
-    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
-    authService = require(path.resolve('./lib/restclient/auth/authService',''));
+    logger = require(path.resolve('./lib/utils/log', '')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    authService = require(path.resolve('./lib/restclient/auth/authService', ''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -32,8 +32,9 @@ router.post('/auth/login', function (req, res, next) {
         } else if (body) {
             res.append('Content-Type', 'application/json');
             res.send(body);
+        } else {
+            res.status(500).send("Error while logging in for user " + username);
         }
-        res.status(500).send("Error while logging in for user " + username);
     });
 });
 
@@ -50,7 +51,9 @@ router.post('/auth/generateotp', function (req, res, next) {
                 res.append('Content-Type', 'application/json');
                 res.status(201).send(data);
             }
-            res.status(500).send("Error while generating the otp");
+            else {
+                res.status(500).send("Error while generating the otp");
+            }
         });
     } else {
         res.status(400).send("Bad Request");
@@ -59,16 +62,16 @@ router.post('/auth/generateotp', function (req, res, next) {
 
 /*router.post('/auth/validateotp', function (req, res, next) {
 
-    authService.validateOtp('kumarg', '880959', function (err, data) {
-        if (err) {
-            next(err);
-        } else if (data) {
-            res.append('Content-Type', 'application/json');
-            res.status(202).send(data);
-        }
-        res.status(500).send("Error in validating otp");
-    });
-});*/
+ authService.validateOtp('kumarg', '880959', function (err, data) {
+ if (err) {
+ next(err);
+ } else if (data) {
+ res.append('Content-Type', 'application/json');
+ res.status(202).send(data);
+ }
+ res.status(500).send("Error in validating otp");
+ });
+ });*/
 
 router.post('/auth/resetpassword', function (req, res, next) {
 
@@ -85,7 +88,9 @@ router.post('/auth/resetpassword', function (req, res, next) {
                 res.append('Content-Type', 'application/json');
                 res.status(201).send(data);
             }
-            res.status(500).send("Error while resetting the password");
+            else {
+                res.status(500).send("Error while resetting the password");
+            }
         });
     } else {
         res.status(400).send("Bad Request");
