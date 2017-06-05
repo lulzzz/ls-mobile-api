@@ -37,8 +37,7 @@ router.get('/assets', function (req, res, next) {
                         logger.error("Error while fetching the data");
                         next(err);
                     } else if (data) {
-                        var assetData = JSON.parse(data);
-                        var assets = assetBuilder.buildAssetData(assetData, tempData, model.offset);
+                        var assets = assetBuilder.buildAssetData(data, tempData, model.offset);
                         res.append('Content-Type', 'application/json');
                         res.status(200).send(assets);
                     }
@@ -74,7 +73,7 @@ function getRecentAlerts(queryModel) {
                 logger.error("Error while fetching the alerts for assets");
                 reject(err);
             } else if (data) {
-                var assetData = assetBuilder.buildRecentAlertModel(JSON.parse(data));
+                var assetData = assetBuilder.buildRecentAlertModel(data);
                 if(assetData) {
                     resolve(assetData);
                 } else {
@@ -92,7 +91,7 @@ function getTemperatures(queryModel) {
                 logger.error("Error while fetching temperature data for assets");
                 reject(err);
             } else if (data) {
-                var assetData = assetBuilder.buildAssetTempDataModel(JSON.parse(data), queryModel);
+                var assetData = assetBuilder.buildAssetTempDataModel(data, queryModel);
                 if(assetData) {
                     resolve(assetData);
                 } else {
