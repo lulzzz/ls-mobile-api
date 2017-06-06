@@ -24,7 +24,6 @@ router.get('/approvals', function (req, res, next) {
         } else if (data) {
             res.status(200).send(data);
         }
-        res.status(400).send("Error while fetching the approvals for approver:" + model.approver_id);
     });
 });
 
@@ -37,7 +36,6 @@ router.post('/approvals', function (req, res, next) {
             logger.info("Approval " + data + " created successfully");
             res.status(200).send(data);
         }
-        res.status(400).send("Error while creating approvals");
     })
 });
 module.exports = router;

@@ -61,7 +61,7 @@ router.get('/assets/detail', function (req, res) {
         res.status(200).send(result[0]);
     }).catch(function (err) {
         logger.error("Error while fetching asset details " + "\n" + err.stack);
-        res.status(400).send("Error while fetching the asset details");
+        res.status(500).send("Error while fetching the asset details");
     });
 
 });
