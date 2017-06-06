@@ -14,8 +14,8 @@ router.use(function (req, res, next) {
 });
 
 router.get('/inventory', function (req, res, next) {
+  
     var queryModel = queryBuilder.buildInvParams(req);
-
     invdetail.getInvDetail(queryModel, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory stock view: ' + err.message);
@@ -24,16 +24,13 @@ router.get('/inventory', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
-        res.status(400).send("Error while fetching the inventory stock view in domain " + queryModel.dId);
     });
-
 });
 
 router.get('/inventory/detail', function (req, res, next) {
 
     var queryModel = queryBuilder.buildInvDetailParams(req);
-
-    invdetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
+    invdetail.getSingleInvDetail(model, req, res, function (err, data) {
         if (err) {
             logger.error('Error in inventory stock view: ' + err.message);
             next(err);
@@ -41,10 +38,7 @@ router.get('/inventory/detail', function (req, res, next) {
             res.append('Content-Type', 'application/json');
             res.status(200).send(data);
         }
-        res.status(400).send("Error while fetching the inventory details for entity: " +
-            queryModel.eid + " in domain " + queryModel.dId);
     });
-
 });
 
 module.exports = router;
