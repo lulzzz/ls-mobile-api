@@ -3,7 +3,7 @@
  */
 module.exports = UserDeviceModel;
 
-function UserDeviceModel () {
+function UserDeviceModel() {
     this.userid = undefined;
     this.appname = undefined;
     this.token = undefined;

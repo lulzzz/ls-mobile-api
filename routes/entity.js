@@ -4,11 +4,11 @@
 'use strict';
 
 var router = require('express').Router(),
-    logger = require('../lib/utils/log'),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    queryBuilder = require('../lib/builder/entityQueryBuilder'),
-    EntitySearchModel = require('../model/EntitySearchModel'),
-    entitySearch = require('../lib/restclient/entity/entitySearch');
+    path = require('path'),
+    logger = require(path.resolve('./lib/utils/log','')),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
+    queryBuilder = require(path.resolve('./lib/builder/entityQueryBuilder','')),
+    entitySearch = require(path.resolve('./lib/restclient/entity/entitySearch',''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -21,7 +21,7 @@ router.get('/entitySearch', function (req, res, next) {
     var model = queryBuilder.buildEntitySearchParams(req);
     entitySearch.getAllEntities(model, req, res, function (err, data) {
         if (err) {
-            logger.error('Error in getting entity list ' + err.message)
+            logger.error('Error in getting entity list ' + err.message);
             next(err);
         } else if (data) {
             res.append('Content-Type', 'application/json');
