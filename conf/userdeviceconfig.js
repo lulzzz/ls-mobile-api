@@ -5,7 +5,7 @@
 
 module.exports = {
     userDevice_addEdit: {
-        url: '/userdevice',
+        url: '/userdevice/',
         method: 'POST',
         timeout: 1000,
         req_pld: 'query'
