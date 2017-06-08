@@ -4,7 +4,7 @@
 
 module.exports = {
     create: {
-        url: '/approvals',
+        url: '/v1/approvals/',
         method: 'POST',
         timeout: 1000,
         req_pld: 'query'
