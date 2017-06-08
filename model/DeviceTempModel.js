@@ -14,4 +14,5 @@ function DeviceTempModel() {
     this.pwa = undefined;
     this.typ = undefined;
     this.time = undefined;
+    this.alrm = undefined;
 }
