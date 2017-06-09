@@ -1,16 +1,16 @@
 /**
- * Created by smriti on 23/05/17.
+ * Created by smriti on 05/06/17.
  */
 
 module.exports = {
-    create: {
-        url: '/v1/approvals/',
-        method: 'POST',
+    getMetadata: {
+        url: '/orders/data',
+        method: 'GET',
         timeout: 1000,
         req_pld: 'query'
     },
     get: {
-        url: '/v1/approvals',
+        url: '/orders/',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'
