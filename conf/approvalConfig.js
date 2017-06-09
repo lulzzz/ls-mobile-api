@@ -10,7 +10,7 @@ module.exports = {
         req_pld: 'query'
     },
     get: {
-        url: '/approvals/',
+        url: '/v1/approvals',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'

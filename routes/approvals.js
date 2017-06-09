@@ -37,10 +37,12 @@ router.get('/approvals', function (req, res, next) {
                         if (model != undefined) {
                             res.status(200).send(model);
                         } else {
-                            res.status(500).send("Error while fetching the data" + e.stack);
+                            res.status(500).send("Error while fetching the data");
                         }
                     }
                 });
+            } else {
+                res.status(500).send("error while fetching the order id's from approval list");
             }
         }
     });
