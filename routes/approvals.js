@@ -59,4 +59,20 @@ router.post('/approvals', function (req, res, next) {
         }
     })
 });
+
+router.get('/approvals/items', function (req, res, next) {
+    orderService.getDemandItems(req, function (err, data) {
+       if(err) {
+           logger.error("Error while fetching the demand items for order: " + req.query.oid + err);
+           next(err);
+       }  else if(data) {
+           var items = orderResBuilder.buildDemandItems(data);
+           if(items != undefined) {
+               res.status(200).send(items);
+           } else {
+               res.status(500).send("Error while fetching demand items for order: " + req.query.oid);
+           }
+       }
+    });
+});
 module.exports = router;

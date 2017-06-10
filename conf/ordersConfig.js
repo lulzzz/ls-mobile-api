@@ -14,5 +14,11 @@ module.exports = {
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'
+    },
+    getItems: {
+        url:'/demand/',
+        method: 'GET',
+        timeout: 1000,
+        req_pld: 'query'
     }
 };
