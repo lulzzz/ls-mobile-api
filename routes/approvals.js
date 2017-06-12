@@ -59,4 +59,18 @@ router.post('/approvals', function (req, res, next) {
         }
     })
 });
+
+router.put('/approvals/:approval_id/status', function (req, res, next) {
+    approvalService.updateApprovalStatus(req, function (err, data) {
+        if (err) {
+            logger.error("Error while updating approval status" + "\n" + err.stack);
+            next(err);
+        } else if (data != null) {
+            data = "Approval req with id "+req.params.approval_id+" updated successfully"
+            logger.info(data);
+            res.status(200).send(data);
+        }
+    })
+});
+
 module.exports = router;
