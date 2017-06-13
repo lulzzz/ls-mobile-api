@@ -4,11 +4,13 @@ var authconfig = require('./authconfig'),
     searchconfig = require('./searchconfig'),
     assetConfig = require('./assetConfig'),
     userdeviceconfig = require('./userdeviceconfig'),
-    approvalConfig = require('./approvalConfig');
+    approvalConfig = require('./approvalConfig'),
+    ordersConfig = require('./ordersConfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
     tempurl: 'http://localhost:9000',
+    approvalUrl: 'http://localhost:6400',
     sectokenconfig: {
         url: '/m/auth/validatetoken',
         method: 'POST',
@@ -19,5 +21,6 @@ module.exports = {
     searchconfig: searchconfig,
     userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig,
-    approvalConfig: approvalConfig
+    approvalConfig: approvalConfig,
+    ordersConfig: ordersConfig
 };

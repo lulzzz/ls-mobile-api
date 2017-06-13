@@ -5,10 +5,14 @@
 'use strict';
 
 var router = require('express').Router(),
-    urlDecoder = require('../lib/utils/urldecoder'),
-    approvalService = require('../lib/restclient/approvals/approvalService'),
-    queryBuilder = require('../lib/builder/approvalQueryBuilder'),
-    logger = require('../lib/utils/log');
+    path = require('path'),
+    urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
+    approvalService = require(path.resolve('./lib/restclient/approvals/approvalService', '')),
+    queryBuilder = require(path.resolve('./lib/builder/approvalQueryBuilder', '')),
+    orderService = require(path.resolve('./lib/restclient/orders/orderService', '')),
+    logger = require(path.resolve('./lib/utils/log', '')),
+    approvalResBuilder = require(path.resolve('./lib/builder/approvalResBuilder', '')),
+    orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', ''));
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
@@ -22,9 +26,25 @@ router.get('/approvals', function (req, res, next) {
             logger.error("Error while fetching the approvals for approver:" + model.approver_id);
             next(err);
         } else if (data) {
-            res.status(200).send(data);
+            var ids = orderResBuilder.getOrderIds(data);
+            if (ids != "") {
+                orderService.getOrderMetaData(ids, req, function (err, orders) {
+                    if (err) {
+                        logger.error("Error while fetching the order metadata");
+                        next(err);
+                    } else if (orders) {
+                        var model = approvalResBuilder.buildApprovalData(data, orders);
+                        if (model != undefined) {
+                            res.status(200).send(model);
+                        } else {
+                            res.status(500).send("Error while fetching the data");
+                        }
+                    }
+                });
+            } else {
+                res.status(500).send("error while fetching the order id's from approval list");
+            }
         }
-        res.status(400).send("Error while fetching the approvals for approver:" + model.approver_id);
     });
 });
 
@@ -37,7 +57,20 @@ router.post('/approvals', function (req, res, next) {
             logger.info("Approval " + data + " created successfully");
             res.status(200).send(data);
         }
-        res.status(400).send("Error while creating approvals");
     })
 });
+
+router.put('/approvals/:approval_id/status', function (req, res, next) {
+    approvalService.updateApprovalStatus(req, function (err, data) {
+        if (err) {
+            logger.error("Error while updating approval status" + "\n" + err.stack);
+            next(err);
+        } else if (data != null) {
+            data = "Approval req with id "+req.params.approval_id+" updated successfully"
+            logger.info(data);
+            res.status(200).send(data);
+        }
+    })
+});
+
 module.exports = router;

@@ -100,8 +100,7 @@ router.get('/dashboards/assets/detail', function (req, res, next) {
             logger.error('Error in getting asset detail dashboard: ' + err.message);
             next(err);
         } else if (data != null) {
-            var tempData = JSON.parse(data);
-            model = dashboardResModel.buildAssetDashbDetailModel(tempData);
+            model = dashboardResModel.buildAssetDashbDetailModel(data);
             res.append('Content-Type', 'application/json');
             res.status(200).send(model);
         }

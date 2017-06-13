@@ -3,11 +3,13 @@ var authconfig = require('./authconfig'),
     dashbrdconfig = require('./dashbrdconfig'),
     searchconfig = require('./searchconfig'),
     userdeviceconfig = require('./userdeviceconfig'),
-    approvalConfig = require('./searchconfig');
+    approvalConfig = require('./searchconfig'),
+    ordersConfig = require('./ordersConfig');
 
 module.exports = {
     baseurl: 'http://<statging-host>:<statging-port>/s2/api',
     tempurl: 'http://<statging-host>:<statging-port>/v2',
+    approvalUrl: 'http://<statging-host>:<statging-port>',
     sectokenconfig: {
         url: '/m/auth/validatetoken',
         method: 'GET',
@@ -18,5 +20,6 @@ module.exports = {
     searchconfig: searchconfig,
     assetConfig: assetConfig,
     userdeviceconfig: userdeviceconfig,
-    approvalConfig: approvalConfig
+    approvalConfig: approvalConfig,
+    ordersConfig: ordersConfig
 };

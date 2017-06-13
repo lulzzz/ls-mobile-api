@@ -45,11 +45,6 @@ app.use(function(err, req, res, next) {
   res.send(JSON.stringify(err.message));
 });
 
-/*var server = app.listen(3000, function () {
-  logger.info("Environment is :"+app.get('env'))
-  logger.info("Example app listening on port 3000!");
-})*/
-
 module.exports = app;
 
 

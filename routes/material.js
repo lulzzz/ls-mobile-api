@@ -29,7 +29,6 @@ router.get('/materialSearch', function (req, res, next) {
             res.status(200).send(data);
         }
     });
-
 });
 
 module.exports = router;

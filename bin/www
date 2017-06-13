@@ -5,7 +5,6 @@
  */
 
 var app = require('../app');
-//var debug = require('debug')('mobile-api-gateway:server');
 var logger = require('../lib/utils/log');
 var http = require('http');
 
@@ -56,10 +55,10 @@ function normalizePort(val) {
  */
 
 function onError(error) {
+
   if (error.syscall !== 'listen') {
     throw error;
   }
-
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
