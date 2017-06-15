@@ -18,7 +18,7 @@ router.use(function(req, res, next){
 
 router.post('/userdevice', function (req, res, next) {
     var model = queryBuilder.buildAddEditParams(req);
-    userdeviceConfig.addEditUserDevice(model,req,res,function (err,data) {
+    userdeviceConfig.addEditUserDevice(model, req, function (err,data) {
         if (err) {
             logger.error('Error in storing user device '+err.message);
             next(err);
@@ -32,7 +32,7 @@ router.post('/userdevice', function (req, res, next) {
 
 router.get('/userdevice/gettoken', function (req, res, next) {
     var model = queryBuilder.buildGetTokenParams(req);
-    userdeviceConfig.getUDToken(model,req,res,function (err,data) {
+    userdeviceConfig.getUDToken(model, function (err,data) {
         if (err) {
             logger.error('Error in getting user device token '+err.message);
             next(err);

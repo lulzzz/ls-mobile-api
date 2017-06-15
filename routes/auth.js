@@ -25,7 +25,7 @@ router.post('/auth/login', function (req, res, next) {
         username = creds[0],
         password = creds[1];
 
-    authService.login(username, password, res, function (err, body) {
+    authService.login(username, password, req.header('x-real-ip'), res, function (err, body) {
         if (err) {
             logger.error("Error in login for user ", username);
             next(err);
@@ -42,7 +42,7 @@ router.post('/auth/generateotp', function (req, res, next) {
     if (typeof !(req.body == 'undefined') && typeof !(req.body.user == 'undefined')) {
         var unm = req.body.user;
 
-        authService.generateOtp(unm, function (err, data) {
+        authService.generateOtp(unm, req.header('x-real-ip'), function (err, data) {
             if (err) {
                 logger.error("Error in otp generation for user ", unm);
                 next(err);
@@ -77,7 +77,7 @@ router.post('/auth/resetpassword', function (req, res, next) {
             pwd = req.body.npd,
             token = req.body.otp;
 
-        authService.resetPassword(unm, pwd, token, function (err, data) {
+        authService.resetPassword(unm, pwd, token, req.header('x-real-ip'), function (err, data) {
             if (err) {
                 logger.error("Error in reset password for user ", unm);
                 next(err);

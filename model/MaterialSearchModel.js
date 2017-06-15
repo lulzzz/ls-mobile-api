@@ -13,5 +13,6 @@ function MaterialSearchModel() {
     this.user = undefined;
     this.user = undefined;
     this.reqId = undefined;
+    this.ip = undefined;
 
 }

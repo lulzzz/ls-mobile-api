@@ -16,4 +16,5 @@ function assetDashboardQueryModel() {
     this.aType = undefined;
     this.user = undefined;
     this.reqId = undefined;
+    this.ip = undefined; // real IP
 }

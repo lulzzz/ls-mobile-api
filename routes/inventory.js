@@ -16,7 +16,7 @@ router.use(function (req, res, next) {
 router.get('/inventory', function (req, res, next) {
   
     var queryModel = queryBuilder.buildInvParams(req);
-    invdetail.getInvDetail(queryModel, req, res, function (err, data) {
+    invdetail.getInvDetail(queryModel, function (err, data) {
         if (err) {
             logger.error('Error in inventory stock view: ' + err.message);
             next(err);
@@ -29,7 +29,7 @@ router.get('/inventory', function (req, res, next) {
 
 router.get('/inventory/detail', function (req, res, next) {
     var queryModel = queryBuilder.buildInvDetailParams(req);
-    invdetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
+    invdetail.getSingleInvDetail(queryModel, function (err, data) {
         if (err) {
             logger.error('Error in inventory stock view: ' + err.message);
             next(err);

@@ -30,4 +30,5 @@ function AssetQueryModel() {
     this.data = undefined;
     this.offset = undefined;
     this.url = "";
+    this.ip = undefined;
 }

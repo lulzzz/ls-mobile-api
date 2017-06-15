@@ -20,7 +20,7 @@ router.get('/materialSearch', function (req, res, next) {
 
     var model = queryBuilder.buildMaterialSearchParams(req);
 
-    materialSearch.getAllMaterials(model, req, res, function (err, data) {
+    materialSearch.getAllMaterials(model, function (err, data) {
         if (err) {
             logger.error('Error in getting material list ' + err.message);
             next(err);
