@@ -4,7 +4,8 @@ var authconfig = require('./authconfig'),
     searchconfig = require('./searchconfig'),
     userdeviceconfig = require('./userdeviceconfig'),
     approvalConfig = require('./searchconfig'),
-    ordersConfig = require('./ordersConfig');
+    ordersConfig = require('./ordersConfig'),
+    conversationConfig = require('./conversationConfig');
 
 module.exports = {
     baseurl: 'http://<statging-host>:<statging-port>/s2/api',
@@ -21,5 +22,6 @@ module.exports = {
     assetConfig: assetConfig,
     userdeviceconfig: userdeviceconfig,
     approvalConfig: approvalConfig,
-    ordersConfig: ordersConfig
+    ordersConfig: ordersConfig,
+    conversationConfig: conversationConfig
 };

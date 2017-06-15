@@ -5,7 +5,8 @@ var authconfig = require('./authconfig'),
     assetConfig = require('./assetConfig'),
     userdeviceconfig = require('./userdeviceconfig'),
     approvalConfig = require('./approvalConfig'),
-    ordersConfig = require('./ordersConfig');
+    ordersConfig = require('./ordersConfig'),
+    conversationConfig = require('./conversationConfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
@@ -22,5 +23,6 @@ module.exports = {
     userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig,
     approvalConfig: approvalConfig,
-    ordersConfig: ordersConfig
+    ordersConfig: ordersConfig,
+    conversationConfig: conversationConfig
 };
