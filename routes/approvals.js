@@ -66,7 +66,7 @@ router.put('/approvals/:approval_id/status', function (req, res, next) {
             logger.error("Error while updating approval status" + "\n" + err.stack);
             next(err);
         } else if (data != null) {
-            data = "Approval req with id "+req.params.approval_id+" updated successfully";
+            data = "Approval req with id " + req.params.approval_id + " updated successfully";
             logger.info(data);
             res.status(200).send(data);
         }
