@@ -5,7 +5,7 @@ var router = require('express').Router(),
     logger = require(path.resolve('./lib/utils/log', '')),
     assetService = require(path.resolve('./lib/restclient/assets/asset', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
-    assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder', '')),
+    assetBuilder = require(path.resolve('./lib/builder/assetResBuilder', '')),
     queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder', '')),
     Promise = require('bluebird');
 
