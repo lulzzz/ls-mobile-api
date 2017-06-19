@@ -18,15 +18,27 @@ router.use(function(req, res, next){
 
 router.post('/addmessage', function (req, res, next) {
     var model = queryBuilder.addMessageParam(req);
-    conversationConfig.addMessage(model,req,res,function (err,data) {
-        if (err) {
-            logger.error('Error in adding message '+err.message);
-            next(err);
-        } else if (data) {
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(data);
-        }
-    });
+    if (req.query.convId) {
+        conversationConfig.addMessage(model, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in adding message ' + err.message);
+                next(err);
+            } else if (data) {
+                res.append('Content-Type', 'application/json');
+                res.status(200).send(data);
+            }
+        });
+    }else{
+        conversationConfig.addEditMessage(model, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in adding message ' + err.message);
+                next(err);
+            } else if (data) {
+                res.append('Content-Type', 'application/json');
+                res.status(200).send(data);
+            }
+        });
+    }
 });
 
 module.exports = router;

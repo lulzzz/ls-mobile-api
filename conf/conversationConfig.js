@@ -11,7 +11,7 @@ module.exports = {
         req_pld: 'query'
     },
     addeditmessage: {
-        url: '/conversation/addEditMessage',
+        url: '/conversation/message',
         method: 'POST',
         timeout: 1000,
         req_pld: 'query'
