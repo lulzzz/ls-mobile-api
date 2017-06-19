@@ -16,9 +16,9 @@ router.use(function(req, res, next){
     return next();
 });
 
-router.post('/addmessage', function (req, res, next) {
+router.put('/addmessage', function (req, res, next) {
     var model = queryBuilder.addMessageParam(req);
-    if (req.query.convId) {
+    if (req.body.conversationId) {
         conversationConfig.addMessage(model, req, res, function (err, data) {
             if (err) {
                 logger.error('Error in adding message ' + err.message);
