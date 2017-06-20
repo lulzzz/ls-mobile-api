@@ -77,8 +77,6 @@ router.put('/approvals/:approval_id/status', function (req, res, next) {
 
 router.put('/approvals/:approval_id/conversation', function (req, res, next) {
     var model = convBuilder.addMessageParam(req);
-    // model.header = convBuilder.addHeaders(req);
-    
     if (req.body.conversation_id) {
         var tempReq = {};
         tempReq.conversationId = req.body.conversation_id;
@@ -107,6 +105,19 @@ router.put('/approvals/:approval_id/conversation', function (req, res, next) {
             }
         });
     }
+});
+
+router.get('/approvals/conversation/getmessages', function (req, res, next) {
+    var model = convBuilder.getMessageParam(req);
+    conversationConfig.getMessages(model, req, res, function (err, data) {
+        if (err) {
+            logger.error('Error in adding message ' + err.message);
+            next(err);
+        } else if (data) {
+            res.append('Content-Type', 'application/json');
+            res.status(200).send(data);
+        }
+    });
 });
 
 module.exports = router;
