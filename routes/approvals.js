@@ -12,7 +12,9 @@ var router = require('express').Router(),
     orderService = require(path.resolve('./lib/restclient/orders/orderService', '')),
     logger = require(path.resolve('./lib/utils/log', '')),
     approvalResBuilder = require(path.resolve('./lib/builder/approvalResBuilder', '')),
-    orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', ''));
+    orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', '')),
+    convBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
+    conversationConfig = require(path.resolve('./lib/restclient/conversation/conversation',''));
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
@@ -71,6 +73,40 @@ router.put('/approvals/:approval_id/status', function (req, res, next) {
             res.status(200).send(data);
         }
     })
+});
+
+router.put('/approvals/:approval_id/conversation', function (req, res, next) {
+    var model = convBuilder.addMessageParam(req);
+    // model.header = convBuilder.addHeaders(req);
+    
+    if (req.body.conversation_id) {
+        var tempReq = {};
+        tempReq.conversationId = req.body.conversation_id;
+        tempReq.message = req.body.message;
+        req.body = tempReq;
+        conversationConfig.addMessage(model, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in adding message ' + err.message);
+                next(err);
+            } else if (data) {
+                res.append('Content-Type', 'application/json');
+                res.status(200).send(data);
+            }
+        });
+    }else{
+        var tempReq = {};
+        tempReq.data= req.body.message;
+        req.body = tempReq;
+        conversationConfig.addEditMessage(model, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in adding message ' + err.message);
+                next(err);
+            } else if (data) {
+                res.append('Content-Type', 'application/json');
+                res.status(200).send(data);
+            }
+        });
+    }
 });
 
 module.exports = router;

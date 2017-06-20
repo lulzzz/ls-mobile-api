@@ -6,8 +6,15 @@
 module.exports = {
     addmessage: {
         url: '/conversation/message',
-        method: 'PUT',
+        method: 'POST',
+        timeout: 1000,
+        req_pld: 'body'
+    },
+    getmessages: {
+        url: '/conversation/messages',
+        method: 'GET',
         timeout: 1000,
         req_pld: 'query'
     }
+
 };

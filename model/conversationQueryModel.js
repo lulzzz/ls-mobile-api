@@ -9,4 +9,5 @@ function ConversationModel() {
     this.user = undefined;
     this.reqId = undefined;
     this.message = undefined;
+    this.conversationId = undefined;
 }

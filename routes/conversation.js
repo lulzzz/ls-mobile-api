@@ -16,9 +16,9 @@ router.use(function(req, res, next){
     return next();
 });
 
-router.put('/addmessage', function (req, res, next) {
+router.put('/approvals/:approval_id/conversation', function (req, res, next) {
     var model = queryBuilder.addMessageParam(req);
-    if (req.body.conversationId) {
+    if (req.body.conversation_id) {
         conversationConfig.addMessage(model, req, res, function (err, data) {
             if (err) {
                 logger.error('Error in adding message ' + err.message);
@@ -39,6 +39,10 @@ router.put('/addmessage', function (req, res, next) {
             }
         });
     }
+});
+router.get('/approvals/messages', function (req, res, next) {
+    var model = queryBuilder.addMessageParam(req);
+    
 });
 
 module.exports = router;
