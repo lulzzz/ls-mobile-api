@@ -15,39 +15,57 @@ describe('test', function () {
         //route = proxyquire('../lib/restclient/dashboard/dashboardService.js', {'request': request});
         route = proxyquire('../lib/restclient/restclient.js', {'request': request});
     });
-    it('shud give 200', function (done) {
+    it('with conversation id', function (done) {
         this.timeout(1000);
-        console.log("inside func");
-        var expectedEndpoint = 'http://localhost:8080/s2/api/dashboard/';
+        var expectedEndpoint = 'http://localhost:8080/s2/api/conversation/message';
         //var req= {};
         var req = {
-            url: "http://localhost:8080/s2/api/dashboard/",
+            url: "http://localhost:8080/s2/api/conversation/message",
             method: "GET",
             headers: {
                 'Accept-Charset': 'utf-8',
                 'Content-Type': 'application/json',
-                'x-access-user': "smriti"
-            }
+                'x-access-user': "yuvaraj"
+            },
+            body:{"conversationId":"4bb1b27d-2b4d-4aa8-9dbf-a559ec5da3f5","message":"wdefrg","userId":"yuvaraj","userName":"yuva"}
         };
 
-        var body = JSON.stringify({
-            "tn": 1,
-            "tl": 0,
-            "th": 0,
-            "tu": 3,
-            "tc": 4,
-            "restime": null,
-            "l": "country"
-        });
+        var body = JSON.stringify({"conversationId":"4bb1b27d-2b4d-4aa8-9dbf-a559ec5da3f5","message":"wdefrg","userId":"yuvaraj","userName":"yuva"});
+        var res = {}
+        res.statusCode = 200;
         request.withArgs(expectedEndpoint).yields(null, null, body);
-        request.withArgs(req).yields(null, null, body);
+        request.withArgs(req).yields(null, res, body);
 
-        console.log(req);
         route.callApi(req, function (err, data) {
-            console.log("callApi");
             expect(err).to.be.null;
             expect(data).to.be.equal(body);
-            console.log("\n data: " + data);
+            done();
+        });
+    });
+    it('without conversation id', function (done) {
+        this.timeout(1000);
+        var expectedEndpoint = 'http://localhost:8080/s2/api/conversation/message/APPROVAL/345321';
+        //var req= {};
+        var req = {
+            url: "http://localhost:8080/s2/api/conversation/message/APPROVAL/345321",
+            method: "GET",
+            headers: {
+                'Accept-Charset': 'utf-8',
+                'Content-Type': 'application/json',
+                'x-access-user': "yuvaraj"
+            },
+            body:{"message":"wdefrg","userId":"yuvaraj","userName":"yuva"}
+        };
+
+        var body = JSON.stringify({"conversationId":"4bb1b27d-2b4d-4aa8-9dbf-a559ec5da3f5","messageId":"4bb1b27d-2b4d-4aa8-9dbf-a559ec5daer4","userId":"yuvaraj","userName":"yuva"});
+        var res = {}
+        res.statusCode = 200;
+        request.withArgs(expectedEndpoint).yields(null, null, body);
+        request.withArgs(req).yields(null, res, body);
+
+        route.callApi(req, function (err, data) {
+            expect(err).to.be.null;
+            expect(data).to.be.equal(body);
             done();
         });
     });
