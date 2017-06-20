@@ -18,7 +18,6 @@ router.use('/events', require('./events'));
 router.use('/materialSearch', require('./material'));
 router.use('/userdevice/*', require('./userdevice'));
 router.use('/approvals*',require('./approvals'));
-router.use('/addmessage',require('./conversation'));
 
 //routes common error handler
 router.use(function (err, req, res, next) {
