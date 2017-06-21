@@ -10,4 +10,5 @@ function ConversationModel() {
     this.reqId = undefined;
     this.message = undefined;
     this.conversationId = undefined;
+    this.xforward = undefined;
 }

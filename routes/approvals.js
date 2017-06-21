@@ -13,8 +13,8 @@ var router = require('express').Router(),
     logger = require(path.resolve('./lib/utils/log', '')),
     approvalResBuilder = require(path.resolve('./lib/builder/approvalResBuilder', '')),
     orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', '')),
-    convBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
-    conversationConfig = require(path.resolve('./lib/restclient/conversation/conversation',''));
+    convQueryBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
+    conversationService = require(path.resolve('./lib/restclient/conversation/conversation',''));
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
@@ -76,13 +76,13 @@ router.put('/approvals/:approval_id/status', function (req, res, next) {
 });
 
 router.put('/approvals/:approval_id/conversation', function (req, res, next) {
-    var model = convBuilder.addMessageParam(req);
+    var model = convQueryBuilder.addMessageParam(req);
     if (req.body.conversation_id) {
         var tempReq = {};
         tempReq.conversationId = req.body.conversation_id;
         tempReq.message = req.body.message;
         req.body = tempReq;
-        conversationConfig.addMessage(model, req, res, function (err, data) {
+        conversationService.addMessage(model, req, function (err, data) {
             if (err) {
                 logger.error('Error in adding message ' + err.message);
                 next(err);
@@ -95,7 +95,7 @@ router.put('/approvals/:approval_id/conversation', function (req, res, next) {
         var tempReq = {};
         tempReq.data= req.body.message;
         req.body = tempReq;
-        conversationConfig.addEditMessage(model, req, res, function (err, data) {
+        conversationService.addEditMessage(model, req, function (err, data) {
             if (err) {
                 logger.error('Error in adding message ' + err.message);
                 next(err);
@@ -107,9 +107,9 @@ router.put('/approvals/:approval_id/conversation', function (req, res, next) {
     }
 });
 
-router.get('/approvals/conversation/getmessages', function (req, res, next) {
-    var model = convBuilder.getMessageParam(req);
-    conversationConfig.getMessages(model, req, res, function (err, data) {
+router.get('/approvals/conversation/messages', function (req, res, next) {
+    var model = convQueryBuilder.getMessageParam(req);
+    conversationService.getMessages(model, req, function (err, data) {
         if (err) {
             logger.error('Error in adding message ' + err.message);
             next(err);
