@@ -16,7 +16,7 @@ router.use('/entitySearch', require('./entity'));
 router.use('/assets', require('./assets'));
 router.use('/events', require('./events'));
 router.use('/materialSearch', require('./material'));
-router.use('/userdevice/*', require('./userdevice'));
+router.use('/user-device/*', require('./userdevice'));
 router.use('/approvals*',require('./approvals'));
 
 //routes common error handler
