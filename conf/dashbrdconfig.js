@@ -14,7 +14,7 @@ module.exports = {
         req_pld: 'query'
     },
     dash_ast: {
-        url: '/dashboard/',
+        url: '/m/dashboards/assets',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'

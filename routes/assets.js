@@ -16,6 +16,9 @@ router.use(function (req, res, next) {
 
 router.get('/assets', function (req, res, next) {
     var model = queryBuilder.buildTempDataParams(req);
+    if (model == undefined) {
+        res.status(400).send("Mandatory fields are empty.");
+    }
     assetService.getAssetsForDomain(model, function (err, data) {
         if (err) {
             logger.error("Error while fetching the list of assets");
@@ -24,7 +27,7 @@ router.get('/assets', function (req, res, next) {
             var obj = JSON.parse(data);
             var asset = [];
             var tempData = obj.data;
-            if (tempData) {
+            if (tempData.length > 0) {
                 tempData.forEach(function (data) {
                     var assetData = {};
                     assetData.vId = data.vId;
@@ -41,8 +44,11 @@ router.get('/assets', function (req, res, next) {
                         res.append('Content-Type', 'application/json');
                         res.status(200).send(assets);
                     }
-                    res.status(500).send("Error while fetching the data");
                 });
+            } else {
+                var offset = req.query.of ? req.query.of : constants.const.OFFSET;
+                var assets = assetBuilder.buildAssetData(JSON.stringify(asset), tempData, offset);
+                res.status(200).send(assets);
             }
         }
     });
@@ -51,16 +57,18 @@ router.get('/assets', function (req, res, next) {
 
 router.get('/assets/detail', function (req, res) {
     var queryModel = queryBuilder.buildTempAlertParams(req);
-
+    if (queryModel == undefined) {
+        res.status(400).send("Mandatory fields are empty.");
+    }
     // fetch recent alerts and temperature for assets
     var a = getRecentAlerts(queryModel),
         b = getTemperatures(queryModel);
     Promise.all([a, b]).then(function (result) {
         logger.info("Received asset details successfully");
-        result[0].temp = result[1].temp;
-        res.status(200).send(result[0]);
+        var model = assetBuilder.buildAssetDetailsModel(result);
+        res.status(200).send(model);
     }).catch(function (err) {
-        logger.error("Error while fetching asset details " + "\n" + err.stack);
+        logger.error("\n" + err.stack);
         res.status(500).send("Error while fetching the asset details");
     });
 
@@ -74,7 +82,7 @@ function getRecentAlerts(queryModel) {
                 reject(err);
             } else if (data) {
                 var assetData = assetBuilder.buildRecentAlertModel(data);
-                if(assetData) {
+                if (assetData) {
                     resolve(assetData);
                 } else {
                     reject("Error while fetching the alerts for assets");
@@ -92,7 +100,7 @@ function getTemperatures(queryModel) {
                 reject(err);
             } else if (data) {
                 var assetData = assetBuilder.buildAssetTempDataModel(data, queryModel);
-                if(assetData) {
+                if (assetData) {
                     resolve(assetData);
                 } else {
                     reject("Error while fetching temperature data for assets");
