@@ -2,13 +2,13 @@
 
 module.exports = {
     login: {
-        url: '/m/auth/login',
+        url: '/mauth/login',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'
     },
     generateotp: {
-        url: '/m/auth/generateotp',
+        url: '/auth/generateoTp',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'

@@ -2,25 +2,19 @@
 
 module.exports = {
     dash_inv: {
-        url: '/m/dashboards/inventory',
+        url: '/dashboards/inventory',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'
     },
     dash_invdetail: {
-        url: '/m/dashboards/inventory/detail',
+        url: '/dashboards/inventory/breakdown',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'
     },
     dash_ast: {
-        url: '/m/dashboards/assets',
-        method: 'GET',
-        timeout: 1000,
-        req_pld: 'query'
-    },
-    dash_astdetail: {
-        url: '/m/dashboards/assets/detail',
+        url: '/dashboards/assets',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'

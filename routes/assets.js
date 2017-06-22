@@ -7,7 +7,8 @@ var router = require('express').Router(),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder', '')),
     queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder', '')),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    utils = require(path.resolve('./lib/utils/common/common-utils', ''));
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
@@ -15,10 +16,11 @@ router.use(function (req, res, next) {
 });
 
 router.get('/assets', function (req, res, next) {
-    var model = queryBuilder.buildTempDataParams(req);
-    if (model == undefined) {
+    if (utils.checkNullEmpty(req.query.did) && utils.checkNullEmpty(req.query.eid)) {
         res.status(400).send("Mandatory fields are empty.");
+        return;
     }
+    var model = queryBuilder.buildTempDataParams(req);
     assetService.getAssetsForDomain(model, function (err, data) {
         if (err) {
             logger.error("Error while fetching the list of assets");
@@ -56,10 +58,11 @@ router.get('/assets', function (req, res, next) {
 });
 
 router.get('/assets/detail', function (req, res) {
-    var queryModel = queryBuilder.buildTempAlertParams(req);
-    if (queryModel == undefined) {
+    if (utils.checkNotNullEmpty(req.query.did) || utils.checkNotNullEmpty(req.query.vid) || utils.checkNotNullEmpty(req.query.mpid)) {
         res.status(400).send("Mandatory fields are empty.");
+        return;
     }
+    var queryModel = queryBuilder.buildTempAlertParams(req);
     // fetch recent alerts and temperature for assets
     var a = getRecentAlerts(queryModel),
         b = getTemperatures(queryModel);

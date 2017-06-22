@@ -12,7 +12,7 @@ module.exports = {
     tempurl: 'http://localhost:9000',
     approvalUrl: 'http://localhost:6400',
     sectokenconfig: {
-        url: '/m/auth/validatetoken',
+        url: '/mauth/validate-token',
         method: 'POST',
         timeout: 1000
     },
