@@ -12,9 +12,8 @@ var router = require('express').Router(),
     orderService = require(path.resolve('./lib/restclient/orders/orderService', '')),
     logger = require(path.resolve('./lib/utils/log', '')),
     approvalResBuilder = require(path.resolve('./lib/builder/approvalResBuilder', '')),
-    orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', '')),
-    convQueryBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
-    conversationService = require(path.resolve('./lib/restclient/conversation/conversation',''));
+    orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', ''));
+
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);

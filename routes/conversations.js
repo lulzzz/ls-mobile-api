@@ -9,7 +9,8 @@ var router = require('express').Router(),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     logger = require(path.resolve('./lib/utils/log', '')),
     convQueryBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
-    conversationService = require(path.resolve('./lib/restclient/conversation/conversation',''));
+    conversationService = require(path.resolve('./lib/restclient/conversation/conversation','')),
+    commonUtils = require(path.resolve('./lib/utils/common/common-utils',''));
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
@@ -17,12 +18,20 @@ router.use(function (req, res, next) {
 });
 
 router.put('/conversations', function (req, res, next) {
+    try{
+        validate(req.body);
+    }catch(e){
+        res.status(400).send(e.message);
+        return;
+    }
     var model = convQueryBuilder.addMessageParam(req);
     if (req.body.conversation_id) {
         var tempReq = {};
         tempReq.conversationId = req.body.conversation_id;
         tempReq.userId = req.body.user_id;
-        tempReq.message = req.body.content.data;
+        if(req.body.content.type=="text") {
+            tempReq.message = req.body.content.data;
+        }
         req.body = tempReq;
         conversationService.addMessage(model, req, function (err, data) {
             if (err) {
@@ -39,7 +48,9 @@ router.put('/conversations', function (req, res, next) {
         });
     }else{
         var tempReq = {};
-        tempReq.data= req.body.message;
+        if(req.body.content.type=="text") {
+            tempReq.message = req.body.content.data;
+        }
         req.body = tempReq;
         conversationService.addEditMessage(model, req, function (err, data) {
             if (err) {
@@ -85,5 +96,25 @@ router.get('/conversations', function (req, res, next) {
         }
     });
 });
+
+function validate(obj){
+    if(!commonUtils.checkIsObject(obj)){
+        throw new TypeError("Request is invalid");
+    }
+    if(!commonUtils.checkNotNullEmpty(obj.conversation_id)){
+        if(!commonUtils.checkNotNullEmpty(obj.object_type) || !commonUtils.checkNotNullEmpty(obj.object_id))
+            throw new TypeError("Request is invalid");
+    }
+    if(!commonUtils.checkNotNullEmpty(obj.user_id)){
+        throw new TypeError("Request is invalid");
+    }
+    if(!commonUtils.checkNotNullEmpty(obj.content.data)){
+        throw new TypeError("Request is invalid");
+    }
+    if(!commonUtils.checkNotNullEmpty(obj.content.type)){
+        throw new TypeError("Request is invalid");
+    }
+}
+
 
 module.exports = router;
