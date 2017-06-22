@@ -75,49 +75,4 @@ router.put('/approvals/:approval_id/status', function (req, res, next) {
     })
 });
 
-router.put('/approvals/:approval_id/conversation', function (req, res, next) {
-    var model = convQueryBuilder.addMessageParam(req);
-    if (req.body.conversation_id) {
-        var tempReq = {};
-        tempReq.conversationId = req.body.conversation_id;
-        tempReq.message = req.body.message;
-        req.body = tempReq;
-        conversationService.addMessage(model, req, function (err, data) {
-            if (err) {
-                logger.error('Error in adding message ' + err.message);
-                next(err);
-            } else if (data) {
-                res.append('Content-Type', 'application/json');
-                res.status(200).send(data);
-            }
-        });
-    }else{
-        var tempReq = {};
-        tempReq.data= req.body.message;
-        req.body = tempReq;
-        conversationService.addEditMessage(model, req, function (err, data) {
-            if (err) {
-                logger.error('Error in adding message ' + err.message);
-                next(err);
-            } else if (data) {
-                res.append('Content-Type', 'application/json');
-                res.status(200).send(data);
-            }
-        });
-    }
-});
-
-router.get('/approvals/conversation/messages', function (req, res, next) {
-    var model = convQueryBuilder.getMessageParam(req);
-    conversationService.getMessages(model, req, function (err, data) {
-        if (err) {
-            logger.error('Error in adding message ' + err.message);
-            next(err);
-        } else if (data) {
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(data);
-        }
-    });
-});
-
 module.exports = router;

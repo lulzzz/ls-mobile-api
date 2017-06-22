@@ -25,17 +25,19 @@ describe('conversation test', function () {
                 'Content-Type': 'application/json',
                 'x-access-user': "yuvaraj"
             },
-            body:{"conversation_id":"ce04db03-a061-46dd-8911-b0ee035bb5fd","message":"test 12245 con id"}
+            body:{
+                "content": {
+                    "type": "text",
+                    "data": "test conv 1234 testing convID123"
+                },
+                "user_id": "yuvaraj",
+                "conversation_id": "4bb1b27d-2b4d-4aa8-9dbf-a559ec5da3f5"
+            }
         };
 
         var body = JSON.stringify({
-            "messageId": "dd7caa99-fbf2-415a-b078-62af0a698c57",
-            "conversationId": "ce04db03-a061-46dd-8911-b0ee035bb5fd",
-            "message": "test 12245 con id",
-            "createDate": "21/06/2017 12:08:37",
-            "cts": 1498027117000,
-            "userId": "yuvaraj",
-            "userName": "Yuvaraj BH"
+            "message_id": "f44f6c59-c794-49da-a482-0027622d67e8",
+            "conversation_id": "59a619aa-7d0a-43d9-9de1-12e7f2f14ea7"
         });
         var res = {}
         res.statusCode = 200;
@@ -50,7 +52,7 @@ describe('conversation test', function () {
     });
     it('without conversation id', function (done) {
         this.timeout(1000);
-        var expectedEndpoint = 'http://localhost:8080/s2/api/conversation/message/APPROVAL/345321';
+        var expectedEndpoint = 'http://localhost:8080/s2/api/APPROVAL/345321';
         //var req= {};
         var req = {
             url: "http://localhost:8080/s2/api/conversation/message/APPROVAL/345321",
@@ -60,10 +62,21 @@ describe('conversation test', function () {
                 'Content-Type': 'application/json',
                 'x-access-user': "yuvaraj"
             },
-            body:{"message":"testing usr id in new conv"}
+            body:{
+                "content": {
+                    "type": "text",
+                    "data": "test conv 1234 abcdqwertyuiop"
+                },
+                "user_id": "yuvaraj",
+                "object_type": "APPROVAL",
+                "object_id":"ABC123"
+            }
         };
 
-        var body = JSON.stringify({"messageId": "991955f9-5614-4876-82df-28a505401eea"});
+        var body = JSON.stringify({
+            "message_id": "f44f6c59-c794-49da-a482-0027622d67e8",
+            "conversation_id": "59a619aa-7d0a-43d9-9de1-12e7f2f14ea7"
+        });
         var res = {}
         res.statusCode = 200;
         request.withArgs(expectedEndpoint).yields(null, null, body);
@@ -88,7 +101,8 @@ describe('conversation test', function () {
                 'x-access-user': "yuvaraj"
             },
             qs:{
-                conversationId: "c610e394-27d5-4e14-a37f-ff2a2234a3d0"
+                object_type: "APPROVAL",
+                object_id:"1234abc"
             }
         };
 

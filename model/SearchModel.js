@@ -1,19 +1,18 @@
 /**
- * Created by yuvaraj on 08/05/17.
+ * Created by yuvaraj on 10/05/17.
  */
-'use strict';
+module.exports = SearchModel;
 
-module.exports = EntitySearchModel;
-
-function EntitySearchModel() {
+function SearchModel() {
 
     this.dId = undefined;
-    this.eId = undefined;
     this.tags = undefined;
     this.q = undefined;
     this.offset = undefined;
     this.size = undefined;
     this.user = undefined;
+    this.user = undefined;
     this.reqId = undefined;
+    this.eId = undefined;
 
 }
