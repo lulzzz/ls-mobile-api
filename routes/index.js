@@ -11,7 +11,7 @@ router.use(function (req, res, next) {
 
 router.use('/auth/*', require('./auth'));
 router.use('/dashboards/*', require('./dashboard'));
-router.use('/inventory', require('./inventory'));
+router.use('/inventory*', require('./inventory'));
 router.use('/search*', require('./search'));
 router.use('/assets', require('./assets'));
 router.use('/events', require('./events'));

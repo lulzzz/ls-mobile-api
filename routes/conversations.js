@@ -18,9 +18,9 @@ router.use(function (req, res, next) {
 });
 
 router.put('/conversations', function (req, res, next) {
-    try{
+    try {
         validate(req.body);
-    }catch(e){
+    } catch(e){
         res.status(400).send(e.message);
         return;
     }
