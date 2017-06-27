@@ -8,7 +8,7 @@ module.exports = {
         req_pld: 'body'
     },
     generateotp: {
-        url: '/auth/generateotp',
+        url: '/auth/generateoTp',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'
@@ -20,7 +20,7 @@ module.exports = {
         req_pld: 'body'
     },
     resetpassword: {
-        url: '/mauth/changepassword',
+        url: '/mauth/change-password',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'
