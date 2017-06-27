@@ -24,10 +24,9 @@ function AssetQueryModel() {
     this.sint = undefined; // sampling intervals
     this.sd = undefined; // start date in millis
     this.ed = undefined; // end date in millis
-    this.oa = false; // only recent alert data
-    this.ot = false; // only asset temperature data
     this.reqId = undefined;
     this.data = undefined;
     this.offset = undefined;
     this.url = "";
+    this.user = undefined;
 }

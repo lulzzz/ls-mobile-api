@@ -12,10 +12,12 @@ module.exports = {
     tempurl: 'http://localhost:9000',
     approvalUrl: 'http://localhost:6400',
     sectokenconfig: {
-        url: '/m/auth/validatetoken',
+        url: '/mauth/validate-token',
         method: 'POST',
         timeout: 1000
     },
+    amsUser: 'logistimo_admin',
+    amsPwd: 'Cl3anAg3nt',
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,

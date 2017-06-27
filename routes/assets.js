@@ -7,7 +7,8 @@ var router = require('express').Router(),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder', '')),
     queryBuilder = require(path.resolve('./lib/builder/assetQueryBuilder', '')),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    utils = require(path.resolve('./lib/utils/common/common-utils', ''));
 
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
@@ -15,6 +16,10 @@ router.use(function (req, res, next) {
 });
 
 router.get('/assets', function (req, res, next) {
+    if (utils.checkNullEmpty(req.query.did) && utils.checkNullEmpty(req.query.eid)) {
+        res.status(400).send("Mandatory fields are empty.");
+        return;
+    }
     var model = queryBuilder.buildTempDataParams(req);
     assetService.getAssetsForDomain(model, function (err, data) {
         if (err) {
@@ -24,7 +29,7 @@ router.get('/assets', function (req, res, next) {
             var obj = JSON.parse(data);
             var asset = [];
             var tempData = obj.data;
-            if (tempData) {
+            if (tempData.length > 0) {
                 tempData.forEach(function (data) {
                     var assetData = {};
                     assetData.vId = data.vId;
@@ -41,8 +46,11 @@ router.get('/assets', function (req, res, next) {
                         res.append('Content-Type', 'application/json');
                         res.status(200).send(assets);
                     }
-                    res.status(500).send("Error while fetching the data");
                 });
+            } else {
+                var offset = req.query.of ? req.query.of : constants.const.OFFSET;
+                var assets = assetBuilder.buildAssetData(JSON.stringify(asset), tempData, offset);
+                res.status(200).send(assets);
             }
         }
     });
@@ -50,17 +58,20 @@ router.get('/assets', function (req, res, next) {
 });
 
 router.get('/assets/detail', function (req, res) {
+    if (utils.checkNotNullEmpty(req.query.did) || utils.checkNotNullEmpty(req.query.vid) || utils.checkNotNullEmpty(req.query.mpid)) {
+        res.status(400).send("Mandatory fields are empty.");
+        return;
+    }
     var queryModel = queryBuilder.buildTempAlertParams(req);
-
     // fetch recent alerts and temperature for assets
     var a = getRecentAlerts(queryModel),
         b = getTemperatures(queryModel);
     Promise.all([a, b]).then(function (result) {
         logger.info("Received asset details successfully");
-        result[0].temp = result[1].temp;
-        res.status(200).send(result[0]);
+        var model = assetBuilder.buildAssetDetailsModel(result);
+        res.status(200).send(model);
     }).catch(function (err) {
-        logger.error("Error while fetching asset details " + "\n" + err.stack);
+        logger.error("\n" + err.stack);
         res.status(500).send("Error while fetching the asset details");
     });
 
@@ -74,7 +85,7 @@ function getRecentAlerts(queryModel) {
                 reject(err);
             } else if (data) {
                 var assetData = assetBuilder.buildRecentAlertModel(data);
-                if(assetData) {
+                if (assetData) {
                     resolve(assetData);
                 } else {
                     reject("Error while fetching the alerts for assets");
@@ -92,7 +103,7 @@ function getTemperatures(queryModel) {
                 reject(err);
             } else if (data) {
                 var assetData = assetBuilder.buildAssetTempDataModel(data, queryModel);
-                if(assetData) {
+                if (assetData) {
                     resolve(assetData);
                 } else {
                     reject("Error while fetching temperature data for assets");
