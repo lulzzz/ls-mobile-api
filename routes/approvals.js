@@ -14,6 +14,7 @@ var router = require('express').Router(),
     approvalResBuilder = require(path.resolve('./lib/builder/approvalResBuilder', '')),
     orderResBuilder = require(path.resolve('./lib/builder/orderResBuilder', ''));
 
+
 router.use(function (req, res, next) {
     req.url = urlDecoder.decodeurl(req);
     return next();

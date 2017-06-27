@@ -20,7 +20,7 @@ module.exports = {
         req_pld: 'body'
     },
     resetpassword: {
-        url: '/m/auth/resetpassword',
+        url: '/mauth/change-password',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'

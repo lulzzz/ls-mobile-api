@@ -20,13 +20,13 @@ module.exports = {
         req_pld: 'query'
     },
     inv_detail: {
-        url: '/m/inventory/',
+        url: '/inventory/',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'
     },
     single_inv_detail: {
-        url: '/m/inventory/detail',
+        url: '/inventory/entity',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'

@@ -11,13 +11,13 @@ router.use(function (req, res, next) {
 
 router.use('/auth/*', require('./auth'));
 router.use('/dashboards/*', require('./dashboard'));
-router.use('/inventory', require('./inventory'));
-router.use('/entitySearch', require('./entity'));
+router.use('/inventory*', require('./inventory'));
+router.use('/search*', require('./search'));
 router.use('/assets', require('./assets'));
 router.use('/events', require('./events'));
-router.use('/materialSearch', require('./material'));
-router.use('/userdevice/*', require('./userdevice'));
-router.use('/approvals',require('./approvals'));
+router.use('/user-device/*', require('./userdevice'));
+router.use('/approvals*',require('./approvals'));
+router.use('/conversations*',require('./conversations'));
 
 //routes common error handler
 router.use(function (err, req, res, next) {
