@@ -8,13 +8,13 @@ module.exports = {
         req_pld: 'body'
     },
     generateotp: {
-        url: '/auth/generateoTp',
+        url: '/auth/generateOtp',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'
     },
     validateotp: {
-        url: '/m/auth/validateotp',
+        url: '/mauth/validateotp',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'
