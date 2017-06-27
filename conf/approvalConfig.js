@@ -4,19 +4,25 @@
 
 module.exports = {
     create: {
-        url: '/v1/approvals/',
+        url: '/order-approvals',
         method: 'POST',
         timeout: 1000,
         req_pld: 'body'
     },
     get: {
-        url: '/v1/approvals',
+        url: '/order-approvals',
+        method: 'GET',
+        timeout: 1000,
+        req_pld: 'query'
+    },
+    getdetail: {
+        url: '/order-approvals/{approval_id}',
         method: 'GET',
         timeout: 1000,
         req_pld: 'query'
     },
     put : {
-        url: '/v1/approvals/{approval_id}/status',
+        url: '/order-approvals/{approval_id}/status',
         method: 'PUT',
         timeout: 1000,
         req_pld: 'body'

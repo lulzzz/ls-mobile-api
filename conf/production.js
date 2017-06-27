@@ -4,7 +4,6 @@ var authconfig = require('./authconfig'),
     searchconfig = require('./searchconfig'),
     userdeviceconfig = require('./userdeviceconfig'),
     approvalConfig = require('./approvalConfig'),
-    ordersConfig = require('./ordersConfig'),
     conversationConfig = require('./conversationConfig');
 
 module.exports = {
@@ -12,7 +11,7 @@ module.exports = {
     tempurl: 'http://<statging-host>:<statging-port>/v2',
     approvalUrl: 'http://<statging-host>:<statging-port>',
     sectokenconfig: {
-        url: '/m/auth/validatetoken',
+        url: '/mauth/validate-token',
         method: 'GET',
         timeout: 1000
     },
@@ -22,6 +21,5 @@ module.exports = {
     userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig,
     approvalConfig: approvalConfig,
-    ordersConfig: ordersConfig,
     conversationConfig: conversationConfig
 };

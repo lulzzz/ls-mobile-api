@@ -5,7 +5,6 @@ var authconfig = require('./authconfig'),
     assetConfig = require('./assetConfig'),
     userdeviceconfig = require('./userdeviceconfig'),
     approvalConfig = require('./approvalConfig'),
-    ordersConfig = require('./ordersConfig'),
     conversationConfig = require('./conversationConfig');
 
 module.exports = {
@@ -25,6 +24,5 @@ module.exports = {
     userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig,
     approvalConfig: approvalConfig,
-    ordersConfig: ordersConfig,
     conversationConfig: conversationConfig
 };

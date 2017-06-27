@@ -15,8 +15,10 @@ function approvalQueryModel() {
     this.ordered_by = undefined;
     this.expiring_in = undefined;
     this.type = undefined;
-    this.type_id = undefined;
-    this.attribute_key = undefined;
-    this.attribute_value = undefined;
-
+    this.order_id = undefined;
+    this.entity_id = undefined;
+    this.xforward = undefined;
+    this.req_id = undefined;
+    this.user = undefined;
+    this.embed = undefined;
 }
