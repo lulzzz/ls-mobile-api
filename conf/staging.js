@@ -9,7 +9,6 @@ var authconfig = require('./authconfig'),
 module.exports = {
     baseurl: 'http://<statging-host>:<statging-port>/s2/api',
     tempurl: 'http://<statging-host>:<statging-port>/v2',
-    approvalUrl: 'http://<statging-host>:<statging-port>',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'GET',

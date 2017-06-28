@@ -10,7 +10,6 @@ var authconfig = require('./authconfig'),
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
     tempurl: 'http://localhost:9000',
-    approvalUrl: 'http://localhost:6400',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'POST',
