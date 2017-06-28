@@ -37,7 +37,6 @@ router.post('/auth/login', function (req, res, next) {
                 res.append('Content-Type', 'application/json');
                 res.send(body);
             }
-            res.status(500).send("Error while logging in for user " + username);
         });
     } else {
         res.status(400).send("Bad request");
@@ -57,7 +56,6 @@ router.post('/auth/generate-otp', function (req, res, next) {
                 res.append('Content-Type', 'application/json');
                 res.status(201).send(data);
             }
-            res.status(500).send("Error while generating the otp");
         });
     } else {
         res.status(400).send("Bad Request");
@@ -84,7 +82,6 @@ router.post('/auth/reset-password', function (req, res, next) {
                 res.append('Content-Type', 'application/json');
                 res.status(201).send(data);
             }
-            res.status(500).send("Error while resetting the password");
         });
     } else {
         res.status(400).send("Bad Request");
