@@ -43,7 +43,7 @@ router.get('/order-approvals/:approval_id', function (req, res, next) {
 });
 
 router.post('/order-approvals', function (req, res, next) {
-    approvalService.getApprovalWithDetail(req, function (err, data) {
+    approvalService.createApprovals(req, function (err, data) {
         if (err) {
             logger.error("Error while creating approvals" + "\n" + err.stack);
             next(err);
