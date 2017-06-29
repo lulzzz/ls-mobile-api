@@ -16,7 +16,7 @@ module.exports = {
         req_pld: 'query'
     },
     assets: {
-        url: '/assets',
+        url: '/assets/get-by-ids',
         method: 'POST',
         timeout: 5000,
         req_pld: 'query'
