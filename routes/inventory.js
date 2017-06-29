@@ -47,6 +47,7 @@ router.get('/inventory', function (req, res, next) {
                 dt.max= data.max;
                 dt.lu= data.t;
                 dt.se = data.event;
+                dt.enm = data.enm
                 dt.ed=data.period;
                 tempData.data.push(dt);
             });
