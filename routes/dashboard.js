@@ -45,7 +45,7 @@ router.get('/dashboards/assets', function (req, res, next) {
     });
 });
 
-router.get('/dashboards/inventory/detail', function (req, res, next) {
+router.get('/dashboards/inventory/breakdown', function (req, res, next) {
     var model = queryBuilder.buildInvDetailDashboardParams(req);
     dashboardService.getInvDetailDashboard(model, req, res, function (err, data) {
         if (err) {
@@ -93,7 +93,7 @@ router.get('/dashboards/inventory/detail', function (req, res, next) {
     }
 });
 
-router.get('/dashboards/assets/detail', function (req, res, next) {
+router.get('/dashboards/assets/breakdown', function (req, res, next) {
     var model = queryBuilder.buildAssetDashboardParams(req);
     dashboardService.getAssetDashboard(model, function (err, data) {
         if (err) {
