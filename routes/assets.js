@@ -58,7 +58,7 @@ router.get('/assets', function (req, res, next) {
 });
 
 router.get('/assets/detail', function (req, res) {
-    if (utils.checkNotNullEmpty(req.query.did) || utils.checkNotNullEmpty(req.query.vid) || utils.checkNotNullEmpty(req.query.mpid)) {
+    if (utils.checkNullEmpty(req.query.did) || utils.checkNullEmpty(req.query.vid) || utils.checkNullEmpty(req.query.mpid)) {
         res.status(400).send("Mandatory fields are empty.");
         return;
     }
