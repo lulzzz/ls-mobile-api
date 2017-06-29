@@ -52,9 +52,9 @@ router.post('/auth/generate-otp', function (req, res, next) {
             if (err) {
                 logger.error("Error in otp generation for user ", unm);
                 next(err);
-            } else if (data) {
+            } else if (data !=null) {
                 res.append('Content-Type', 'application/json');
-                res.status(201).send(data);
+                res.status(201).send("OTP generated successfully");
             }
         });
     } else {
@@ -78,9 +78,9 @@ router.post('/auth/reset-password', function (req, res, next) {
             if (err) {
                 logger.error("Error in reset password for user ", unm);
                 next(err);
-            } else if (data) {
+            } else if (data != null) {
                 res.append('Content-Type', 'application/json');
-                res.status(201).send(data);
+                res.status(201).send("Passowrd reset successfully");
             }
         });
     } else {
