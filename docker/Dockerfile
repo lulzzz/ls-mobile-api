@@ -40,7 +40,8 @@ WORKDIR $NODE_HOME
 # Bundle app source
 COPY . $NODE_HOME/
 
-RUN npm install -i l /
+RUN npm install -i l \
+	npm install express \
 	rm -rf docker
 
 EXPOSE 3000 8080 9000 6400
