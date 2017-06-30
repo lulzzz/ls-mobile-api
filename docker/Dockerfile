@@ -31,9 +31,7 @@ RUN mkdir -p /usr/src/app
 ENV NODE_HOME /usr/src/app
 
 ENV LOGI_HOST=localhost \
-	LOGI_PORT=8080 \
 	TEMP_HOST=localhost \
-	TEMP_PORT=9000 \
 	AMS_USER=logistimo \
 	AMS_PASS=logistimo
 
