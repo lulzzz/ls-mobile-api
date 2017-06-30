@@ -41,7 +41,7 @@ WORKDIR $NODE_HOME
 COPY . $NODE_HOME/
 
 RUN npm install \
-	cd $NODE_HOME;rm -rf docker
+	rm -rf docker
 
 EXPOSE 3000 8080 9000 6400
 
