@@ -24,7 +24,7 @@ router.get('/order-approvals', function (req, res, next) {
             logger.error("Error while fetching the approvals for query detail:" + model);
             next(err);
         } else if (data) {
-            logger.info("Approval detail for query: " + model + " fetched successfully");
+            logger.info("Approval detail for query: " + data + " fetched successfully");
             res.status(200).send(data);
         }
     });
