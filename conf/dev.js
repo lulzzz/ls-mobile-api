@@ -15,8 +15,8 @@ module.exports = {
         method: 'POST',
         timeout: 1000
     },
-    amsUser: 'logistimo_admin',
-    amsPwd: 'Cl3anAg3nt',
+    amsUser: 'logistimo',
+    amsPwd: 'logistimo',
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,
