@@ -40,11 +40,12 @@ WORKDIR $NODE_HOME
 # Bundle app source
 COPY . $NODE_HOME/
 
+RUN rm -rf docker
+
 EXPOSE 3000 8080 9000 6400
 
 COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
 
-RUN chmod +x /docker-entrypoint.sh \
-	rm -rf docker
+RUN chmod +x /docker-entrypoint.sh
 
 CMD ["/docker-entrypoint.sh"]
