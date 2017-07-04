@@ -6,7 +6,7 @@ function InvDashQueryModel() {
 
     this.dId = undefined;
     this.incetags = undefined;
-    this.exeetags = undefined;
+    this.exetags = undefined;
     this.mtags = undefined;
     this.mnm = undefined;
     this.loc = undefined;
