@@ -40,12 +40,8 @@ WORKDIR $NODE_HOME
 # Bundle app source
 COPY . $NODE_HOME/
 
-RUN rm -rf docker
-
+RUN sed -i "s~http:\/\/localhost:8080\/s2\/api~$LOGI_HOST~g;s~http:\/\/localhost:9000~$TEMP_HOST~g;"s/amsUser:\ \'logistimo\'/amsUser:\ \'$AMS_USER\'/g";"s/amsPwd:\ \'logistimo\'/amsPwd:\ \'$AMS_PASS\'/g"" $NODE_HOME/conf/dev.js
+ 
 EXPOSE 3000 8080 9000 6400
 
-COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
-
-RUN chmod +x /docker-entrypoint.sh
-
-CMD ["/docker-entrypoint.sh"]
+CMD [ "npm", "start" ]
