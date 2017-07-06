@@ -23,8 +23,8 @@
 # the commercial license, please contact us at opensource@logistimo.com
 
 
-sed -ri "s/http:\/\/localhost:8080\/s2\/api/https:\/\/$LOGI_HOST\/s2\/api/g" $NODE_HOME/conf/dev.js \
-	sed -ri "s/http:\/\/localhost:9000/https:\/\/$TEMP_HOST/g" $NODE_HOME/conf/dev.js \
+sed -ri "s~http:\/\/localhost:8080\/s2\/api~$LOGI_HOST~g" $NODE_HOME/conf/dev.js \
+	sed -ri "s~http:\/\/localhost:9000~$TEMP_HOST~g" $NODE_HOME/conf/dev.js \
 	sed -ri "s/amsUser: \'logistimo\'/amsUser: \$AMS_USER\'/g" $NODE_HOME/conf/dev.js \
 	sed -ri "s/amsPwd: \'logistimo\'/amsPwd: \$AMS_PASS\'/g" $NODE_HOME/conf/dev.js;
 	
