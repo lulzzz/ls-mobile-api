@@ -15,14 +15,12 @@ router.use(function (req, res, next) {
 
 router.post('/auth/login', function (req, res, next) {
 
-    logger.info("inside login method with headers" + JSON.stringify(req.headers));
     const cred = req.headers['authorization'];
     const xforward = req.headers['x-real-ip'];
     var tmp = cred.split(' '),   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
         buf = new Buffer(tmp[1], 'base64'), // create a buffer and tell it the data coming in is base64
         plain_auth = buf.toString();        // read it back out as a string
-    logger.info("Decoded Authorization ", plain_auth);
-    // At this point plain_auth = "username:password"
+
     var creds = plain_auth.split(':'),      // split on a ':'
         username = creds[0],
         password = creds[1];
