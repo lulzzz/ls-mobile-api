@@ -7,8 +7,9 @@ var express = require('express'),
     config = require("./conf/index"),
     route = require('./routes/index'),
     logger = require('./lib/utils/log'),
-    interceptor = require('./lib/interceptor');
-//var rs = require('./lib/restclient/index')
+    interceptor = require('./lib/interceptor'),
+    endpoints = require('./conf/endpoints.json'),
+    utils = require('./lib/utils/common/common-utils');
 
 var app = express();
 //logging
@@ -19,12 +20,82 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set('x-powered-by', false);
 
+
+// Bootstrap services
+/*for(var i = 0; i < endpoints.length; i++) {
+
+  const endpoint = endpoints[i].service;
+  const method = endpoints[i].method;
+  const host = endpoints[i].host;
+  const port = endpoints[i].port;
+  const rootPath = endpoints[i].rootPath || "";
+  const protocol = endpoints[i].protocol || "http";
+
+  var middleware;
+
+  console.log('Boostrapping service: ${protocol}://${host}:${port}/${rootPath}');
+
+  if(utils.checkStrictNotNullEmpty(endpoints[i].middleware)) {
+
+    middleware = require('./lib/interceptor/index');
+    prepareRouteWithMW(endpoint,method,middleware);
+  } else {
+    prepareRoute(endpoint,method);
+  }
+}
+*/
+function prepareRoute(endpoint,method) {
+
+  switch (method) {
+    case 'POST':
+      app.post(`${endpoint}*`,function (req,res){
+         console.log('hit the endpoint'+`${endpoint}`);
+      });
+      break;
+    case 'GET':
+      app.get(`${endpoint}*`,function (req,res){
+
+      });
+      break;
+    case 'PUT':
+      app.put(`${endpoint}*`,function (req,res){
+
+      });
+      break;
+    default:
+      console.log('endpoint with invalid method');
+
+  }
+}
+
+function prepareRouteWithMW(endpoint,method,middleware) {
+  switch (method) {
+    case 'POST':
+      app.post(`${endpoint}*`, middleware, function (req, res) {
+
+      });
+      break;
+    case 'GET':
+      app.get(`${endpoint}*`, middleware, function (req, res) {
+
+      });
+      break;
+    case 'PUT':
+      app.put(`${endpoint}*`, middleware, function (req, res) {
+
+      });
+      break;
+    default:
+      console.log('endpoint with invalid method');
+  }
+}
+
 app.use(function(req,res,next) {
   logger.info("Received request for resource :"+req.url)
   next();
 });
 
-app.use('/',interceptor)
+//app.use('/',interceptor)
 
 app.use(route);
 

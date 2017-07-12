@@ -17,6 +17,10 @@ router.use(function (req, res, next) {
 });
 
 router.get('/dashboards/inventory', function (req, res, next) {
+    var keys = Object.keys(req.query);
+    for (var key in keys) {
+        console.log("objecy key:"+key+" with value:"+Object[keys[key]]);
+    }
     var model = queryBuilder.buildInvDashboardParams(req);
     dashboardService.getInvDashboard(model, req, res, function (err, data) {
         if (err) {
