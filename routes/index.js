@@ -18,6 +18,7 @@ router.use('/events', require('./events'));
 router.use('/user-device/*', require('./userdevice'));
 router.use('/order-approvals*',require('./approvals'));
 router.use('/conversations*',require('./conversations'));
+router.use('/metrics*', require('./metrics'));
 
 //routes common error handler
 router.use(function (err, req, res, next) {

@@ -7,8 +7,15 @@ var express = require('express'),
     config = require("./conf/index"),
     route = require('./routes/index'),
     logger = require('./lib/utils/log'),
-    interceptor = require('./lib/interceptor');
-//var rs = require('./lib/restclient/index')
+    interceptor = require('./lib/interceptor'),
+    metrics = require(path.resolve('./lib/metrics', ''));
+
+const client = require('prom-client');
+
+const collectDefaultMetrics = client.collectDefaultMetrics;
+
+// Probe every 5th second.
+collectDefaultMetrics({timeout: 5000});
 
 var app = express();
 //logging
@@ -20,11 +27,11 @@ app.use(cookieParser());
 app.set('x-powered-by', false);
 
 app.use(function(req,res,next) {
-  logger.info("Received request for resource :"+req.url)
+    logger.info("Received request for resource :" + req.url);
   next();
 });
 
-app.use('/',interceptor)
+app.use('/', interceptor);
 
 app.use(route);
 
