@@ -8,7 +8,8 @@ var path = require('path'),
     InvDetailResModel = require(path.resolve('./model/InvDetailResModel', '')),
     queryBuilder = require(path.resolve('./lib/builder/dashboardQueryBuilder', '')),
     dashboardResModel = require(path.resolve('./lib/builder/dashboardResBuilder', '')),
-    metrics = require(path.resolve('./lib/metrics', ''));
+    metrics = require(path.resolve('./lib/metrics', '')),
+    utils = require(path.resolve('./lib/utils/common/common-utils',''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -16,17 +17,22 @@ router.use(function (req, res, next) {
     return next();
 });
 
-router.get('/dashboards/inventory', function (req, res) {
-    var model = queryBuilder.buildInvDashboardParams(req);
+router.get('/dashboards/inventory', function (req) {
 
     return new Promise(function (resolve, reject) {
-        dashboardService.getInvDashboard(model, req, res, function (err, data) {
+        try {
+            validateRequestParams(req);
+        } catch(exception) {
+            logger.error(exception);
+            reject({status:400, message: "Invalid request"});
+            return;
+        }
+        var model = queryBuilder.buildInvDashboardParams(req);
+        dashboardService.getInvDashboard(model, req, function (err, data) {
             if (err) {
                 logger.error('Error in inventory dashboard: ' + err.message);
                 reject(err);
-            } else if (data) {
-                res.append('Content-Type', 'application/json');
-                res.status(200).send(data);
+            } else {
                 resolve(data);
             }
         });
@@ -34,14 +40,21 @@ router.get('/dashboards/inventory', function (req, res) {
 });
 
 
-router.get('/dashboards/assets', function (req, res) {
-    var model = queryBuilder.buildAssetDashboardParams(req);
+router.get('/dashboards/assets', function (req) {
     return new Promise(function (resolve, reject) {
+        try {
+            validateRequestParams(req);
+        } catch(exception) {
+            logger.error(exception);
+            reject({status:400, message: "Invalid request"});
+            return;
+        }
+        var model = queryBuilder.buildAssetDashboardParams(req);
         dashboardService.getAssetDashboard(model, function (err, data) {
             if (err) {
                 logger.error('Error in getting asset overview dashboard' + err.message);
                 reject(err);
-            } else if (data != null) {
+            } else {
                 var tempData = JSON.parse(data);
                 model = dashboardResModel.buildAssetDashboardModel(tempData);
                 resolve(model);
@@ -85,14 +98,22 @@ function transformInvDetailResponse(data) {
     return resmodel;
 }
 
-router.get('/dashboards/inventory/breakdown', function (req, res, next) {
-    var model = queryBuilder.buildInvDetailDashboardParams(req);
+router.get('/dashboards/inventory/breakdown', function (req) {
+
     return new Promise(function (resolve, reject) {
-        dashboardService.getInvDetailDashboard(model, req, res, function (err, data) {
+        try {
+            validateRequestParams(req);
+        } catch(exception) {
+            logger.error(exception);
+            reject({status:400, message: "Invalid request"});
+            return;
+        }
+        var model = queryBuilder.buildInvDetailDashboardParams(req);
+        dashboardService.getInvDetailDashboard(model, req, function (err, data) {
             if (err) {
                 logger.error('Error in inventory detail dashboard: ' + err.message);
                 reject(err);
-            } else if (data) {
+            } else {
                 var v = transformInvDetailResponse(data);
                 resolve(v);
             }
@@ -100,19 +121,43 @@ router.get('/dashboards/inventory/breakdown', function (req, res, next) {
     });
 });
 
-router.get('/dashboards/assets/breakdown', function (req, res, next) {
-    var model = queryBuilder.buildAssetDashboardParams(req);
+router.get('/dashboards/assets/breakdown', function (req) {
+
     return new Promise(function (resolve, reject) {
+        try {
+            validateRequestParams(req);
+        } catch(exception) {
+            logger.error(exception);
+            reject({status:400, message: "Invalid request"});
+            return;
+        }
+        var model = queryBuilder.buildAssetDashboardParams(req);
         dashboardService.getAssetDashboard(model, function (err, data) {
             if (err) {
                 logger.error('Error in getting asset detail dashboard: ' + err.message);
                 reject(err);
-            } else if (data != null) {
+            } else {
                 model = dashboardResModel.buildAssetDashbDetailModel(data);
                 resolve(model);
             }
         });
     });
 });
+
+function validateRequestParams(req) {
+    if(req.baseUrl.startsWith('/dashboards/inventory')) {
+        if(utils.checkNotNullEmpty(req.query.incetags) && utils.checkNotNullEmpty(req.query.exetags)) {
+            throw new Error("Invalid request");
+        }
+        if(req.baseUrl.endsWith('/breakdown') && utils.checkNullEmpty(req.query.groupby)) {
+            throw new Error("Invalid request");
+        }
+    } else {
+        if (utils.checkNotNullEmpty(req.query.includeETag) && utils.checkNotNullEmpty(req.query.excludeETag)) {
+            throw new Error("Invalid request");
+        }
+    }
+
+}
 
 module.exports = router.getRouter();

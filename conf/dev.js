@@ -17,6 +17,7 @@ module.exports = {
     },
     amsUser: 'logistimo',
     amsPwd: 'logistimo',
+    maxSockets: 25,
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,

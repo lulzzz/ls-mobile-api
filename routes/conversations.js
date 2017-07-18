@@ -4,8 +4,8 @@
 
 'use strict';
 
-var router = require('express').Router(),
-    path = require('path'),
+var path = require('path'),
+    router = require(path.resolve('./lib/expressive', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     logger = require(path.resolve('./lib/utils/log', '')),
     convQueryBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
@@ -17,104 +17,112 @@ router.use(function (req, res, next) {
     return next();
 });
 
-router.put('/conversations', function (req, res, next) {
-    try {
-        validate(req.body);
-    } catch(e){
-        res.status(400).send(e.message);
-        return;
-    }
-    var model = convQueryBuilder.addMessageParam(req);
-    if (req.body.conversation_id) {
-        var tempReq = {};
-        tempReq.conversationId = req.body.conversation_id;
-        tempReq.userId = req.body.user_id;
-        if(req.body.content.type=="text") {
-            tempReq.message = req.body.content.data;
+router.put('/conversations', function (req) {
+
+    return new Promise(function(resolve, reject) {
+        try {
+            validate(req.body);
+        } catch(exception){
+            logger.error(exception.message);
+            reject({status: 400, message: exception.message});
+            return;
         }
-        req.body = tempReq;
-        conversationService.addMessage(model, req, function (err, data) {
-            if (err) {
-                logger.error('Error in adding message ' + err.message);
-                next(err);
-            } else if (data) {
-                var resData = {};
-                data = JSON.parse(data);
-                resData.message_id = data.messageId;
-                resData.conversation_id = data.conversationId;
-                res.append('Content-Type', 'application/json');
-                res.status(200).send(resData);
-            }
-        });
-    }else{
         var tempReq = {};
-        if(req.body.content.type=="text") {
-            tempReq.message = req.body.content.data;
-        }
-        req.body = tempReq;
-        conversationService.addEditMessage(model, req, function (err, data) {
-            if (err) {
-                logger.error('Error in adding message ' + err.message);
-                next(err);
-            } else if (data) {
-                var resData = {};
-                data = JSON.parse(data);
-                resData.message_id = data.messageId;
-                resData.conversation_id = data.conversationId;
-                res.append('Content-Type', 'application/json');
-                res.status(200).send(resData);
+        var model = convQueryBuilder.addMessageParam(req);
+        if (req.body.conversation_id) {
+            tempReq.conversationId = req.body.conversation_id;
+            tempReq.userId = req.body.user_id;
+            if(req.body.content.type=="text") {
+                tempReq.message = req.body.content.data;
             }
-        });
-    }
+            req.body = tempReq;
+            conversationService.addMessage(model, req, function (err, data) {
+                if (err) {
+                    logger.error('Error in adding message ' + err.message);
+                    reject(err);
+                } else {
+                    var resData = {};
+                    data = JSON.parse(data);
+                    resData.message_id = data.messageId;
+                    resData.conversation_id = data.conversationId;
+                    resolve(resData);
+                }
+            });
+        } else {
+            if(req.body.content.type=="text") {
+                tempReq.data = req.body.content.data;
+            }
+            req.body = tempReq;
+            conversationService.addEditMessage(model, req, function (err, data) {
+                if (err) {
+                    logger.error('Error in adding message ' + err.message);
+                    reject(err);
+                } else {
+                    var resData = {};
+                    data = JSON.parse(data);
+                    resData.message_id = data.messageId;
+                    resData.conversation_id = data.conversationId;
+                    resolve(resData);
+                }
+            });
+        }
+    });
 });
 
-router.get('/conversations', function (req, res, next) {
-    var model = convQueryBuilder.getMessageParam(req);
-    conversationService.getMessages(model, req, function (err, data) {
-        if (err) {
-            logger.error('Error in adding message ' + err.message);
-            next(err);
-        } else if (data) {
-            var tempData = {};
-            data = JSON.parse(data);
-            tempData.data = [];
-            tempData.total = data.numFound;
-            tempData.size = data.size;
-            tempData.offset = data.offset;
-            data.results.forEach(function(data){
-                var dt ={}
-                dt.message_id = data.messageId;
-                dt.user_id = data.userId;
-                dt.content = {};
-                dt.content.type = "text";
-                dt.content.data = data.message;
-                dt.created_on = new Date(data.cts).toISOString();
-                tempData.data.push(dt);
-            });
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(tempData);
+router.get('/conversations', function (req) {
+
+    return new Promise(function (resolve, reject) {
+        if(commonUtils.checkNullEmpty(req.query.conversation_id) && (commonUtils.checkNullEmpty(req.query.object_id)
+            && commonUtils.checkNullEmpty(req.query.object_type))) {
+            logger.error("Invalid request");
+            reject({status:400, message: "Invalid request"});
+            return;
         }
+        var model = convQueryBuilder.getMessageParam(req);
+        conversationService.getMessages(model, req, function (err, data) {
+            if (err) {
+                logger.error('Error in adding message ' + err.message);
+                reject(err);
+            } else {
+                var conversation = {};
+                data = JSON.parse(data);
+                conversation.data = [];
+                conversation.total = data.numFound;
+                conversation.size = data.size;
+                conversation.offset = data.offset;
+                data.results.forEach(function(data){
+                    var dt ={};
+                    dt.message_id = data.messageId;
+                    dt.user_id = data.userId;
+                    dt.content = {};
+                    dt.content.type = "text";
+                    dt.content.data = data.message;
+                    dt.created_on = new Date(data.cts).toISOString();
+                    conversation.data.push(dt);
+                });
+                resolve(conversation);
+            }
+        });
     });
 });
 
 function validate(obj){
     if(!commonUtils.checkIsObject(obj)){
-        throw new TypeError("Request is invalid");
+        throw new Error("Invalid request");
     }
-    if(!commonUtils.checkNotNullEmpty(obj.conversation_id)){
-        if(!commonUtils.checkNotNullEmpty(obj.object_type) || !commonUtils.checkNotNullEmpty(obj.object_id))
-            throw new TypeError("Request is invalid");
+    if(commonUtils.checkNullEmpty(obj.conversation_id)){
+        if(commonUtils.checkNullEmpty(obj.object_type) || commonUtils.checkNullEmpty(obj.object_id))
+            throw new Error("Invalid request");
     }
-    if(!commonUtils.checkNotNullEmpty(obj.user_id)){
-        throw new TypeError("Request is invalid");
+    if(commonUtils.checkNullEmpty(obj.user_id)){
+        throw new Error("Invalid request");
     }
-    if(!commonUtils.checkNotNullEmpty(obj.content.data)){
-        throw new TypeError("Request is invalid");
+    if(commonUtils.checkNullEmpty(obj.content.data)){
+        throw new TypeError("Invalid request");
     }
-    if(!commonUtils.checkNotNullEmpty(obj.content.type)){
-        throw new TypeError("Request is invalid");
+    if(commonUtils.checkNullEmpty(obj.content.type)){
+        throw new TypeError("Invalid request");
     }
 }
 
-
-module.exports = router;
+module.exports = router.getRouter();

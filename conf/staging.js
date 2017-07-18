@@ -14,6 +14,7 @@ module.exports = {
         method: 'GET',
         timeout: 1000
     },
+    maxSockets: 25,
     loginconfig: authconfig,
     dashconfig: dashbrdconfig,
     searchconfig: searchconfig,

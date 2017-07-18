@@ -3,8 +3,8 @@
  */
 'use strict';
 
-var router = require('express').Router(),
-    path = require('path'),
+var path = require('path'),
+    router = require(path.resolve('./lib/expressive', '')),
     logger = require(path.resolve('./lib/utils/log', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     queryBuilder = require(path.resolve('./lib/builder/searchQueryBuilder', '')),
@@ -16,34 +16,36 @@ router.use(function (req, res, next) {
     return next();
 });
 
-router.get('/search/material', function (req, res, next) {
+router.get('/search/material', function (req, res) {
 
-    var model = queryBuilder.buildSearchParams(req);
-
-    searchService.getAllMaterials(model, req, res, function (err, data) {
-        if (err) {
-            logger.error('Error in getting material list ' + err.message);
-            next(err);
-        } else if (data) {
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(data);
-        }
+    return new Promise(function (resolve, reject) {
+        var model = queryBuilder.buildSearchParams(req);
+        searchService.getAllMaterials(model, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in getting material list ' + err.message);
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
     });
 });
 
-router.get('/search/entity', function (req, res, next) {
+router.get('/search/entity', function (req, res) {
 
-    var model = queryBuilder.buildSearchParams(req);
-    searchService.getAllEntities(model, req, res, function (err, data) {
-        if (err) {
-            logger.error('Error in getting entity list ' + err.message);
-            next(err);
-        } else if (data) {
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(data);
-        }
+    return new Promise(function (resolve, reject) {
+        var model = queryBuilder.buildSearchParams(req);
+        searchService.getAllEntities(model, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in getting entity list ' + err.message);
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
     });
+
 });
 
 
-module.exports = router;
+module.exports = router.getRouter();

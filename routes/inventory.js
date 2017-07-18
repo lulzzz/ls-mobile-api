@@ -1,10 +1,10 @@
 'use strict';
 
-var router = require('express').Router(),
-    path = require('path'),
+var path = require('path'),
+    router = require(path.resolve('./lib/expressive', '')),
     logger = require(path.resolve('./lib/utils/log', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
-    invdetail = require(path.resolve('./lib/restclient/inventory/invdetail', '')),
+    invDetail = require(path.resolve('./lib/restclient/inventory/invdetail', '')),
     queryBuilder = require(path.resolve('./lib/builder/inventoryQueryBuilder', '')),
     commonUtils = require(path.resolve('./lib/utils/common/common-utils',''));
 
@@ -14,75 +14,78 @@ router.use(function (req, res, next) {
     return next();
 });
 
-router.get('/inventory', function (req, res, next) {
-    try {
-        validate(req);
-    } catch(e){
-        res.status(400).send(e.message);
-        return;
-    }
-    var queryModel = queryBuilder.buildInvParams(req);    
-    
-    invdetail.getInvDetail(queryModel, req, res, function (err, data) {
-        if (err) {
-            logger.error('Error in inventory stock view: ' + err.message);
-            next(err);
-        } else if (data) {
-            var tempData = {};
-            data = JSON.parse(data);
-            tempData.data = [];
-            tempData.total = data.numFound;
-            tempData.size = data.size;
-            tempData.offset = data.offset;
-            data.results.forEach(function(data){
-                var dt ={}
-                dt.mId = data.mId;
-                dt.mnm = data.mnm;
-                dt.eId = data.kId;
-                dt.tc = data.stk;
-                dt.a = data.astk;
-                dt.av = data.atpsk;
-                dt.it = data.tstk;
-                dt.min = data.reord;
-                dt.max= data.max;
-                dt.lu= data.t;
-                dt.se = data.event;
-                dt.enm = data.enm
-                dt.ed=data.period;
-                tempData.data.push(dt);
-            });
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(tempData);
+router.get('/inventory', function (req, res) {
+
+    return new Promise(function (resolve, reject) {
+        try {
+            validate(req);
+        } catch(exception){
+            logger.error(exception);
+            reject({status:400,message:exception.message});
+            return;
         }
+        var queryModel = queryBuilder.buildInvParams(req);
+        invDetail.getInvDetail(queryModel, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in inventory stock view: ' + err.message);
+                reject(err);
+            } else {
+                var invData = {};
+                data = JSON.parse(data);
+                invData.data = [];
+                invData.total = data.numFound;
+                invData.size = data.size;
+                invData.offset = data.offset;
+                data.results.forEach(function(data){
+                    var dt ={};
+                    dt.mId = data.mId;
+                    dt.mnm = data.mnm;
+                    dt.eId = data.kId;
+                    dt.tc = data.stk;
+                    dt.a = data.astk;
+                    dt.av = data.atpsk;
+                    dt.it = data.tstk;
+                    dt.min = data.reord;
+                    dt.max= data.max;
+                    dt.lu= data.t;
+                    dt.se = data.event;
+                    dt.enm = data.enm;
+                    dt.ed=data.period;
+                    invData.data.push(dt);
+                });
+                resolve(invData);
+            }
+        });
     });
 });
 
-router.get('/inventory/entity/:entity_id/:material_id', function (req, res, next) {
-    var queryModel = queryBuilder.buildInvDetailParams(req);
-    invdetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
-        if (err) {
-            logger.error('Error in inventory stock view: ' + err.message);
-            next(err);
-        } else if (data) {
-            res.append('Content-Type', 'application/json');
-            res.status(200).send(data);
-        }
+router.get('/inventory/entity/:entity_id/:material_id', function (req, res) {
+    return new Promise(function(resolve, reject) {
+        var queryModel = queryBuilder.buildInvDetailParams(req);
+        invDetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
+            if (err) {
+                logger.error('Error in inventory stock view: ' + err.message);
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
     });
 });
 
 function validate(req){
     if(commonUtils.checkNull(req.query.entity_id) && commonUtils.checkNull(req.query.material_id) ){
-            throw new TypeError("Request is invalid");
+            throw new Error("Invalid request");
     }
     if(commonUtils.checkNotNullEmpty(req.query.entity_id) && commonUtils.checkNotNullEmpty(req.query.material_id) ){
-        throw new TypeError("Request is invalid");
+        throw new Error("Invalid request");
     }
     if(commonUtils.checkNotNullEmpty(req.query.entity_id) && commonUtils.checkNotNullEmpty(req.query.etags)){
-        throw new TypeError("Request is invalid");
+        throw new Error("Invalid request");
     }
     if(commonUtils.checkNotNullEmpty(req.query.material_id) && commonUtils.checkNotNullEmpty(req.query.mtags)){
-        throw new TypeError("Request is invalid");
+        throw new Error("Invalid request");
     }
 }
 
-module.exports = router;
+module.exports = router.getRouter();
