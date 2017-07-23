@@ -21,7 +21,7 @@ router.put('/conversations', function (req) {
 
     return new Promise(function(resolve, reject) {
         try {
-            validate(req.body);
+            validateRequestParams(req.body, req.baseUrl);
         } catch(exception){
             logger.error(exception.message);
             reject({status: 400, message: exception.message});
@@ -72,10 +72,10 @@ router.put('/conversations', function (req) {
 router.get('/conversations', function (req) {
 
     return new Promise(function (resolve, reject) {
-        if(commonUtils.checkNullEmpty(req.query.conversation_id) && (commonUtils.checkNullEmpty(req.query.object_id)
-            && commonUtils.checkNullEmpty(req.query.object_type))) {
-            logger.error("Invalid request");
-            reject({status:400, message: "Invalid request"});
+        try {
+            validateRequestParams(req.query, req.method);
+        } catch(exception) {
+            reject({status: 400, message: exception.message});
             return;
         }
         var model = convQueryBuilder.getMessageParam(req);
@@ -106,22 +106,24 @@ router.get('/conversations', function (req) {
     });
 });
 
-function validate(obj){
-    if(!commonUtils.checkIsObject(obj)){
-        throw new Error("Invalid request");
-    }
+function validateRequestParams(obj, method){
     if(commonUtils.checkNullEmpty(obj.conversation_id)){
         if(commonUtils.checkNullEmpty(obj.object_type) || commonUtils.checkNullEmpty(obj.object_id))
-            throw new Error("Invalid request");
+            throw new Error("One of object type or object id is required.");
     }
-    if(commonUtils.checkNullEmpty(obj.user_id)){
-        throw new Error("Invalid request");
-    }
-    if(commonUtils.checkNullEmpty(obj.content.data)){
-        throw new TypeError("Invalid request");
-    }
-    if(commonUtils.checkNullEmpty(obj.content.type)){
-        throw new TypeError("Invalid request");
+    if(constants.const.PUT == method) {
+        if (!commonUtils.checkIsObject(obj)) {
+            throw new Error("Bad request");
+        }
+        if (commonUtils.checkNullEmpty(obj.user_id)) {
+            throw new Error("User id is required");
+        }
+        if (commonUtils.checkNullEmpty(obj.content.data)) {
+            throw new TypeError("Content data is required");
+        }
+        if (commonUtils.checkNullEmpty(obj.content.type)) {
+            throw new TypeError("Content type is required");
+        }
     }
 }
 

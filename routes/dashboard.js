@@ -8,7 +8,6 @@ var path = require('path'),
     InvDetailResModel = require(path.resolve('./model/InvDetailResModel', '')),
     queryBuilder = require(path.resolve('./lib/builder/dashboardQueryBuilder', '')),
     dashboardResModel = require(path.resolve('./lib/builder/dashboardResBuilder', '')),
-    metrics = require(path.resolve('./lib/metrics', '')),
     utils = require(path.resolve('./lib/utils/common/common-utils',''));
 
 router.use(function (req, res, next) {
@@ -24,7 +23,7 @@ router.get('/dashboards/inventory', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: "Invalid request"});
+            reject({status:400, message: exception.message});
             return;
         }
         var model = queryBuilder.buildInvDashboardParams(req);
@@ -46,7 +45,7 @@ router.get('/dashboards/assets', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: "Invalid request"});
+            reject({status:400, message: exception.message});
             return;
         }
         var model = queryBuilder.buildAssetDashboardParams(req);
@@ -105,7 +104,7 @@ router.get('/dashboards/inventory/breakdown', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: "Invalid request"});
+            reject({status:400, message: exception.message});
             return;
         }
         var model = queryBuilder.buildInvDetailDashboardParams(req);
@@ -128,7 +127,7 @@ router.get('/dashboards/assets/breakdown', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: "Invalid request"});
+            reject({status:400, message: exception.message});
             return;
         }
         var model = queryBuilder.buildAssetDashboardParams(req);
@@ -147,14 +146,14 @@ router.get('/dashboards/assets/breakdown', function (req) {
 function validateRequestParams(req) {
     if(req.baseUrl.startsWith('/dashboards/inventory')) {
         if(utils.checkNotNullEmpty(req.query.incetags) && utils.checkNotNullEmpty(req.query.exetags)) {
-            throw new Error("Invalid request");
+            throw new Error("One of include entity tags or exclude entity tags is required.");
         }
         if(req.baseUrl.endsWith('/breakdown') && utils.checkNullEmpty(req.query.groupby)) {
-            throw new Error("Invalid request");
+            throw new Error("groupby field is required");
         }
     } else {
         if (utils.checkNotNullEmpty(req.query.includeETag) && utils.checkNotNullEmpty(req.query.excludeETag)) {
-            throw new Error("Invalid request");
+            throw new Error("One of include entity tags or exclude entity tags is required.");
         }
     }
 

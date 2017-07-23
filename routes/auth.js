@@ -31,13 +31,14 @@ router.post('/auth/login', function (req, res) {
             authService.login(username, password,xforward, res, function (err, body) {
                 if (err) {
                     logger.error("Error in login for user ", username);
-                    reject(err);
+                    console.log(err.message);
+                    reject({status: 401, message: err.message});
                 } else {
                     resolve(body);
                 }
             });
         } else {
-            reject({status: 400, message: "Invalid request"});
+            reject({status: 400, message: "Bad request"});
         }
     });
 
@@ -49,16 +50,20 @@ router.post('/auth/generate-otp', function (req) {
         if (typeof !(req.body == 'undefined') && typeof !(req.body.user == 'undefined')) {
             var unm = req.body.user;
             const xforward = req.headers['x-real-ip'];
-            authService.generateOtp(unm, xforward, function (err) {
+            authService.generateOtp(unm, xforward, function (err, body) {
                 if (err) {
                     logger.error("Error in otp generation for user ", unm);
                     reject(err);
                 } else {
-                    resolve({status: 201, message: "OTP generated successfully"});
+                    if(body.isError) {
+                        reject({status: 404, message: body.errorMsg});
+                    } else {
+                        resolve("OTP generated successfully");
+                    }
                 }
             });
         } else {
-            reject({status: 400, message: "Invalid request"});
+            reject({status: 400, message: "Bad request"});
         }
     });
 });
@@ -81,11 +86,11 @@ router.post('/auth/reset-password', function (req) {
                     logger.error("Error in reset password for user ", unm);
                     reject(err);
                 } else {
-                    resolve({status: 201, message: "Passowrd reset successfully"});
+                    resolve("Password reset successfully");
                 }
             });
         } else {
-            reject({status: 400, message: "Invalid request"});
+            reject({status: 400, message: "Bad request"});
         }
     });
 });

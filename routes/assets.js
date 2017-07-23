@@ -19,7 +19,7 @@ router.get('/assets', function (req) {
 
     return new Promise(function (resolve, reject) {
         if (utils.checkNullEmpty(req.query.did) && utils.checkNullEmpty(req.query.eid)) {
-            reject({status:400, message: "Invalid request"});
+            reject({status:400, message: "One of domain id or entity id is required."});
             return;
         }
         var model = queryBuilder.buildTempDataParams(req);
@@ -62,7 +62,7 @@ router.get('/assets', function (req) {
 router.get('/assets/detail', function (req) {
     return new Promise(function(resolve, reject) {
         if (utils.checkNullEmpty(req.query.did) || utils.checkNullEmpty(req.query.vid) || utils.checkNullEmpty(req.query.mpid)) {
-            reject({status: 400, message: "Invalid request"});
+            reject({status: 400, message: "Device id, vendor id and monitoring point is required."});
         }
         var queryModel = queryBuilder.buildTempAlertParams(req);
         // fetch recent alerts and temperature for assets
