@@ -10,6 +10,7 @@ var path = require('path'),
     logger = require(path.resolve('./lib/utils/log', '')),
     convQueryBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
     conversationService = require(path.resolve('./lib/restclient/conversation/conversation','')),
+    constants = require(path.resolve('./lib/constants/constants', '')),
     commonUtils = require(path.resolve('./lib/utils/common/common-utils',''));
 
 router.use(function (req, res, next) {
@@ -21,10 +22,10 @@ router.put('/conversations', function (req) {
 
     return new Promise(function(resolve, reject) {
         try {
-            validateRequestParams(req.body, req.baseUrl);
+            validateRequestParams(req.body, req.method);
         } catch(exception){
             logger.error(exception.message);
-            reject({status: 400, message: exception.message});
+            reject(exception);
             return;
         }
         var tempReq = {};
@@ -75,7 +76,7 @@ router.get('/conversations', function (req) {
         try {
             validateRequestParams(req.query, req.method);
         } catch(exception) {
-            reject({status: 400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = convQueryBuilder.getMessageParam(req);
@@ -94,6 +95,7 @@ router.get('/conversations', function (req) {
                     var dt ={};
                     dt.message_id = data.messageId;
                     dt.user_id = data.userId;
+                    dt.unm = data.userName;
                     dt.content = {};
                     dt.content.type = "text";
                     dt.content.data = data.message;
@@ -109,20 +111,20 @@ router.get('/conversations', function (req) {
 function validateRequestParams(obj, method){
     if(commonUtils.checkNullEmpty(obj.conversation_id)){
         if(commonUtils.checkNullEmpty(obj.object_type) || commonUtils.checkNullEmpty(obj.object_id))
-            throw new Error("One of object type or object id is required.");
+            commonUtils.generateValidationError("One of object type or object id is required.");
     }
     if(constants.const.PUT == method) {
         if (!commonUtils.checkIsObject(obj)) {
-            throw new Error("Bad request");
+            commonUtils.generateValidationError("Invalid request payload");
         }
         if (commonUtils.checkNullEmpty(obj.user_id)) {
-            throw new Error("User id is required");
+            commonUtils.generateValidationError("User id is required");
         }
         if (commonUtils.checkNullEmpty(obj.content.data)) {
-            throw new TypeError("Content data is required");
+            commonUtils.generateValidationError("message data is required");
         }
         if (commonUtils.checkNullEmpty(obj.content.type)) {
-            throw new TypeError("Content type is required");
+            commonUtils.generateValidationError("message type is required");
         }
     }
 }

@@ -24,7 +24,7 @@ router.get('/search/material', function (req, res) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = queryBuilder.buildSearchParams(req);
@@ -46,7 +46,7 @@ router.get('/search/entity', function (req, res) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = queryBuilder.buildSearchParams(req);
@@ -64,7 +64,7 @@ router.get('/search/entity', function (req, res) {
 
 function validateRequestParams(req) {
     if(utils.checkNullEmpty(req.query.tags) && utils.checkNullEmpty(req.query.q)) {
-        throw new Error("One of search field or tag is mandatory");
+        utils.generateValidationError("One of search field or tag is mandatory");
     }
 }
 

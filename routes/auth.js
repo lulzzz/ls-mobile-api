@@ -58,7 +58,7 @@ router.post('/auth/generate-otp', function (req) {
                     if(body.isError) {
                         reject({status: 404, message: body.errorMsg});
                     } else {
-                        resolve("OTP generated successfully");
+                        resolve({message: "OTP generated successfully"});
                     }
                 }
             });
@@ -86,7 +86,7 @@ router.post('/auth/reset-password', function (req) {
                     logger.error("Error in reset password for user ", unm);
                     reject(err);
                 } else {
-                    resolve("Password reset successfully");
+                    resolve({message: "Password reset successfully"});
                 }
             });
         } else {

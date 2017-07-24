@@ -25,7 +25,7 @@ router.get('/order-approvals', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status: 400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = queryBuilder.getQueryParams(req);
@@ -46,7 +46,7 @@ router.get('/order-approvals/:approval_id', function (req) {
     return new Promise(function(resolve,reject) {
         if(utils.checkNullEmpty(req.params.approval_id)) {
             logger.error("Approval_id is mandatory");
-            reject({status: 400, message: "Approval id is required"});
+            reject(utils.generateValidationError("Approval id is required"));
             return;
         }
 
@@ -62,14 +62,14 @@ router.get('/order-approvals/:approval_id', function (req) {
     });
 });
 
-router.post('/order-approvals', function (req) {
+router.post('/order-approvals', function (req,res) {
 
     return new Promise(function(resolve,reject) {
         try {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status: 400, message: exception.message});
+            reject(exception);
             return;
         }
         approvalService.createApprovals(req, function (err, data) {
@@ -78,6 +78,8 @@ router.post('/order-approvals', function (req) {
                 reject(err);
             } else {
                 logger.info("Approval " + data + " created successfully");
+                //adding post status code
+                res.status(201);
                 resolve(JSON.parse(data));
             }
         })
@@ -91,7 +93,7 @@ router.put('/order-approvals/:approval_id/status', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status: 400, message: exception.message});
+            reject(exception);
             return;
         }
         approvalService.updateApprovalStatus(req, function (err, data) {
@@ -101,7 +103,7 @@ router.put('/order-approvals/:approval_id/status', function (req) {
             } else {
                 data = "Approval req with id " + req.params.approval_id + " updated successfully";
                 logger.info(data);
-                resolve(data);
+                resolve({message: data});
             }
         })
     });
@@ -111,36 +113,36 @@ function validateRequestParams(req) {
     if(req.baseUrl.endsWith('order-approvals')) {
         if(constants.const.POST == req.method) {
             if (utils.checkNullEmpty(req.body.order_id)) {
-                throw new Error("Order id is required.");
+                utils.generateValidationError("Order id is required.");
             }
             if (utils.checkNullEmpty(req.body.requester_id)) {
-                throw new Error("Requester id is required.");
+                utils.generateValidationError("Requester id is required.");
             }
             if (req.body.requester_id != req.headers['x-access-user']) {
-                throw new Error("Requester id should be same as logged in user id.");
+                utils.generateValidationError("Requester id should be same as logged in user id.");
             }
             if (req.body.approval_type != 0 && utils.checkNullEmpty(req.body.approval_type)) {
-                throw new Error("Approval type is required.");
+                utils.generateValidationError("Approval type is required.");
             }
         } else {
             if(utils.checkNullEmpty(req.query.approver_id)) {
-                throw new Error("Approver id required.");
+                utils.generateValidationError("Approver id required.");
             } if(req.query.approver_id != req.headers['x-access-user']) {
-                throw new Error("Approver id should be same as logged in user id.");
+                utils.generateValidationError("Approver id should be same as logged in user id.");
             }
             if(utils.checkNullEmpty(req.query.status)) {
-                throw new Error("Status is required.");
+                utils.generateValidationError("Status is required.");
             }
         }
     } else if(req.baseUrl.endsWith('status')) {
         if(utils.checkNullEmpty(req.body.status)) {
-            throw new Error("Status is required.");
+            utils.generateValidationError("Status is required.");
         }
         if(utils.checkNullEmpty(req.body.message)) {
-            throw new Error("Message is required.");
+            utils.generateValidationError("Message is required.");
         }
         if(utils.checkNullEmpty(req.body.updated_by)) {
-            throw new Error("Updated by is required.");
+            utils.generateValidationError("Updated by is required.");
         }
     }
 }

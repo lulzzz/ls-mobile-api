@@ -19,12 +19,12 @@ router.use(function(req, res, next){
 router.post('/user-device', function (req, res) {
     return new Promise(function (resolve, reject) {
         var model = userDeviceQueryBuilder.buildAddEditParams(req);
-        userDeviceService.addEditUserDevice(model,req,res,function (err,data) {
+        userDeviceService.addEditUserDevice(model,req,res,function (err) {
             if (err) {
                 logger.error('Error in storing user device '+err.message);
                 reject(err);
             } else {
-                resolve(data);
+                resolve({message: "User device stored successfully"});
             }
         });
     });

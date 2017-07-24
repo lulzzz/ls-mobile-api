@@ -21,7 +21,7 @@ router.get('/inventory', function (req, res) {
             validate(req);
         } catch(exception){
             logger.error(exception);
-            reject({status:400,message:exception.message});
+            reject(exception);
             return;
         }
         var queryModel = queryBuilder.buildInvParams(req);
@@ -67,7 +67,7 @@ router.get('/inventory/entity/:entity_id/:material_id', function (req, res) {
                 logger.error('Error in inventory stock view: ' + err.message);
                 reject(err);
             } else {
-                resolve(data);
+                resolve(JSON.parse(data));
             }
         });
     });
@@ -75,16 +75,16 @@ router.get('/inventory/entity/:entity_id/:material_id', function (req, res) {
 
 function validate(req){
     if(commonUtils.checkNull(req.query.entity_id) && commonUtils.checkNull(req.query.material_id) ){
-            throw new Error("One of entity id or material id is required.");
+        commonUtils.generateValidationError("One of entity id or material id is required.");
     }
     if(commonUtils.checkNotNullEmpty(req.query.entity_id) && commonUtils.checkNotNullEmpty(req.query.material_id) ){
-        throw new Error("Any one of entity id or material id is required.");
+        commonUtils.generateValidationError("Any one of entity id or material id is required.");
     }
     if(commonUtils.checkNotNullEmpty(req.query.entity_id) && commonUtils.checkNotNullEmpty(req.query.etags)){
-        throw new Error("Any one of entity id or entity tag is required.");
+        commonUtils.generateValidationError("Any one of entity id or entity tag is required.");
     }
     if(commonUtils.checkNotNullEmpty(req.query.material_id) && commonUtils.checkNotNullEmpty(req.query.mtags)){
-        throw new Error("Any one of material id or material tag is required.");
+        commonUtils.generateValidationError("Any one of material id or material tag is required.");
     }
 }
 

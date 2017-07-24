@@ -23,7 +23,7 @@ router.get('/dashboards/inventory', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = queryBuilder.buildInvDashboardParams(req);
@@ -32,7 +32,7 @@ router.get('/dashboards/inventory', function (req) {
                 logger.error('Error in inventory dashboard: ' + err.message);
                 reject(err);
             } else {
-                resolve(data);
+                resolve(JSON.parse(data));
             }
         });
     });
@@ -104,7 +104,7 @@ router.get('/dashboards/inventory/breakdown', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = queryBuilder.buildInvDetailDashboardParams(req);
@@ -127,7 +127,7 @@ router.get('/dashboards/assets/breakdown', function (req) {
             validateRequestParams(req);
         } catch(exception) {
             logger.error(exception);
-            reject({status:400, message: exception.message});
+            reject(exception);
             return;
         }
         var model = queryBuilder.buildAssetDashboardParams(req);
@@ -146,17 +146,16 @@ router.get('/dashboards/assets/breakdown', function (req) {
 function validateRequestParams(req) {
     if(req.baseUrl.startsWith('/dashboards/inventory')) {
         if(utils.checkNotNullEmpty(req.query.incetags) && utils.checkNotNullEmpty(req.query.exetags)) {
-            throw new Error("One of include entity tags or exclude entity tags is required.");
+            utils.generateValidationError("One of include entity tags or exclude entity tags is required.");
         }
         if(req.baseUrl.endsWith('/breakdown') && utils.checkNullEmpty(req.query.groupby)) {
-            throw new Error("groupby field is required");
+            utils.generateValidationError("groupby field is required");
         }
     } else {
         if (utils.checkNotNullEmpty(req.query.includeETag) && utils.checkNotNullEmpty(req.query.excludeETag)) {
-            throw new Error("One of include entity tags or exclude entity tags is required.");
+            utils.generateValidationError("One of include entity tags or exclude entity tags is required.");
         }
     }
-
 }
 
 module.exports = router.getRouter();
