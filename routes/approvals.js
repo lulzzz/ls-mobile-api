@@ -138,9 +138,6 @@ function validateRequestParams(req) {
         if(utils.checkNullEmpty(req.body.status)) {
             utils.generateValidationError("Status is required.");
         }
-        if(utils.checkNullEmpty(req.body.message)) {
-            utils.generateValidationError("Message is required.");
-        }
         if(utils.checkNullEmpty(req.body.updated_by)) {
             utils.generateValidationError("Updated by is required.");
         }
