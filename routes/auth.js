@@ -2,7 +2,7 @@
 
 var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
-    logger = require(path.resolve('./lib/utils/log','')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
     utils = require(path.resolve('./lib/utils/common/common-utils','')),
     authService = require(path.resolve('./lib/restclient/auth/authService',''));

@@ -7,7 +7,7 @@
 var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
-    logger = require(path.resolve('./lib/utils/log', '')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     convQueryBuilder = require(path.resolve('./lib/builder/conversationQueryBuilder','')),
     conversationService = require(path.resolve('./lib/restclient/conversation/conversation','')),
     constants = require(path.resolve('./lib/constants/constants', '')),

@@ -1,7 +1,7 @@
 'use strict';
 
 var router = require('express').Router();
-var logger = require('../lib/utils/log');
+var logger = require('../lib/utils/logger');
 
 router.use('/auth/*', require('./auth'));
 router.use('/dashboards/*', require('./dashboard'));

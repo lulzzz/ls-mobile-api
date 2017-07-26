@@ -2,7 +2,7 @@
 
 var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
-    logger = require(path.resolve('./lib/utils/log', '')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     dashboardService = require(path.resolve('./lib/restclient/dashboard/dashboardService', '')),
     InvDetailResModel = require(path.resolve('./model/InvDetailResModel', '')),

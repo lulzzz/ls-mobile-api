@@ -6,7 +6,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     config = require("./conf/index"),
     route = require('./routes/index'),
-    logger = require('./lib/utils/log'),
+    logger = require('./lib/utils/logger'),
     interceptor = require('./lib/interceptor'),
     metrics = require(path.resolve('./lib/metrics', ''));
 

@@ -2,7 +2,7 @@
 
 var path = require("path"),
     router = require(path.resolve('./lib/expressive', '')),
-    logger = require(path.resolve('./lib/utils/log', '')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     assetService = require(path.resolve('./lib/restclient/assets/asset', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     assetBuilder = require(path.resolve('./lib/builder/assetRespBuilder', '')),

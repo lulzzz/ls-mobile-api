@@ -5,7 +5,7 @@
 
 var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
-    logger = require(path.resolve('./lib/utils/log','')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
     userDeviceQueryBuilder = require(path.resolve('./lib/builder/userDeviceQueryBuilder','')),
     userDeviceService = require(path.resolve('./lib/restclient/userdevice/userdevice',''));

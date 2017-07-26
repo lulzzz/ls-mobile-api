@@ -9,7 +9,7 @@ var path = require('path'),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     approvalService = require(path.resolve('./lib/restclient/approvals/approvalService', '')),
     queryBuilder = require(path.resolve('./lib/builder/approvalQueryBuilder', '')),
-    logger = require(path.resolve('./lib/utils/log', '')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     utils = require(path.resolve('./lib/utils/common/common-utils','')),
     constants = require(path.resolve('./lib/constants/constants'));
 
