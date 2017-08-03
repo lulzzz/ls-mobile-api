@@ -51,6 +51,16 @@ router.get('/inventory', function (req, res) {
                     dt.se = data.event;
                     dt.enm = data.enm;
                     dt.ed=data.period;
+                    dt.loc = {};
+                    dt.loc.st = data.em.st;
+                    dt.loc.stid = data.em.stid;
+                    dt.loc.tlk = data.em.tlk;
+                    dt.loc.ctr = data.em.ctr;
+                    dt.loc.ctrid = data.em.ctrid;
+                    dt.loc.ct = data.em.ct;
+                    dt.loc.ctid = data.em.ctid;
+                    dt.loc.ds = data.em.ds;
+                    dt.loc.dsid = data.em.dsid;
                     invData.data.push(dt);
                 });
                 resolve(invData);
