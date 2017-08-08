@@ -2,7 +2,7 @@
 
 var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
-    logger = require(path.resolve('./lib/utils/log', '')),
+    logger = require(path.resolve('./lib/utils/logger', '')),
     decoder = require(path.resolve('./lib/utils/urldecoder', '')),
     service = require(path.resolve('./lib/restclient/events/eventService', ''));
 
@@ -25,8 +25,14 @@ router.get('/event-summaries', function (req) {
     });
 });
 
-router.get('/event-summaries/breakdown', function (req) {
-
+router.get('/event-summaries/:event_id', function (req) {
+    try {
+        validateRequestParams(req);
+    } catch(exception) {
+        logger.error(exception);
+        reject(exception);
+        return;
+    }
     return new Promise(function (reject, resolve) {
         service.getEventsByType(req, function (err, data) {
             if (err) {
@@ -38,5 +44,16 @@ router.get('/event-summaries/breakdown', function (req) {
         });
     });
 });
+
+function validateRequestParams(req) {
+    if(!req.baseUrl.endsWith('event-summaries')) {
+        if (utils.checkNullEmpty(req.params.event_id)) {
+            utils.generateValidationError("Event id is required.");
+        }
+        if (utils.checkNullEmpty(req.query.event_type)) {
+            utils.generateValidationError("Event type is required.");
+        }
+    }
+}
 
 module.exports = router.getRouter();
