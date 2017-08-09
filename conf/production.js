@@ -4,13 +4,20 @@ var authconfig = require('./authconfig'),
     searchconfig = require('./searchconfig'),
     userdeviceconfig = require('./userdeviceconfig'),
     approvalConfig = require('./approvalConfig'),
-    conversationConfig = require('./conversationConfig');
+    conversationConfig = require('./conversationConfig'),
+    eventsConfig = require('./eventsConfig');
 
 module.exports = {
-    baseurl: 'http://<statging-host>:<statging-port>/s2/api',
-    tempurl: 'http://<statging-host>:<statging-port>/v2',
+    baseurl: 'http://<staging-host>:<staging-port>/s2/api',
+    tempurl: 'http://<staging-host>:<staging-port>',
+    eventsUrl: 'http://<staging-host>:<staging-port>/v1/event-summary',
     sectokenconfig: {
         url: '/mauth/validate-token',
+        method: 'GET',
+        timeout: 1000
+    },
+    validateDomainConfig: {
+        url: '',
         method: 'GET',
         timeout: 1000
     },
@@ -21,5 +28,6 @@ module.exports = {
     userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig,
     approvalConfig: approvalConfig,
-    conversationConfig: conversationConfig
+    conversationConfig: conversationConfig,
+    eventsConfig: eventsConfig
 };

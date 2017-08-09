@@ -8,7 +8,7 @@ router.use('/dashboards/*', require('./dashboard'));
 router.use('/inventory*', require('./inventory'));
 router.use('/search*', require('./search'));
 router.use('/assets', require('./assets'));
-router.use('/events', require('./events'));
+router.use('/event-summaries*', require('./events'));
 router.use('/user-device/*', require('./userdevice'));
 router.use('/order-approvals*',require('./approvals'));
 router.use('/conversations*',require('./conversations'));

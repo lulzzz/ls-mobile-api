@@ -5,11 +5,13 @@ var authconfig = require('./authconfig'),
     assetConfig = require('./assetConfig'),
     userdeviceconfig = require('./userdeviceconfig'),
     approvalConfig = require('./approvalConfig'),
-    conversationConfig = require('./conversationConfig');
+    conversationConfig = require('./conversationConfig'),
+    eventsConfig = require('./eventsConfig');;
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
     tempurl: 'http://localhost:9000',
+    eventsUrl: 'http://localhost:9010/v1/event-summary',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'POST',
@@ -24,5 +26,6 @@ module.exports = {
     userdeviceconfig: userdeviceconfig,
     assetConfig: assetConfig,
     approvalConfig: approvalConfig,
-    conversationConfig: conversationConfig
+    conversationConfig: conversationConfig,
+    eventsConfig: eventsConfig
 };
