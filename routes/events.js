@@ -4,7 +4,8 @@ var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
     logger = require(path.resolve('./lib/utils/logger', '')),
     decoder = require(path.resolve('./lib/utils/urldecoder', '')),
-    service = require(path.resolve('./lib/restclient/events/eventService', ''));
+    service = require(path.resolve('./lib/restclient/events/eventService', '')),
+    utils = require(path.resolve('./lib/utils/common/common-utils',''));
 
 router.use(function (req, res, next) {
     req.url = decoder.decodeurl(req);
@@ -39,7 +40,7 @@ router.get('/event-summaries/:event_id', function (req) {
         reject(exception);
         return;
     }
-    return new Promise(function (reject, resolve) {
+    return new Promise(function (resolve,reject) {
         service.getEventsByType(req, function (err, data) {
             if (err) {
                 logger.error("Error while fetching event summaries for domain " + req.query.cn_domain_id + " and event" + req.params.event_id);
