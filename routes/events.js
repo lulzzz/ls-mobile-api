@@ -69,9 +69,6 @@ function validateRequestParams(req) {
         if (utils.checkNullEmpty(req.params.event_id)) {
             utils.generateValidationError("Event id is required.");
         }
-        if (utils.checkNullEmpty(req.query.event_type)) {
-            utils.generateValidationError("Event type is required.");
-        }
     }
 }
 
