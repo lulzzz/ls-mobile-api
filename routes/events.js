@@ -22,7 +22,7 @@ router.get('/event-summaries', function (req) {
     return new Promise(function (resolve, reject) {
         service.getEventSummaries(req, function (err, data) {
             if (err) {
-                logger.error("Error while fetching event summaries for user: " + req.header('x-access-user'));
+                logger.error("Error while fetching event summaries for domain: " + req.query.cn_domain_id);
                 reject(err);
             } else {
                 resolve(JSON.parse(data));
@@ -42,7 +42,7 @@ router.get('/event-summaries/:event_id', function (req) {
     return new Promise(function (reject, resolve) {
         service.getEventsByType(req, function (err, data) {
             if (err) {
-                logger.error("Error while fetching event summaries for event " + req.query.event_type);
+                logger.error("Error while fetching event summaries for domain " + req.query.cn_domain_id + " and event" + req.params.event_id);
                 reject(err);
             } else {
                 resolve(JSON.parse(data));

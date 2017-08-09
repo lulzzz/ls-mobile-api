@@ -10,6 +10,7 @@ var authconfig = require('./authconfig'),
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
     tempurl: 'http://localhost:9000',
+    eventsUrl: 'http://localhost:9010/v1/event-summary',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'POST',
