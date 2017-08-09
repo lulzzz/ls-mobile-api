@@ -12,7 +12,13 @@ router.use(function (req, res, next) {
 });
 
 router.get('/event-summaries', function (req) {
-
+    try {
+        validateRequestParams(req);
+    } catch(exception) {
+        logger.error(exception);
+        reject(exception);
+        return;
+    }
     return new Promise(function (resolve, reject) {
         service.getEventSummaries(req, function (err, data) {
             if (err) {
@@ -46,7 +52,20 @@ router.get('/event-summaries/:event_id', function (req) {
 });
 
 function validateRequestParams(req) {
-    if(!req.baseUrl.endsWith('event-summaries')) {
+    if (req.baseUrl.endsWith('event-summaries')) {
+        if(utils.checkNullEmpty(req.query.cn_domain_id)){
+            utils.generateValidationError("Current domain id is required.");
+        }
+        if(utils.checkNullEmpty(req.query.user_id)){
+            utils.generateValidationError("user id is required.");
+        }
+    } else {
+        if(utils.checkNullEmpty(req.query.cn_domain_id)){
+            utils.generateValidationError("Current domain id is required.");
+        }
+        if(utils.checkNullEmpty(req.query.user_id)){
+            utils.generateValidationError("user id is required.");
+        }
         if (utils.checkNullEmpty(req.params.event_id)) {
             utils.generateValidationError("Event id is required.");
         }
