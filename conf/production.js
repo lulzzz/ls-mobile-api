@@ -10,7 +10,7 @@ var authconfig = require('./authconfig'),
 module.exports = {
     baseurl: 'http://<staging-host>:<staging-port>/s2/api',
     tempurl: 'http://<staging-host>:<staging-port>',
-    eventsUrl: 'http://<staging-host>:<staging-port>/v1/event-summary',
+    eventsUrl: 'http://<staging-host>:<staging-port>/v1/event-summaries',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'GET',
