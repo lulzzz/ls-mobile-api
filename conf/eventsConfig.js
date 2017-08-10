@@ -8,7 +8,7 @@ module.exports = {
     events: {
         url: '',
         method: 'GET',
-        timeout: 3000,
+        timeout: 5000,
         req_pld: 'query'
     },
     eventsByType: {
