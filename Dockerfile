@@ -33,7 +33,8 @@ ENV NODE_HOME /usr/src/app
 ENV LOGI_HOST=localhost \
 	TEMP_HOST=localhost \
 	AMS_USER=logistimo \
-	AMS_PASS=logistimo
+	AMS_PASS=logistimo \
+	ES_HOST=localhost
 
 WORKDIR $NODE_HOME
 
