@@ -12,7 +12,7 @@ module.exports = {
         req_pld: 'query'
     },
     eventsByType: {
-        url: '/event-type/',
+        url: '/',
         method: 'GET',
         timeout: 5000,
         req_pld: 'query'
