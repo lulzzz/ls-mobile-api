@@ -6,7 +6,7 @@ var path = require('path'),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
     invDetail = require(path.resolve('./lib/restclient/inventory/invdetail', '')),
     queryBuilder = require(path.resolve('./lib/builder/inventoryQueryBuilder', '')),
-    commonUtils = require(path.resolve('./lib/utils/common/common-utils',''));
+    commonUtils = require(path.resolve('./lib/utils/common/common-utils', ''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -95,6 +95,10 @@ function validate(req){
     }
     if(commonUtils.checkNotNullEmpty(req.query.material_id) && commonUtils.checkNotNullEmpty(req.query.mtags)){
         commonUtils.generateValidationError("Any one of material id or material tag is required.");
+    }
+    if (commonUtils.checkNotNullEmpty(req.query.entity_id) && (commonUtils.checkNotNullEmpty(req.query.state) ||
+        commonUtils.checkNotNullEmpty(req.query.district) || commonUtils.checkNotNullEmpty(req.query.taluk))) {
+        commonUtils.generateValidationError("Any one of entity id or state/district/taluk is required.");
     }
 }
 
