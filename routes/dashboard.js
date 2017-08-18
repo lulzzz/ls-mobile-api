@@ -62,41 +62,6 @@ router.get('/dashboards/assets', function (req) {
     });
 });
 
-function transformInvDetailResponse(data) {
-    var d = JSON.parse(data);
-    var resmodel = new InvDetailResModel();
-    if (d.items instanceof Array) {
-        for (var i in d.items) {
-            var item = d.items[i];
-            if (item.nc != undefined && item.nc > 0) {
-                resmodel.n.push(item);
-            }
-            if (item.soc != undefined && item.soc > 0) {
-                resmodel.so.push(item);
-            }
-            if (item.gmc != undefined && item.gmc > 0) {
-                resmodel.mx.push(item);
-            }
-            if (item.lmnc != undefined && item.lmnc > 0) {
-                resmodel.mn.push(item);
-            }
-        }
-    }
-    if (d.total != undefined) {
-        resmodel.total = d.total;
-    }
-    if (d.offset != undefined) {
-        resmodel.offset = d.offset;
-    }
-    if (d.size != undefined) {
-        resmodel.size = d.size;
-    }
-    if (d.level != undefined) {
-        resmodel.l = d.level;
-    }
-    return resmodel;
-}
-
 router.get('/dashboards/inventory/breakdown', function (req) {
 
     return new Promise(function (resolve, reject) {
@@ -113,8 +78,7 @@ router.get('/dashboards/inventory/breakdown', function (req) {
                 logger.error('Error in inventory detail dashboard: ' + err.message);
                 reject(err);
             } else {
-                var v = transformInvDetailResponse(data);
-                resolve(v);
+                resolve(dashboardResModel.transformInvDetailResponse(data));
             }
         });
     });
