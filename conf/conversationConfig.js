@@ -7,13 +7,13 @@ module.exports = {
     addmessage: {
         url: '/conversation/message',
         method: 'POST',
-        timeout: 1000,
+        timeout: 30000,
         req_pld: 'body'
     },
     getmessages: {
         url: '/conversation/messages',
         method: 'GET',
-        timeout: 1000,
+        timeout: 30000,
         req_pld: 'query'
     }
 
