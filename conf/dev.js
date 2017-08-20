@@ -15,7 +15,7 @@ module.exports = {
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'POST',
-        timeout: 1000
+        timeout: 30000
     },
     amsUser: 'logistimo',
     amsPwd: 'logistimo',

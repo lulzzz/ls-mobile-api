@@ -7,13 +7,13 @@ module.exports = {
     entity_search: {
         url: '/entities/',
         method: 'GET',
-        timeout: 1000,
+        timeout: 30000,
         req_pld: 'query'
     },
     material_search: {
         url: '/materials/',
         method: 'GET',
-        timeout: 1000,
+        timeout: 30000,
         req_pld: 'query'
     }
 }
