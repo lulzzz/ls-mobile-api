@@ -17,4 +17,10 @@ describe('sort data test', function () {
         done();
 
     });
+
+    it('sort data for an empty object', function () {
+        var abc = [];
+        expect(abc.length = 0);
+        done();
+    });
 });
