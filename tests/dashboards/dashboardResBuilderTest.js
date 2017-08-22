@@ -18,9 +18,17 @@ describe('sort data test', function () {
 
     });
 
-    it('sort data for an empty object', function () {
+    it('sort data for an empty object', function (done) {
         var abc = [];
         expect(abc.length = 0);
         done();
     });
+
+    it('sort data for district level', function (done) {
+        var data = dashboardBuilder.sortData([{enm:"Lucknow DVS",nc:50,tc:100},{enm:"Rajasthan DVS",nc:100,tc:100},{enm:"Assam DVS",nc:100,tc:100}],'nc');
+        expect(data[0].enm="Assam DVS");
+        expect(data[1].enm="Rajasthan DVS");
+        expect(data[2].enm="Lucknow DVS");
+        done();
+    })
 });

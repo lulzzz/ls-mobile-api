@@ -78,7 +78,7 @@ router.get('/dashboards/inventory/breakdown', function (req) {
                 logger.error('Error in inventory detail dashboard: ' + err.message);
                 reject(err);
             } else {
-                resolve(dashboardResModel.transformInvDetailResponse(data, model.groupby));
+                resolve(dashboardResModel.transformInvDetailResponse(data, model.groupby, model.locty));
             }
         });
     });
