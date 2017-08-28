@@ -100,7 +100,7 @@ router.get('/dashboards/assets/breakdown', function (req) {
                 logger.error('Error in getting asset detail dashboard: ' + err.message);
                 reject(err);
             } else {
-                model = dashboardResModel.buildAssetDashbDetailModel(data);
+                model = dashboardResModel.buildAssetDashbDetailModel(data, model.level);
                 resolve(model);
             }
         });
