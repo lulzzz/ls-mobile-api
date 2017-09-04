@@ -33,10 +33,11 @@ router.get('/inventory', function (req, res) {
                 var invData = {};
                 data = JSON.parse(data);
                 invData.data = [];
-                invData.total = data.numFound;
+                invData.total = 0;
                 invData.size = data.size;
                 invData.offset = data.offset;
                 if (commonUtils.checkNotNullEmptyArray(data.results)) {
+                    invData.total = data.results.length;
                     data.results.forEach(function (data) {
                         var dt = {};
                         dt.mId = data.mId;
