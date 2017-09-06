@@ -24,5 +24,6 @@ module.exports = {
     userdeviceconfig: userdeviceconfig,
     approvalConfig: approvalConfig,
     conversationConfig: conversationConfig,
-    eventsConfig: eventsConfig
+    eventsConfig: eventsConfig,
+    statusFilePath: ''
 };

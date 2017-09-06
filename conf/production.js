@@ -29,5 +29,6 @@ module.exports = {
     assetConfig: assetConfig,
     approvalConfig: approvalConfig,
     conversationConfig: conversationConfig,
-    eventsConfig: eventsConfig
+    eventsConfig: eventsConfig,
+    statusFilePath: ''
 };

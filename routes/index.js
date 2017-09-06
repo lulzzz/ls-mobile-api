@@ -13,6 +13,8 @@ router.use('/user-device/*', require('./userdevice'));
 router.use('/order-approvals*',require('./approvals'));
 router.use('/conversations*',require('./conversations'));
 router.use('/metrics*', require('./metrics'));
+router.use('/app-status', require('./appstatus'));
+
 
 //routes common error handler
 router.use(function (err, req, res, next) {
