@@ -34,7 +34,8 @@ ENV LOGI_HOST=localhost \
 	TEMP_HOST=localhost \
 	AMS_USER=logistimo \
 	AMS_PASS=logistimo \
-	ES_HOST=localhost
+	ES_HOST=localhost \
+	STATUS_FILE=
 
 WORKDIR $NODE_HOME
 
