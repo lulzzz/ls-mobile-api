@@ -18,6 +18,8 @@ router.post('/auth/login', function (req, res) {
     return new Promise(function(resolve, reject) {
         const cred = req.headers['authorization'];
         const xforward = req.headers['x-real-ip'];
+        const appname = req.headers['x-app-name'];
+        const appver = req.headers['x-app-ver'];
         var tmp = cred.split(' '),   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
             buf = new Buffer(tmp[1], 'base64'), // create a buffer and tell it the data coming in is base64
             plain_auth = buf.toString();        // read it back out as a string
@@ -28,7 +30,7 @@ router.post('/auth/login', function (req, res) {
 
         //validating input paras
         if (utils.checkNotNullEmpty(username) && utils.checkNotNullEmpty(password)) {
-            authService.login(username, password,xforward, res, function (err, body) {
+            authService.login(username, password, appname, appver, xforward, res, function (err, body) {
                 if (err) {
                     logger.error("Error in login for user ", username);
                     console.log(err.message);
