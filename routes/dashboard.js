@@ -107,6 +107,27 @@ router.get('/dashboards/assets/breakdown', function (req) {
     });
 });
 
+router.get('/dashboards/activity/breakdown', function(req) {
+   return new Promise(function(resolve,reject) {
+       try {
+           validateRequestParams(req);
+       } catch(exception) {
+           logger.error(exception);
+           reject(exception);
+           return;
+       }
+       var model = queryBuilder.buildActivityDashboardParams(req);
+       dashboardService.getActivityDashboard(model, function(err, data) {
+            if(err) {
+                logger.error("Error while fetching activity dashboard: "+ err);
+                reject(err);
+            } else {
+                resolve(dashboardResModel.buildActivityDashboard(JSON.parse(data)));
+            }
+       });
+   });
+});
+
 function validateRequestParams(req) {
     if(req.baseUrl.startsWith('/dashboards/inventory')) {
         if(utils.checkNotNullEmpty(req.query.incetags) && utils.checkNotNullEmpty(req.query.exetags)) {
@@ -114,6 +135,10 @@ function validateRequestParams(req) {
         }
         if(req.baseUrl.endsWith('/breakdown') && utils.checkNullEmpty(req.query.groupby)) {
             utils.generateValidationError("groupby field is required");
+        }
+    } else if(req.baseUrl.startsWith('/dashboards/activity')) {
+        if(utils.checkNotNullEmpty(req.query.incetags) && utils.checkNotNullEmpty(req.query.exetags)) {
+            utils.generateValidationError("One of include entity tags or exclude entity tags is required.");
         }
     } else {
         if (utils.checkNotNullEmpty(req.query.includeETag) && utils.checkNotNullEmpty(req.query.excludeETag)) {
