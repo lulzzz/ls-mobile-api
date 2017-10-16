@@ -36,7 +36,7 @@ router.post('/auth/login', function (req, res) {
                     console.log(err.message);
                     reject({status: 401, message: err.message});
                 } else {
-                    resolve(body);
+                    resolve(updateTimezone(body));
                 }
             });
         } else {
@@ -97,4 +97,10 @@ router.post('/auth/reset-password', function (req) {
     });
 });
 
+function updateTimezone(data) {
+    if(data.tz == "Asia/Yangon") {
+        data.tz = "Asia/Rangoon";
+    }
+    return data;
+}
 module.exports = router.getRouter();
