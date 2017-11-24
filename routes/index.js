@@ -14,6 +14,7 @@ router.use('/order-approvals*',require('./approvals'));
 router.use('/conversations*',require('./conversations'));
 router.use('/metrics*', require('./metrics'));
 router.use('/app-status', require('./appstatus'));
+router.use('/media',require('./media'));
 
 
 //routes common error handler
