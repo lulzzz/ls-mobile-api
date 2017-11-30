@@ -6,7 +6,8 @@ var authconfig = require('./authconfig'),
     approvalConfig = require('./searchconfig'),
     conversationConfig = require('./conversationConfig'),
     eventsConfig = require('./eventsConfig'),
-    mediaConfig = require('./mediaConfig');
+    mediaConfig = require('./mediaConfig'),
+    domainConfig = require('./domainConfig');
 
 module.exports = {
     baseurl: 'http://<staging-host>:<staging-port>/s2/api',
@@ -28,5 +29,6 @@ module.exports = {
     conversationConfig: conversationConfig,
     eventsConfig: eventsConfig,
     statusFilePath: '',
-    mediaConfig: mediaConfig
+    mediaConfig: mediaConfig,
+    domainConfig: domainConfig
 };

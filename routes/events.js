@@ -5,7 +5,9 @@ var path = require('path'),
     logger = require(path.resolve('./lib/utils/logger', '')),
     decoder = require(path.resolve('./lib/utils/urldecoder', '')),
     service = require(path.resolve('./lib/restclient/events/eventService', '')),
-    utils = require(path.resolve('./lib/utils/common/common-utils',''));
+    utils = require(path.resolve('./lib/utils/common/common-utils','')),
+    domainCfgService = require(path.resolve('./lib/restclient/domain/domainCfgService','')),
+    eventResBuilder = require(path.resolve('./lib/builder/eventResBuilder',''));
 
 router.use(function (req, res, next) {
     req.url = decoder.decodeurl(req);
@@ -15,7 +17,7 @@ router.use(function (req, res, next) {
 router.get('/event-summaries', function (req) {
     try {
         validateRequestParams(req);
-    } catch(exception) {
+    } catch (exception) {
         logger.error(exception);
         reject(exception);
         return;
@@ -26,7 +28,24 @@ router.get('/event-summaries', function (req) {
                 logger.error("Error while fetching event summaries for domain: " + req.query.cn_domain_id);
                 reject(err);
             } else {
-                resolve(JSON.parse(data));
+                if (req.query.include_distribution) {
+                    var eventData = JSON.parse(data);
+                    if(utils.checkNotNullEmptyArray(eventData.summaries)) {
+                        var objectIds = eventResBuilder.getDistributionObjectIds(eventData);
+                        domainCfgService.get(req, objectIds, function (err, domainMetaData) {
+                            if (err) {
+                                logger.warn("\n Error while fetching the domain general config for the object ids: \n" + exception);
+                                reject(exception);
+                            } else {
+                                resolve(eventResBuilder.buildEventSummary(JSON.parse(domainMetaData), eventData));
+                            }
+                        });
+                    } else {
+                        resolve(JSON.parse(eventData));
+                    }
+                } else {
+                    resolve(JSON.parse(data));
+                }
             }
         });
     });
