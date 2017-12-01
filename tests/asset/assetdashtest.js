@@ -4,28 +4,44 @@
 
 var proxyquire = require('proxyquire'),
     sinon = require('sinon'),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    path = require('path'),
+    config = require(path.resolve('./conf', ''));
 
 describe('userTests', function () {
     var request, route, route1, p;
     beforeEach(function () {
         "use strict";
         request = sinon.stub();
-        route = proxyquire('../lib/restclient/restclient.js', {'request': request});
-        route1 = proxyquire('../lib/restclient/dashboard/dashboardService.js', {'request': request});
+        route = proxyquire('../../lib/restclient/restclient.js', {'request': request});
+        route1 = proxyquire('../../lib/restclient/dashboard/dashboardService.js', {'request': request});
     });
     it('shud give 200', function (done) {
         var req = {
-            url: "http://localhost:8080/s2/api/dashboard/",
+            url: "http://localhost:8080/s2/api/dashboard/assets",
             method: "GET",
             headers: {
                 'Accept-Charset': 'utf-8',
                 'Content-Type': 'application/json',
-                'x-access-user': "smriti"
+                'x-access-user': "smriti",
+                'x-request-id': undefined
             },
-            qs: {},
-            timedOut: 1000
+            qs:  {
+                filter: undefined,
+                level: undefined,
+                aType: undefined,
+                size: undefined,
+                offset: undefined,
+                excludeETag: undefined,
+                refresh: undefined,
+                onlyTempData: undefined,
+                tPeriod: undefined,
+                includeETag: undefined
+            },
+            timedOut: 30000,
+            time: true
         };
+        console.log("req: " + JSON.stringify(req));
         var options ={};
         options.user = "smriti";
         var body = JSON.stringify({
@@ -39,9 +55,8 @@ describe('userTests', function () {
         });
         var res = {};
         res.statusCode = 200;
-        console.log("\n req: " + JSON.stringify(req));
         request.withArgs(req).yields(null, res, body);
-        res.statusCode = 201;
+        //res.statusCode = 201;
         request.withArgs(options).yields(null, res, body);
         route1.getAssetDashboard(options, function (err, data) {
             console.log("Process end:");
@@ -49,11 +64,9 @@ describe('userTests', function () {
             expect(data).to.be.equals(body);
             done();
         });
-        route.callApi(req, function(err, data) {
-            console.log("call API: ");
-            console.log("Data: " + data);
+        /*route.callApi(req, function(err, data) {
+            console.log("Done1");
             expect(err).to.be.null;
-
-        });
+        });*/
     });
 });

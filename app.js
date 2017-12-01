@@ -8,7 +8,8 @@ var express = require('express'),
     route = require('./routes/index'),
     logger = require('./lib/utils/logger'),
     interceptor = require('./lib/interceptor'),
-    metrics = require(path.resolve('./lib/metrics', ''));
+    metrics = require(path.resolve('./lib/metrics', '')),
+    cors = require('cors');
 
 const client = require('prom-client');
 
@@ -18,6 +19,10 @@ const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics({timeout: 5000});
 
 var app = express();
+//include cors
+app.use(cors());
+app.options("*", cors());
+
 //logging
 app.use(require('morgan')(':remote-addr :remote-user :method :url HTTP/:http-version :status :res[content-length] - :response-time ms ":user-agent"', {"stream": logger.stream}));
 //to parse request body

@@ -4,7 +4,7 @@ var path = require('path'),
     router = require(path.resolve('./lib/expressive', '')),
     logger = require(path.resolve('./lib/utils/logger', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder', '')),
-    invDetail = require(path.resolve('./lib/restclient/inventory/invdetail', '')),
+    invService = require(path.resolve('./lib/restclient/inventory/invdetail', '')),
     queryBuilder = require(path.resolve('./lib/builder/inventoryQueryBuilder', '')),
     commonUtils = require(path.resolve('./lib/utils/common/common-utils', ''));
 
@@ -25,7 +25,7 @@ router.get('/inventory', function (req, res) {
             return;
         }
         var queryModel = queryBuilder.buildInvParams(req);
-        invDetail.getInvDetail(queryModel, req, res, function (err, data) {
+        invService.getInvDetail(queryModel, function (err, data) {
             if (err) {
                 logger.error('Error in inventory stock view: ' + err.message);
                 reject(err);
@@ -75,7 +75,7 @@ router.get('/inventory', function (req, res) {
 router.get('/inventory/entity/:entity_id/:material_id', function (req, res) {
     return new Promise(function (resolve, reject) {
         var queryModel = queryBuilder.buildInvDetailParams(req);
-        invDetail.getSingleInvDetail(queryModel, req, res, function (err, data) {
+        invService.getSingleInvDetail(queryModel, req, res, function (err, data) {
             if (err) {
                 logger.error('Error in inventory stock view: ' + err.message);
                 reject(err);

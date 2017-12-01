@@ -3,7 +3,7 @@
  */
 
 var path = require('path');
-    dashboardBuilder = require(path.resolve('./lib/builder/dashboardResBuilder.js','')),
+dashboardBuilder = require(path.resolve('./lib/builder/dashboardResBuilder.js', '')),
     sinon = require('sinon'),
     proxyquire = require('proxyquire'),
     expect = require('chai').expect;
@@ -11,9 +11,13 @@ var path = require('path');
 describe('sort data test', function () {
 
     it('sort data', function (done) {
-        var abc = dashboardBuilder.sortData([{mnm:"BCG dose",nc:50,tc:100},{mnm:"Syringes",nc:100,tc:100}],'nc');
-        expect(abc[0].mnm="Syringes");
-        expect(abc[1].mnm="BCG dose");
+        var abc = dashboardBuilder.sortData([{mnm: "BCG dose", nc: 50, tc: 100}, {
+            mnm: "Syringes",
+            nc: 100,
+            tc: 100
+        }], 'nc');
+        expect(abc[0].mnm = "Syringes");
+        expect(abc[1].mnm = "BCG dose");
         done();
 
     });
@@ -25,10 +29,26 @@ describe('sort data test', function () {
     });
 
     it('sort data for district level', function (done) {
-        var data = dashboardBuilder.sortData([{enm:"Lucknow DVS",nc:50,tc:100},{enm:"Rajasthan DVS",nc:100,tc:100},{enm:"Assam DVS",nc:100,tc:100}],'nc');
-        expect(data[0].enm="Assam DVS");
-        expect(data[1].enm="Rajasthan DVS");
-        expect(data[2].enm="Lucknow DVS");
+        var data = dashboardBuilder.sortData([{enm: "Lucknow DVS", nc: 50, tc: 100}, {
+            enm: "Rajasthan DVS",
+            nc: 100,
+            tc: 100
+        }, {enm: "Assam DVS", nc: 100, tc: 100}], 'nc');
+        expect(data[0].enm = "Assam DVS");
+        expect(data[1].enm = "Rajasthan DVS");
+        expect(data[2].enm = "Lucknow DVS");
         done();
-    })
+    });
+});
+
+describe('buildActivityDashboard Test', function () {
+    it('returns the activity dashboard data', function (done) {
+        var data = {mLev:"country",entDomain:{a:2, i:7},ent:{a:{Goa:{value:10,
+            per:50,den:20},Assam:{value:15,per:30,den:50}}, i:{Goa:{value:10, per:20, den:50},Assam:{value:20, per: 40, den:50}}}};
+        var model = dashboardBuilder.buildActivityDashboard(data);
+        expect(model.l = "country");
+        expect(model.items["a"][0].lcnm).to.equal("Goa");
+        expect(model.items["i"][0].lcnm).to.equal("Assam");
+        done();
+    });
 });

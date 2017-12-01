@@ -30,5 +30,11 @@ module.exports = {
         method: 'GET',
         timeout: 30000,
         req_pld: 'query'
+    },
+    dash_act: {
+        url: '/dashboards/activity',
+        method: 'GET',
+        timeout: 30000,
+        req_pld: 'query'
     }
-}
+};
