@@ -8,7 +8,9 @@ var path = require('path'),
     utils = require(path.resolve('./lib/utils/common/common-utils', '')),
     domainCfgService = require(path.resolve('./lib/restclient/domain/domainCfgService', '')),
     eventResBuilder = require(path.resolve('./lib/builder/eventResBuilder', '')),
-    redisService = require(path.resolve('./lib/redis/redisService', ''));
+    redisService = require(path.resolve('./lib/redis/redisService', '')),
+    date = parseInt((new Date().setHours(23, 59, 59, 999) - new Date()) / 1000),
+    constant = require(path.resolve('./lib/constants/constants',''));
 
 router.use(function (req, res, next) {
     req.url = decoder.decodeurl(req);
@@ -53,11 +55,11 @@ router.get('/event-summaries', function (req) {
                                         }
                                     });
                                 } else {
-                                    redisService.setData(key, data, parseInt((new Date().setHours(23, 59, 59, 999) - new Date()) / 1000));
+                                    redisService.setData(key, data, date);
                                     resolve(JSON.parse(eventData));
                                 }
                             } else {
-                                redisService.setData(key, data, parseInt((new Date().setHours(23, 59, 59, 999) - new Date()) / 1000));
+                                redisService.setData(key, data, date);
                                 resolve(JSON.parse(data));
                             }
                         }
@@ -78,12 +80,28 @@ router.get('/event-summaries/:event_id', function (req) {
         return;
     }
     return new Promise(function (resolve, reject) {
-        service.getEventsByType(req, function (err, data) {
+        var key = "event" + "_" + req.query.cn_domain_id + "_" + req.params.event_id;
+        if(utils.checkNotNullEmpty(req.query.domain_id)) {
+            key = "_" + req.query.domain_id;
+        }
+        key += "_" + (req.query.offset || constant.const.OFFSET);
+        redisService.getData(key, function (err, cacheData) {
             if (err) {
-                logger.error("Error while fetching event summaries for domain " + req.query.cn_domain_id + " and event" + req.params.event_id);
-                reject(err);
+                // do nothing
             } else {
-                resolve(JSON.parse(data));
+                if (utils.checkNotNullEmpty(cacheData)) {
+                    resolve(JSON.parse(cacheData));
+                } else {
+                    service.getEventsByType(req, function (err, data) {
+                        if (err) {
+                            logger.error("Error while fetching event summaries for domain " + req.query.cn_domain_id + " and event" + req.params.event_id);
+                            reject(err);
+                        } else {
+                            redisService.setData(key, data, date);
+                            resolve(JSON.parse(data));
+                        }
+                    });
+                }
             }
         });
     });
