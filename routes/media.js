@@ -31,6 +31,7 @@ router.get('/media', function(req) {
                 }
             });
         } else {
+            logger.warn("Object id is required");
             reject({status: 400, message: "Object id is required."});
         }
     });

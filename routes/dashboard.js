@@ -22,7 +22,7 @@ router.get('/dashboards/inventory', function (req) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -44,7 +44,7 @@ router.get('/dashboards/assets', function (req) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject({status:400, message: exception.message});
             return;
         }
@@ -68,7 +68,7 @@ router.get('/dashboards/inventory/breakdown', function (req) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -90,7 +90,7 @@ router.get('/dashboards/assets/breakdown', function (req) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -112,7 +112,7 @@ router.get('/dashboards/activity/breakdown', function(req) {
        try {
            validateRequestParams(req);
        } catch(exception) {
-           logger.error(exception);
+           logger.warn(exception);
            reject(exception);
            return;
        }

@@ -24,7 +24,7 @@ router.put('/conversations', function (req) {
         try {
             validateRequestParams(req.body, req.method);
         } catch(exception){
-            logger.error(exception.message);
+            logger.warn(exception.message);
             reject(exception);
             return;
         }
@@ -76,6 +76,7 @@ router.get('/conversations', function (req) {
         try {
             validateRequestParams(req.query, req.method);
         } catch(exception) {
+            logger.warn(exception);
             reject(exception);
             return;
         }

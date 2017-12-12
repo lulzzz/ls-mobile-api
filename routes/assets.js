@@ -19,6 +19,7 @@ router.get('/assets', function (req) {
 
     return new Promise(function (resolve, reject) {
         if (utils.checkNullEmpty(req.query.did) && utils.checkNullEmpty(req.query.eid)) {
+            logger.warn("One of domain id or entity id is required.");
             reject(utils.generateValidationError("One of domain id or entity id is required."));
             return;
         }
@@ -73,7 +74,6 @@ router.get('/assets/detail', function (req) {
             var model = assetBuilder.buildAssetDetailsModel(result);
             resolve(model);
         }).catch(function (err) {
-            logger.error("\n" + err.stack);
             reject(err);
         });
     });
@@ -91,6 +91,7 @@ function getRecentAlerts(queryModel) {
                 if (assetData) {
                     resolve(assetData);
                 } else {
+                    logger.error("Error while fetching the alerts for assets \n");
                     reject("Error while fetching the alerts for assets");
                 }
             }
@@ -109,6 +110,7 @@ function getTemperatures(queryModel) {
                 if (assetData) {
                     resolve(assetData);
                 } else {
+                    logger.error("Error while fetching temperature data for assets \n");
                     reject("Error while fetching temperature data for assets");
                 }
             }

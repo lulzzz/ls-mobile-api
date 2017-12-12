@@ -7,13 +7,16 @@ var authconfig = require('./authconfig'),
     conversationConfig = require('./conversationConfig'),
     eventsConfig = require('./eventsConfig'),
     mediaConfig = require('./mediaConfig'),
-    domainConfig = require('./domainConfig');
+    domainConfig = require('./domainConfig'),
+    collaborationConfig = require('./collaborationConfig'),
+    assetConfig = require('./assetConfig');
 
 module.exports = {
     baseurl: 'http://<staging-host>:<staging-port>/s2/api',
     tempurl: 'http://<staging-host>:<staging-port>',
     mediaurl: 'http://<staging-host>:<staging-port>/_ah/api/mediaendpoint',
     eventsUrl: 'http://<staging-host>:<staging-port>/v1/event-summaries',
+    collaborationServiceUrl: 'http://<staging-host>:<staging-port>/v1/collaboration',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'GET',
@@ -30,5 +33,6 @@ module.exports = {
     eventsConfig: eventsConfig,
     statusFilePath: '',
     mediaConfig: mediaConfig,
-    domainConfig: domainConfig
+    domainConfig: domainConfig,
+    collaborationConfig: collaborationConfig
 };
