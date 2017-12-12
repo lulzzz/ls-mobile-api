@@ -23,6 +23,8 @@ describe('Constructs the event summary response for domain level', function () {
             summaries: [{
                 event_type: "data_entry_performance_by_entity",
                 category: "activity",
+                object_id: 1,
+                object_type: "domain",
                 event_id: "1144183923",
                 text: "Data entered within 2 days of actual date of transaction over last 12 months",
                 type: "performance",
@@ -33,13 +35,22 @@ describe('Constructs the event summary response for domain level', function () {
             offset: 0,
             size: 50
         };
+        var likeCountObject = [
+            {
+                objectId: 1,
+                objectType: "domain",
+                contextId: "1144183923",
+                count: 5,
+                liked: true
+            }
+        ];
         var domainData = [
             {
                "domainId": "1343726",
                 "cnt": "IN"
             }
         ];
-        var data = eventResBuilder.buildEventSummary(domainData, eventData);
+        var data = eventResBuilder.buildEventSummary(domainData, likeCountObject, eventData);
         expect(data.offset, undefined);
         console.log("smriti");
         console.log(data.summaries[0].distribution[0]);
@@ -63,6 +74,40 @@ describe('Constructs ids from distribution list', function() {
     it('Constructs ids for valid list', function(done) {
         var data = eventResBuilder.getDistributionObjectIds({ summaries: [{ distribution: [{id: 1343726, count: 12}, {id: 1343727, count: 5}]}]});
         expect(data, "1343726,1343727");
+        done();
+    });
+});
+
+describe('Get likes count request payload', function() {
+    it('\n Constructs request object for empty data', function(done) {
+        var data = eventResBuilder.getLikesCountRequestPayload({ headers: { 'x-access-user': "smriti"}},{summaries:[], offset: 0, size: 50});
+        expect(data,{likes:[], user: "smriti"});
+        done();
+    });
+    it('\n Constructs request object for event summary data', function(done) {
+        var eventData = {
+            summaries: [ {
+                event_id: 1,
+                object_id: 123,
+                object_type: "domain"
+            },
+                {
+                    event_id: 2,
+                    object_id: 234,
+                    object_type: "kiosk"
+                }
+            ],
+            offset: 0,
+            size: 50
+        };
+        var data = eventResBuilder.getLikesCountRequestPayload({ headers: { 'x-access-user': "smriti"}}, eventData);
+        expect(data.likes.size, 2);
+        expect(data.likes[0].context_id, 1);
+        expect(data.likes[0].object_id, 123);
+        expect(data.likes[0].object_type, "domain");
+        expect(data.likes[1].context_id, 2);
+        expect(data.likes[1].object_id, 234);
+        expect(data.likes[1].object_type, "kiosk");
         done();
     });
 });

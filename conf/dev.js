@@ -8,13 +8,15 @@ var authconfig = require('./authconfig'),
     conversationConfig = require('./conversationConfig'),
     eventsConfig = require('./eventsConfig'),
     mediaConfig = require('./mediaConfig'),
-    domainConfig = require('./domainConfig');
+    domainConfig = require('./domainConfig'),
+    collaborationConfig = require('./collaborationConfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
     tempurl: 'http://localhost:9000',
     mediaurl: 'http://localhost:8080/_ah/api/mediaendpoint',
     eventsUrl: 'http://localhost:9010/v1/event-summaries',
+    collaborationServiceUrl: 'http://localhost:9070/v1/collaboration',
     sectokenconfig: {
         url: '/mauth/validate-token',
         method: 'POST',
@@ -33,5 +35,6 @@ module.exports = {
     eventsConfig: eventsConfig,
     statusFilePath: '',
     mediaConfig: mediaConfig,
-    domainConfig: domainConfig
+    domainConfig: domainConfig,
+    collaborationConfig: collaborationConfig
 };
