@@ -20,7 +20,7 @@ router.get('/inventory', function (req, res) {
         try {
             validate(req);
         } catch (exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }

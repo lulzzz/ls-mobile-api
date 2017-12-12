@@ -24,7 +24,7 @@ router.get('/order-approvals', function (req) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -45,7 +45,7 @@ router.get('/order-approvals/:approval_id', function (req) {
 
     return new Promise(function(resolve,reject) {
         if(utils.checkNullEmpty(req.params.approval_id)) {
-            logger.error("Approval_id is mandatory");
+            logger.warn("Approval_id is mandatory");
             reject(utils.generateValidationError("Approval id is required"));
             return;
         }
@@ -68,7 +68,7 @@ router.post('/order-approvals', function (req,res) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -92,7 +92,7 @@ router.put('/order-approvals/:approval_id/status', function (req) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }

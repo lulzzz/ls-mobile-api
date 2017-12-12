@@ -21,7 +21,7 @@ router.get('/event-summaries', function (req) {
         try {
             validateRequestParams(req);
         } catch (exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -39,7 +39,7 @@ router.get('/event-summaries', function (req) {
                     var finalEventResponse = eventResBuilder.buildLikeCountResponse(eventResponse,results[1]);
                     resolve(finalEventResponse);
                 }).catch(function (exception) {
-                    reject(exception)
+                    reject(exception);
                 });
             }
         });
@@ -101,7 +101,7 @@ router.get('/event-summaries/:event_id', function (req) {
                 Promise.all([likeCountResponse]).then(function (results) {
                     resolve(eventResBuilder.buildLikeCountResponse(eventData, results[0]));
                 }).catch(function (exception) {
-                    reject(exception)
+                    reject(exception);
                 });
             }
         });

@@ -23,7 +23,7 @@ router.get('/search/material', function (req, res) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
@@ -45,7 +45,7 @@ router.get('/search/entity', function (req, res) {
         try {
             validateRequestParams(req);
         } catch(exception) {
-            logger.error(exception);
+            logger.warn(exception);
             reject(exception);
             return;
         }
