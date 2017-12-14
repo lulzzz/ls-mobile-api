@@ -124,7 +124,8 @@ router.post('/event-summaries/:event_id/like', function (req) {
                 logger.error("Error while posting like for the event id: " + req.params.context_id, err);
                 reject(err);
             } else {
-                resolve(JSON.parse(data));
+                logger.info("Like data object: " + data);
+                resolve(data);
             }
         });
     });
