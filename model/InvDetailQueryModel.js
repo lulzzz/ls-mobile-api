@@ -16,6 +16,7 @@ function InvDashQueryModel() {
     this.user = undefined;
     this.reqId = undefined;
     this.loc = undefined;
+    this.eetag = undefined;
 }
 
 function SingleInvDetailModel() {
