@@ -99,7 +99,7 @@ router.get('/event-summaries/:event_id', function (req) {
                 var eventData = JSON.parse(data),
                     configs = getDomainConfigs(req, eventData),
                     likeCountResponse = getEventLikesCount(req, eventData);
-                Promise.all([configs, likesCount]).then(function (results) {
+                Promise.all([configs, likeCountResponse]).then(function (results) {
                     logger.log("Received the domain configuration and like count for the event ids");
                     var eventResponse = eventResBuilder.buildEventSummary(results[0],eventData);
                     var finalEventResponse = eventResBuilder.buildLikeCountResponse(eventResponse,results[1]);
