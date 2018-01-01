@@ -97,9 +97,13 @@ router.get('/event-summaries/:event_id', function (req) {
                 reject(err);
             } else {
                 var eventData = JSON.parse(data),
+                    configs = getDomainConfigs(req, eventData),
                     likeCountResponse = getEventLikesCount(req, eventData);
-                Promise.all([likeCountResponse]).then(function (results) {
-                    resolve(eventResBuilder.buildLikeCountResponse(eventData, results[0]));
+                Promise.all([configs, likesCount]).then(function (results) {
+                    logger.log("Received the domain configuration and like count for the event ids");
+                    var eventResponse = eventResBuilder.buildEventSummary(results[0],eventData);
+                    var finalEventResponse = eventResBuilder.buildLikeCountResponse(eventResponse,results[1]);
+                    resolve(finalEventResponse);
                 }).catch(function (exception) {
                     reject(exception);
                 });
