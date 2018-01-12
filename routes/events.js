@@ -53,8 +53,8 @@ function getDomainConfigs(req, eventData) {
                 var objectIds = eventResBuilder.getDistributionObjectIds(eventData);
                 domainCfgService.get(req, objectIds, function (err, domainMetaData) {
                     if (err) {
-                        logger.error("\n Error while fetching the domain general config for the object ids: \n" + exception);
-                        reject(exception);
+                        logger.error("\n Error while fetching the domain general config for the object ids: \n" + err);
+                        reject(err);
                     } else {
                         resolve(eventResBuilder.buildEventSummary(JSON.parse(domainMetaData), eventData));
                     }
