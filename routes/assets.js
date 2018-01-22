@@ -98,6 +98,24 @@ router.get('/assets/:asset_id/activity', function (req) {
     });
 });
 
+router.get('/assets/:asset_id/temperature/sensors/:sensor_id', function (req) {
+    return new Promise(function(resolve, reject) {
+        if (utils.checkNullEmpty(req.params.asset_id) || utils.checkNullEmpty(req.params.sensor_id)) {
+            reject(utils.generateValidationError("Device id and monitoring point is required."));
+        }
+        var queryModel = queryBuilder.buildTempSensorParams(req);
+        // fetch recent alerts and temperature for assets
+        var a = getTemperatures(queryModel);
+        Promise.all([a]).then(function (result) {
+            logger.info("Received asset details successfully");
+            var model = assetBuilder.buildAssetStatusModel(result);
+            resolve(model);
+        }).catch(function (err) {
+            reject(err);
+        });
+    });
+});
+
 function getRecentAlerts(queryModel) {
     return new Promise(function (resolve, reject) {
         assetService.getRecentAlerts(queryModel, function (err, data) {
