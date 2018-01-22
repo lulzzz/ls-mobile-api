@@ -80,6 +80,24 @@ router.get('/assets/detail', function (req) {
 
 });
 
+router.get('/assets/:asset_id/activity', function (req) {
+    return new Promise(function(resolve, reject) {
+        if (utils.checkNullEmpty(req.params.asset_id) || utils.checkNullEmpty(req.query.vid) || utils.checkNullEmpty(req.query.mpid)) {
+            reject(utils.generateValidationError("Device id, vendor id and monitoring point is required."));
+        }
+        var queryModel = queryBuilder.buildTempAlertParams(req);
+        // fetch recent alerts and temperature for assets
+        var a = getRecentAlerts(queryModel);
+        Promise.all([a]).then(function (result) {
+            logger.info("Received asset details successfully");
+            var model = assetBuilder.buildAssetActivityModel(result);
+            resolve(model);
+        }).catch(function (err) {
+            reject(err);
+        });
+    });
+});
+
 function getRecentAlerts(queryModel) {
     return new Promise(function (resolve, reject) {
         assetService.getRecentAlerts(queryModel, function (err, data) {
