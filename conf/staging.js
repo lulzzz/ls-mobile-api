@@ -9,7 +9,8 @@ var authconfig = require('./authconfig'),
     mediaConfig = require('./mediaConfig'),
     domainConfig = require('./domainConfig'),
     collaborationConfig = require('./collaborationConfig'),
-    assetConfig = require('./assetConfig');
+    assetConfig = require('./assetConfig'),
+    reportsConfig = require('./reportsConfig');
 
 module.exports = {
     baseurl: 'http://<staging-host>:<staging-port>/s2/api',
@@ -34,5 +35,6 @@ module.exports = {
     statusFilePath: '',
     mediaConfig: mediaConfig,
     domainConfig: domainConfig,
-    collaborationConfig: collaborationConfig
+    collaborationConfig: collaborationConfig,
+    reportsConfig:reportsConfig
 };

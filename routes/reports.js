@@ -17,7 +17,6 @@ router.use(function (req, res, next) {
 });
 
 router.get('/report', function (req, res) {
-    console.log('came in');
     return new Promise(function (resolve, reject) {
         try {
             validate(req);

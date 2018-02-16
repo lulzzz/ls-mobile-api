@@ -36,11 +36,5 @@ module.exports = {
         method: 'GET',
         timeout: 30000,
         req_pld: 'query'
-    },
-    report: {
-        url: '/plugins/report/',
-        method: 'GET',
-        timeout: 30000,
-        req_pld: 'query'
     }
 };
