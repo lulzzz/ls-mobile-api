@@ -17,7 +17,7 @@ describe('Constructs the asset detail response', function () {
         done();
     });
 
-    it('Constructs asset detail response with asset id as params', function (done) {
+    it('Constructs asset detail response with serial no and manufacturer code as params', function (done) {
         var req = {};
         req.query = {};
         req.params = {};
@@ -28,10 +28,8 @@ describe('Constructs the asset detail response', function () {
         req.query.sz=50;
         req.headers['x-access-token'] = "ABC#123";
         req.headers['x-request-id'] = "XYZ#123";
-        req.params.asset_id ="2200-ILR-0000003";
-        console.log("vid:" + req.query.vid);
+        req.query.did ="1343724";
 
-        
         var data = assetQueryBuilder.buildTempAlertParams(req);
         expect(data.did, "2200-ILR-0000003");
         expect(data.vid, "Electrolux");
@@ -81,11 +79,11 @@ describe('Constructs the asset sensor response', function () {
         req.query = {};
         req.params = {};
         req.headers = [];
-        req.query.vid= "Electrolux";
-        req.params.sensor_id=2;
+        req.params.manufacturer_code= "Electrolux";
+        req.params.monitoring_position_id=2;
         req.query.page=1;
-        req.query.sz=50;
-        req.params.asset_id ="2200-ILR-0000003";
+        req.query.size=50;
+        req.params.serial_no ="2200-ILR-0000003";
         req.headers['x-access-token'] = "ABC#123";
         req.headers['x-request-id'] = "XYZ#123";
 

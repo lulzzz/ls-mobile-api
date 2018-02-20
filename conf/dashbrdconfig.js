@@ -14,7 +14,7 @@ module.exports = {
         req_pld: 'query'
     },
     dash_ast: {
-        url: '/dashboards/assets',
+        url: '/dashboards/assets/temperature',
         method: 'GET',
         timeout: 30000,
         req_pld: 'query'

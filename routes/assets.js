@@ -80,12 +80,12 @@ router.get('/assets/detail', function (req) {
 
 });
 
-router.get('/assets/:asset_id/activity', function (req) {
+router.get('/assets/:manufacturer_code/:serial_no/activity', function (req) {
     return new Promise(function(resolve, reject) {
-        if (utils.checkNullEmpty(req.params.asset_id) || utils.checkNullEmpty(req.query.vid) || utils.checkNullEmpty(req.query.mpid)) {
-            reject(utils.generateValidationError("Device id, vendor id and monitoring point is required."));
+        if (utils.checkNullEmpty(req.params.manufacturer_code) || utils.checkNullEmpty(req.params.serial_no)) {
+            reject(utils.generateValidationError("Manufacturer code and serial no is required."));
         }
-        var queryModel = queryBuilder.buildTempAlertParams(req);
+        var queryModel = queryBuilder.buildAssetActivityParams(req);
         // fetch recent alerts and temperature for assets
         var a = getRecentAlerts(queryModel);
         Promise.all([a]).then(function (result) {
@@ -98,10 +98,11 @@ router.get('/assets/:asset_id/activity', function (req) {
     });
 });
 
-router.get('/assets/:asset_id/temperature/sensors/:sensor_id', function (req) {
+router.get('/assets/:manufacturer_code/:serial_no/:monitoring_position_id/temperature', function (req) {
     return new Promise(function(resolve, reject) {
-        if (utils.checkNullEmpty(req.params.asset_id) || utils.checkNullEmpty(req.params.sensor_id)) {
-            reject(utils.generateValidationError("Device id and monitoring point is required."));
+        if (utils.checkNullEmpty(req.params.manufacturer_code) || utils.checkNullEmpty(req.params.serial_no)
+            || utils.checkNullEmpty(req.params.monitoring_position_id) || utils.checkNullEmpty(req.query.monitoring_type)) {
+            reject(utils.generateValidationError("Manufacturer code, serial no, monitoring position id and monitoring type is required."));
         }
         var queryModel = queryBuilder.buildTempSensorParams(req);
         // fetch recent alerts and temperature for assets
