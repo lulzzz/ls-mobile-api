@@ -117,6 +117,27 @@ router.get('/assets/:manufacturer_code/:serial_no/:monitoring_position_id/temper
     });
 });
 
+router.post('/assets/:manufacturer_code/:serial_no/status', function (req) {
+    return new Promise(function (resolve, reject) {
+        try {
+            validateAssetWorkingStatusParams(req);
+        } catch(exception) {
+            logger.warn(exception);
+            reject(exception);
+            return;
+        }
+        var queryModel = queryBuilder.buildAssetStatusParams(req);
+        assetService.updateAssetStatus(queryModel, function (err, data) {
+            if (err) {
+                logger.error("Error while updating asset status");
+                reject(err);
+            } else {
+                resolve(JSON.parse(data));
+            }
+        });
+    });
+});
+
 function getRecentAlerts(queryModel) {
     return new Promise(function (resolve, reject) {
         assetService.getRecentAlerts(queryModel, function (err, data) {
@@ -153,6 +174,14 @@ function getTemperatures(queryModel) {
             }
         });
     })
+}
+
+function validateAssetWorkingStatusParams(req){
+    if(utils.checkNullEmpty(req.params.serial_no) || utils.checkNullEmpty(req.params.manufacturer_code)) {
+        reject(utils.generateValidationError("Asset vendor id and serial number is required."))
+    } else if (utils.checkNullEmpty(req.body.status_code)) {
+        reject(utils.generateValidationError("Asset working status code is mandatory"));
+    }
 }
 
 module.exports = router.getRouter();

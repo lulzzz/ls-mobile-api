@@ -99,3 +99,31 @@ describe('Constructs the asset sensor response', function () {
     });
 });
 
+describe('Constructs the asset status builder response', function () {
+
+    it('Construct for empty data', function (done) {
+        var req = {query: {}, params: {}, body:{}};
+        var data = assetQueryBuilder.buildAssetStatusParams(req);
+        expect(data, {});
+        done();
+    });
+
+    it('Constructs asset status query', function (done) {
+        var req = {params: {}, body: {}, headers:[]};
+        req.headers['x-access-token'] = "ABC#123";
+        req.headers['x-request-id'] = "XYZ#123";
+        req.headers['x-access-user'] = "smriti";
+        req.params.serial_no = "UAS-009-QWE";
+        req.params.manufacturer_code = "haier";
+        req.body.status_code=1;
+        req.body.status_updated_time="3345632161";
+
+        var data = assetQueryBuilder.buildAssetStatusParams(req);
+        expect(data.url, "haier/" + encodeURIComponent(req.params.serial_no) + "/status");
+        expect(data.body.st, 1);
+        expect(data.token, "ABC#123");
+        expect(data.reqId, "XYZ#123");
+        done();
+    });
+});
+
