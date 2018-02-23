@@ -22,6 +22,10 @@ router.get('/assets', function (req) {
             logger.warn("One of domain id or entity id is required.");
             reject(utils.generateValidationError("One of domain id or entity id is required."));
             return;
+        } else if(utils.checkNullEmpty(req.query.ty) && utils.checkNullEmpty(req.query.monitoring_type)) {
+            logger.warn("One of asset type or monitoring type is required.");
+            reject(utils.generateValidationError("One of asset type or monitoring type is required."));
+            return;
         }
         var model = queryBuilder.buildTempDataParams(req);
         assetService.getAssetsForDomain(model, function (err, data) {
