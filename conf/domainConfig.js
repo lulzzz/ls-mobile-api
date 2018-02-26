@@ -8,5 +8,11 @@ module.exports = {
         method: 'GET',
         timeout: 30000,
         req_pld: 'query'
+    },
+    system_config: {
+        url: '/configuration',
+        method: 'GET',
+        timeout: 3000,
+        req_pld: 'query'
     }
 };

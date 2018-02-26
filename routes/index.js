@@ -16,6 +16,7 @@ router.use('/metrics*', require('./metrics'));
 router.use('/app-status', require('./appstatus'));
 router.use('/media',require('./media'));
 router.use('/collaboration*',require('./collaboration'));
+router.use('/configurations*', require('./configuration'));
 
 
 //routes common error handler
