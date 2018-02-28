@@ -22,6 +22,10 @@ router.get('/assets', function (req) {
             logger.warn("One of domain id or entity id is required.");
             reject(utils.generateValidationError("One of domain id or entity id is required."));
             return;
+        } else if(utils.checkNullEmpty(req.query.ty) && utils.checkNullEmpty(req.query.monitoring_type)) {
+            logger.warn("One of asset type or monitoring type is required.");
+            reject(utils.generateValidationError("One of asset type or monitoring type is required."));
+            return;
         }
         var model = queryBuilder.buildTempDataParams(req);
         assetService.getAssetsForDomain(model, function (err, data) {
@@ -80,12 +84,12 @@ router.get('/assets/detail', function (req) {
 
 });
 
-router.get('/assets/:asset_id/activity', function (req) {
+router.get('/assets/:manufacturer_code/:serial_no/activity', function (req) {
     return new Promise(function(resolve, reject) {
-        if (utils.checkNullEmpty(req.params.asset_id) || utils.checkNullEmpty(req.query.vid) || utils.checkNullEmpty(req.query.mpid)) {
-            reject(utils.generateValidationError("Device id, vendor id and monitoring point is required."));
+        if (utils.checkNullEmpty(req.params.manufacturer_code) || utils.checkNullEmpty(req.params.serial_no)) {
+            reject(utils.generateValidationError("Manufacturer code and serial no is required."));
         }
-        var queryModel = queryBuilder.buildTempAlertParams(req);
+        var queryModel = queryBuilder.buildAssetActivityParams(req);
         // fetch recent alerts and temperature for assets
         var a = getRecentAlerts(queryModel);
         Promise.all([a]).then(function (result) {
@@ -98,10 +102,11 @@ router.get('/assets/:asset_id/activity', function (req) {
     });
 });
 
-router.get('/assets/:asset_id/temperature/sensors/:sensor_id', function (req) {
+router.get('/assets/:manufacturer_code/:serial_no/:monitoring_position_id/temperature', function (req) {
     return new Promise(function(resolve, reject) {
-        if (utils.checkNullEmpty(req.params.asset_id) || utils.checkNullEmpty(req.params.sensor_id)) {
-            reject(utils.generateValidationError("Device id and monitoring point is required."));
+        if (utils.checkNullEmpty(req.params.manufacturer_code) || utils.checkNullEmpty(req.params.serial_no)
+            || utils.checkNullEmpty(req.params.monitoring_position_id) || utils.checkNullEmpty(req.query.monitoring_type)) {
+            reject(utils.generateValidationError("Manufacturer code, serial no, monitoring position id and monitoring type is required."));
         }
         var queryModel = queryBuilder.buildTempSensorParams(req);
         // fetch recent alerts and temperature for assets
@@ -112,6 +117,27 @@ router.get('/assets/:asset_id/temperature/sensors/:sensor_id', function (req) {
             resolve(model);
         }).catch(function (err) {
             reject(err);
+        });
+    });
+});
+
+router.post('/assets/:manufacturer_code/:serial_no/status', function (req) {
+    return new Promise(function (resolve, reject) {
+        try {
+            validateAssetWorkingStatusParams(req);
+        } catch(exception) {
+            logger.warn(exception);
+            reject(exception);
+            return;
+        }
+        var queryModel = queryBuilder.buildAssetStatusParams(req);
+        assetService.updateAssetStatus(queryModel, function (err, data) {
+            if (err) {
+                logger.error("Error while updating asset status");
+                reject(err);
+            } else {
+                resolve(JSON.parse(data));
+            }
         });
     });
 });
@@ -152,6 +178,14 @@ function getTemperatures(queryModel) {
             }
         });
     })
+}
+
+function validateAssetWorkingStatusParams(req){
+    if(utils.checkNullEmpty(req.params.serial_no) || utils.checkNullEmpty(req.params.manufacturer_code)) {
+        reject(utils.generateValidationError("Asset vendor id and serial number is required."))
+    } else if (utils.checkNullEmpty(req.body.status_code)) {
+        reject(utils.generateValidationError("Asset working status code is mandatory"));
+    }
 }
 
 module.exports = router.getRouter();

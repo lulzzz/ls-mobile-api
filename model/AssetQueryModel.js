@@ -29,4 +29,5 @@ function AssetQueryModel() {
     this.offset = undefined;
     this.url = "";
     this.user = undefined;
+    this.body = {};
 }
