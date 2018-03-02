@@ -12,7 +12,7 @@ module.exports = {
     system_config: {
         url: '/configuration',
         method: 'GET',
-        timeout: 3000,
+        timeout: 30000,
         req_pld: 'query'
     }
 };
