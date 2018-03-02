@@ -26,7 +26,7 @@ var path = require("path"),
            }
            domainConfigService.getAssetSystemConfig(req, function(err, data) {
                if (err) {
-                   logger.error("Error while fetching the asset system configuration");
+                   logger.error("Error while fetching the asset system configuration" + "\n" + err.stack);
                    reject(err);
                } else {
                    resolve(JSON.parse(data));
