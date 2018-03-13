@@ -30,7 +30,7 @@ router.get('/assets', function (req) {
         var model = queryBuilder.buildTempDataParams(req);
         assetService.getAssetsForDomain(model, function (err, data) {
             if (err) {
-                logger.error("Error while fetching the list of assets");
+                logger.error("Error while fetching the list of assets"+err);
                 reject(err);
             } else {
                 var obj = JSON.parse(data);
@@ -46,7 +46,7 @@ router.get('/assets', function (req) {
                     model = queryBuilder.buildAssetListingParams(req, asset);
                     assetService.getAssetsListingsData(model, function (err, data) {
                         if (err) {
-                            logger.error("Error while fetching the data");
+                            logger.error("Error while fetching the data"+err);
                             reject(err);
                         } else {
                             var assets = assetBuilder.buildAssetData(data, tempData, model.offset);
@@ -133,10 +133,35 @@ router.post('/assets/:manufacturer_code/:serial_no/status', function (req) {
         var queryModel = queryBuilder.buildAssetStatusParams(req);
         assetService.updateAssetStatus(queryModel, function (err, data) {
             if (err) {
-                logger.error("Error while updating asset status");
+                logger.error("Error while updating asset status"+err);
                 reject(err);
             } else {
-                resolve(JSON.parse(data));
+                data = "Asset status with manufacturer " + req.params.manufacturer_code + " and serial no "+ req.params.serial_no+ "updated successfully";
+                logger.info(data);
+                resolve({message: data});
+            }
+        });
+    });
+});
+
+
+router.get('/assets/:manufacturer_code/:serial_no', function (req) {
+    return new Promise(function (resolve, reject) {
+        try {
+            validateManfCodeSerialNo(req);
+        } catch(exception) {
+            logger.warn(exception);
+            reject(exception);
+            return;
+        }
+        var queryModel = queryBuilder.buildAssetDetailsParams(req);
+        assetService.getAssetDetail(queryModel, function (err, data) {
+            if (err) {
+                logger.error("Error while getting asset detail"+err);
+                reject(err);
+            } else {
+                var model = assetBuilder.buildAssetDetailModel(JSON.parse(data));
+                resolve(model);
             }
         });
     });
@@ -146,7 +171,7 @@ function getRecentAlerts(queryModel) {
     return new Promise(function (resolve, reject) {
         assetService.getRecentAlerts(queryModel, function (err, data) {
             if (err) {
-                logger.error("Error while fetching the alerts for assets");
+                logger.error("Error while fetching the alerts for assets"+err);
                 reject(err);
             } else {
                 var assetData = assetBuilder.buildRecentAlertModel(data);
@@ -165,7 +190,7 @@ function getTemperatures(queryModel) {
     return new Promise(function (resolve, reject) {
         assetService.getTemperatureData(queryModel, function (err, data) {
             if (err) {
-                logger.error("Error while fetching temperature data for assets");
+                logger.error("Error while fetching temperature data for assets"+err);
                 reject(err);
             } else {
                 var assetData = assetBuilder.buildAssetTempDataModel(data, queryModel);
@@ -180,12 +205,18 @@ function getTemperatures(queryModel) {
     })
 }
 
-function validateAssetWorkingStatusParams(req){
+function validateManfCodeSerialNo (req) {
     if(utils.checkNullEmpty(req.params.serial_no) || utils.checkNullEmpty(req.params.manufacturer_code)) {
-        reject(utils.generateValidationError("Asset vendor id and serial number is required."))
-    } else if (utils.checkNullEmpty(req.body.status_code)) {
+        reject(utils.generateValidationError("Asset manufacturer code or serial number is required."))
+    }
+}
+
+function validateAssetWorkingStatusParams(req){
+    validateManfCodeSerialNo(req);
+    if (utils.checkNullEmpty(req.body.status_code)) {
         reject(utils.generateValidationError("Asset working status code is mandatory"));
     }
 }
+
 
 module.exports = router.getRouter();

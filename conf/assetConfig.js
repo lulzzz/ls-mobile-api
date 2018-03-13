@@ -38,5 +38,11 @@ module.exports = {
         method: 'POST',
         timeout: 30000,
         req_pld: 'query'
+    },
+    asset_ls_detail: {
+        url: '/assets/',
+        method: 'GET',
+        timeout: 30000,
+        req_pld: 'query'
     }
 };
