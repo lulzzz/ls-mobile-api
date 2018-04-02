@@ -133,10 +133,10 @@ router.post('/assets/:manufacturer_code/:serial_no/status', function (req) {
         var queryModel = queryBuilder.buildAssetStatusParams(req);
         assetService.updateAssetStatus(queryModel, function (err, data) {
             if (err) {
-                logger.error("Error while updating asset status"+err);
+                logger.error("Error while updating asset status: "+err);
                 reject(err);
             } else {
-                data = "Asset status with manufacturer " + req.params.manufacturer_code + " and serial no "+ req.params.serial_no+ "updated successfully";
+                data = "Asset status with manufacturer " + req.params.manufacturer_code + " and serial no "+ req.params.serial_no+ " updated successfully";
                 logger.info(data);
                 resolve({message: data});
             }
