@@ -149,7 +149,7 @@ router.get('/assets/:manufacturer_code/:serial_no', function (req) {
     return new Promise(function (resolve, reject) {
         try {
             validateManfCodeSerialNo(req);
-        } catch(exception) {
+        } catch (exception) {
             logger.warn(exception);
             reject(exception);
             return;
@@ -157,8 +157,10 @@ router.get('/assets/:manufacturer_code/:serial_no', function (req) {
         var queryModel = queryBuilder.buildAssetDetailsParams(req);
         assetService.getAssetDetail(queryModel, function (err, data) {
             if (err) {
-                logger.error("Error while getting asset detail"+err);
+                logger.error("Error while getting asset detail" + err);
                 reject(err);
+            } else if (utils.checkNullEmpty(data)) {
+                reject({status: 404, message: "Device not found"});
             } else {
                 var model = assetBuilder.buildAssetDetailModel(JSON.parse(data));
                 resolve(model);
