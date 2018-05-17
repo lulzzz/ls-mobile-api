@@ -12,10 +12,11 @@ var authconfig = require('./authconfig'),
     collaborationConfig = require('./collaborationConfig');
 
 module.exports = {
-    baseurl: 'http://localhost:8080/s2/api',
+    baseurl: 'https://nls.logistimo.com/s2/api',
     tempurl: 'http://localhost:9000',
     mediaurl: 'http://localhost:8080/_ah/api/mediaendpoint',
     eventsUrl: 'http://localhost:9010/v1/event-summaries',
+    intentsUrl: 'https://api.dialogflow.com/v1/query?v=20170318',
     collaborationServiceUrl: 'http://localhost:9070/v1/collaboration',
     sectokenconfig: {
         url: '/mauth/validate-token',
