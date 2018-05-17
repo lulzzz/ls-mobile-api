@@ -19,7 +19,8 @@ router.post('/intents/transaction', function (req) {
     return new Promise(function(resolve, reject) {
         req.body.lang = "en";
         req.body.sessionId = "123456";
-        service.getIntents(req, function(err, data) {
+        var key = "Bearer 3898b4ec126e4f2e81543acff59c72e6";
+        service.getIntents(key, req, function(err, data) {
             if(err) {
                 console.log("Error occurred: "+ err);
                 reject(err);
@@ -51,16 +52,16 @@ router.post('/intents/transaction', function (req) {
 });
 
 router.post('/intents/order', function(req) {
-    return new Promise(function(reject, resolve) {
+    return new Promise(function(resolve, reject) {
         req.body.lang = "en";
         req.body.sessionId = "123456";
-        service.getIntents(req, function(error, data) {
+        var key = "Bearer 6a5e7ecec3424f258e8e18ebfac79050";
+        service.getIntents(key, req, function(err, data) {
             if(err) {
-                console.log("error: " + error);
+                console.log("err: " + err);
                 reject(err);
             } else {
-                var response = JSON.parse(data);
-                resolve(builder.buildIntentResponse(response));
+                resolve(builder.buildIntentResponse(JSON.parse(data)));
             }
         });
     });

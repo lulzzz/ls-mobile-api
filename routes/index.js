@@ -17,7 +17,7 @@ router.use('/app-status', require('./appstatus'));
 router.use('/media',require('./media'));
 router.use('/collaboration*',require('./collaboration'));
 router.use('/configurations*', require('./configuration'));
-router.use('/intents', require('./intents'));
+router.use('/intents*', require('./intents'));
 
 
 //routes common error handler
