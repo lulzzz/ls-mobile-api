@@ -9,10 +9,11 @@ var authconfig = require('./authconfig'),
     eventsConfig = require('./eventsConfig'),
     mediaConfig = require('./mediaConfig'),
     domainConfig = require('./domainConfig'),
-    collaborationConfig = require('./collaborationConfig');
+    collaborationConfig = require('./collaborationConfig'),
+    orderConfig = require('./orderConfig');
 
 module.exports = {
-    baseurl: 'https://nls.logistimo.com/s2/api',
+    baseurl: 'http://localhost:8080/s2/api',
     tempurl: 'http://localhost:9000',
     mediaurl: 'http://localhost:8080/_ah/api/mediaendpoint',
     eventsUrl: 'http://localhost:9010/v1/event-summaries',
@@ -37,5 +38,6 @@ module.exports = {
     statusFilePath: '',
     mediaConfig: mediaConfig,
     domainConfig: domainConfig,
-    collaborationConfig: collaborationConfig
+    collaborationConfig: collaborationConfig,
+    orderConfig: orderConfig
 };
