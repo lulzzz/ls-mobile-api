@@ -11,13 +11,11 @@ describe('user device test', function () {
     beforeEach(function () {
         "use strict";
         request = sinon.stub();
-        //route = proxyquire('../lib/restclient/dashboard/dashboardService.js', {'request': request});
         route = proxyquire('../../lib/restclient/restclient.js', {'request': request});
     });
     it('create user device', function (done) {
         this.timeout(1000);
         var expectedEndpoint = 'http://localhost:8080/s2/api/user-device/';
-        //var req= {};
         var req = {
             url: "http://localhost:8080/s2/api/conversation/user-device/",
             method: "POST",
@@ -44,7 +42,6 @@ describe('user device test', function () {
     it('update user device', function (done) {
         this.timeout(1000);
         var expectedEndpoint = 'http://localhost:8080/s2/api/user-device/';
-        //var req= {};
         var req = {
             url: "http://localhost:8080/s2/api/conversation/user-device/",
             method: "POST",

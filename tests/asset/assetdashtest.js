@@ -9,12 +9,11 @@ var proxyquire = require('proxyquire'),
     config = require(path.resolve('./conf', ''));
 
 describe('userTests', function () {
-    var request, route, route1, p;
+    var request, route;
     beforeEach(function () {
         "use strict";
         request = sinon.stub();
         route = proxyquire('../../lib/restclient/restclient.js', {'request': request});
-        route1 = proxyquire('../../lib/restclient/dashboard/dashboardService.js', {'request': request});
     });
     it('shud give 200', function (done) {
         var req = {
@@ -58,15 +57,11 @@ describe('userTests', function () {
         request.withArgs(req).yields(null, res, body);
         //res.statusCode = 201;
         request.withArgs(options).yields(null, res, body);
-        route1.getAssetDashboard(options, function (err, data) {
+        route.callApi(options, function (err, data) {
             console.log("Process end:");
             expect(err).to.be.null;
             expect(data).to.be.equals(body);
             done();
         });
-        /*route.callApi(req, function(err, data) {
-            console.log("Done1");
-            expect(err).to.be.null;
-        });*/
     });
 });

@@ -16,15 +16,15 @@ describe('sort data test', function () {
             nc: 100,
             tc: 100
         }], 'nc');
-        expect(abc[0].mnm = "Syringes");
-        expect(abc[1].mnm = "BCG dose");
+        expect(abc[0].mnm).to.be.equal("BCG dose");
+        expect(abc[1].mnm).to.be.equal("Syringes");
         done();
 
     });
 
     it('sort data for an empty object', function (done) {
         var abc = [];
-        expect(abc.length = 0);
+        expect(abc.length).to.be.equal(0);
         done();
     });
 
@@ -34,9 +34,9 @@ describe('sort data test', function () {
             nc: 100,
             tc: 100
         }, {enm: "Assam DVS", nc: 100, tc: 100}], 'nc');
-        expect(data[0].enm = "Assam DVS");
-        expect(data[1].enm = "Rajasthan DVS");
-        expect(data[2].enm = "Lucknow DVS");
+        expect(data[0].enm).to.be.equal("Lucknow DVS");
+        expect(data[1].enm).to.be.equal("Rajasthan DVS");
+        expect(data[2].enm).to.be.equal("Assam DVS");
         done();
     });
 });
