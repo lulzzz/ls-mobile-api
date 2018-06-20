@@ -131,6 +131,27 @@ router.post('/event-summaries/:event_id/like', function (req) {
     });
 });
 
+router.get('/event-summaries/:event_id/:object_type/:object_id', function (req) {
+    return new Promise(function (resolve, reject) {
+        try {
+            validateRequestParams(req);
+        } catch (exception) {
+            logger.error(exception);
+            reject(exception);
+            return;
+        }
+        service.getEventsByObjectType(req, function (err, data) {
+            if (err) {
+                logger.error("Error while fetching event summaries for object " + req.params.object_type + req.params.object_id + " and event" + req.params.event_id +err);
+                reject(err);
+            } else {
+                logger.info("Received event summaries for object " + req.params.object_type + req.params.object_id + " and event" + req.params.event_id);
+                resolve(JSON.parse(data));
+            }
+        });
+    });
+});
+
 router.get('/event-summaries/:event_id/like', function (req) {
     return new Promise(function (resolve, reject) {
         try {
