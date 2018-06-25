@@ -3,9 +3,9 @@
  */
 
 module.exports = {
-    create_order: {
-        "url": "/orders/add/",
-        method: "POST",
+    get_order: {
+        "url": "/orders/",
+        method: "GET",
         timeout: 30000
     }
 };
