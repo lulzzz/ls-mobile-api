@@ -4,7 +4,7 @@
 
 module.exports = {
     get_order: {
-        "url": "/orders/",
+        "url": "/orders/entity/",
         method: "GET",
         timeout: 30000
     }
