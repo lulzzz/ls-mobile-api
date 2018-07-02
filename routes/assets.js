@@ -64,6 +64,9 @@ router.get('/assets', function (req) {
 
 });
 
+/**
+ * @deprecated
+ */
 router.get('/assets/detail', function (req) {
     return new Promise(function(resolve, reject) {
         if (utils.checkNullEmpty(req.query.did) || utils.checkNullEmpty(req.query.vid) || utils.checkNullEmpty(req.query.mpid)) {
