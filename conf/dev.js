@@ -9,7 +9,8 @@ var authconfig = require('./authconfig'),
     eventsConfig = require('./eventsConfig'),
     mediaConfig = require('./mediaConfig'),
     domainConfig = require('./domainConfig'),
-    collaborationConfig = require('./collaborationConfig');
+    collaborationConfig = require('./collaborationConfig'),
+    orderConfig = require('./orderConfig');
 
 module.exports = {
     baseurl: 'http://localhost:8080/s2/api',
@@ -36,5 +37,6 @@ module.exports = {
     statusFilePath: '',
     mediaConfig: mediaConfig,
     domainConfig: domainConfig,
-    collaborationConfig: collaborationConfig
+    collaborationConfig: collaborationConfig,
+    orderConfig: orderConfig
 };
