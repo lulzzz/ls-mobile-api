@@ -15,7 +15,7 @@ function OrderQueryModel() {
     this.size = undefined;
     this.offset = undefined;
     this.linkedKioskId = undefined;
-    this.xforward = undefined;
+    this.ip = undefined;
     this.from = undefined;
     this.until = undefined;
 }
