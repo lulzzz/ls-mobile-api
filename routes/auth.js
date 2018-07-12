@@ -5,7 +5,9 @@ var path = require('path'),
     logger = require(path.resolve('./lib/utils/logger', '')),
     urlDecoder = require(path.resolve('./lib/utils/urldecoder','')),
     utils = require(path.resolve('./lib/utils/common/common-utils','')),
-    authService = require(path.resolve('./lib/restclient/auth/authService',''));
+    authService = require(path.resolve('./lib/restclient/auth/authService','')),
+    authQueryBuilder = require(path.resolve('./lib/builder/authQueryBuilder','')),
+    validator = require(path.resolve('./lib/validator/authRequestValidator',''));
 
 router.use(function (req, res, next) {
     //changing url to original url as url is getting changed--need to find the reason & fix.
@@ -13,35 +15,18 @@ router.use(function (req, res, next) {
     return next();
 });
 
+/**
+ * This method is used for user's login
+ * @deprecated
+ */
+
 router.post('/auth/login', function (req, res) {
-
-    return new Promise(function(resolve, reject) {
-        const cred = req.headers['authorization'];
-        const xforward = req.headers['x-real-ip'];
-        const appname = req.headers['x-app-name'];
-        const appver = req.headers['x-app-ver'];
-        var tmp = cred.split(' '),   // Split on a space, the original auth looks like  "Basic Y2hhcmxlczoxMjM0NQ==" and we need the 2nd part
-            buf = new Buffer(tmp[1], 'base64'), // create a buffer and tell it the data coming in is base64
-            plain_auth = buf.toString();        // read it back out as a string
-
-        var creds = plain_auth.split(':'),      // split on a ':'
-            username = creds[0],
-            password = creds[1];
-
-        //validating input paras
-        if (utils.checkNotNullEmpty(username) && utils.checkNotNullEmpty(password)) {
-            authService.login(username, password, appname, appver, xforward, res, function (err, body) {
-                if (err) {
-                    logger.error("Error in login for user ", username);
-                    console.log(err.message);
-                    reject({status: 401, message: err.message});
-                } else {
-                    resolve(updateTimezone(body));
-                }
-            });
-        } else {
-            reject({status: 400, message: "Bad request"});
-        }
+    return new Promise(function (resolve, reject) {
+        processLoginRequest(req, res, true).then(function(data) {
+            resolve(data);
+        }).catch(function (err) {
+            reject(err);
+        });
     });
 
 });
@@ -97,10 +82,68 @@ router.post('/auth/reset-password', function (req) {
     });
 });
 
-function updateTimezone(data) {
-    if(data.tz == "Asia/Yangon") {
-        data.tz = "Asia/Rangoon";
-    }
-    return data;
+/**
+ * This method is used for user's login along with two factor authentication
+ */
+router.post('/auth/login/v1', function (request, response) {
+    return new Promise(function (resolve, reject) {
+        processLoginRequest(request, response, false).then(function(data) {
+            if(utils.checkNullEmpty(data.id)) {
+                resolve({"mobile_no": data.mobileNo});
+            } else {
+                resolve(data);
+            }
+        }).catch(function (err) {
+            reject(err);
+        });
+    });
+});
+
+router.post('/auth/generate-authentication-otp', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        try {
+            validator.validate2FAOTPGenerationRequest(req);
+        } catch (exception) {
+            logger.warn("Error while validating the regenarte OTP request for user " + req.body.user_id + "\n" + exception);
+            reject(exception);
+            return;
+        }
+        authService.process2FAOTPGenerationRequest(req, function (err, data) {
+            if (err) {
+                logger.warn("Error while regenerating authentication otp for user: {0}", req.body.user_id, err);
+                reject(err);
+            } else {
+                logger.info("OTP regenerated successfully");
+                data.message = data.errorMsg;
+                data.is_error = data.isError;
+                delete data.errorMsg;
+                delete data.ec;
+                resolve(data);
+            }
+        });
+    });
+});
+
+function processLoginRequest(req, res, isOldRequest) {
+    return new Promise(function (resolve, reject) {
+        var authModel = authQueryBuilder.buildQueryModel(req, isOldRequest);
+        try {
+            validator.validateLoginRequest(authModel);
+        } catch (exception) {
+            logger.warn("Error while validating the authentication request: " + exception);
+            reject(exception);
+            return;
+        }
+        authService.login(authModel, res, function (err, body) {
+            if (err) {
+                logger.warn("Error in login for user:{0} ", authModel.username, err);
+                reject({status: 401, message: err.message});
+            } else {
+                resolve(utils.updateTimezone(body));
+            }
+        });
+    });
 }
+
+
 module.exports = router.getRouter();

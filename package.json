@@ -22,12 +22,13 @@
     "serve-favicon": "~2.3.2",
     "uuid": "3.0.1",
     "winston": "~2.3.1",
-    "winston-daily-rotate-file": "1.4.6"
+    "winston-daily-rotate-file": "1.4.6",
+    "md5": "^2.2.1",
   },
   "devDependencies": {
     "chai": "3.2.0",
     "chai-http": "1.0.0",
-    "grunt": "^1.0.1",
+    "grunt": "^1.0.3",
     "istanbul": "^0.4.5",
     "mocha": "3.2.0",
     "mockserver-grunt": "^1.0.41",

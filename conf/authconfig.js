@@ -24,5 +24,17 @@ module.exports = {
         method: 'POST',
         timeout: 30000,
         req_pld: 'body'
+    },
+    loginV1: {
+        url: '/mauth/login/v1',
+        method: 'POST',
+        timeout: 30000,
+        req_pld: 'body'
+    },
+    generate2FAOTP: {
+        url: '/mauth/generate-authentication-otp',
+        method: 'POST',
+        timeout: 30000,
+        req_pld: 'body'
     }
 };
