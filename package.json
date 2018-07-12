@@ -23,7 +23,7 @@
     "uuid": "3.0.1",
     "winston": "~2.3.1",
     "winston-daily-rotate-file": "1.4.6",
-    "md5": "^2.2.1",
+    "md5": "^2.2.1"
   },
   "devDependencies": {
     "chai": "3.2.0",
