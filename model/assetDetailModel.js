@@ -21,4 +21,5 @@ function assetDetailModel() {
     this.working_status =  undefined;
     this.capacity = undefined;
     this.related_assets = undefined;
+    this.entity = undefined;
 }
