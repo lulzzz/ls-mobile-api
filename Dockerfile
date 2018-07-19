@@ -26,7 +26,8 @@ FROM node:latest
 MAINTAINER dockers@logistimo.com
 
 # Create app directory
-RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app \
+	&& npm install elastic-apm-node --save
 
 ENV NODE_HOME /usr/src/app
 
