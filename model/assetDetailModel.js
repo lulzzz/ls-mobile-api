@@ -20,6 +20,7 @@ function assetDetailModel() {
     this.monitoring_points = undefined;
     this.working_status =  undefined;
     this.capacity = undefined;
+    this.capacity_new = undefined;
     this.related_assets = undefined;
     this.entity = undefined;
 }

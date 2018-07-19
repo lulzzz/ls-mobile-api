@@ -16,7 +16,9 @@ describe('buildAssetDetailModel Test', function () {
         var model = assetRespBuilder.buildAssetDetailModel(data);
         expect(model.serial_no).to.be.equal("Test-NC-003");
         expect(model.manufacturer_code).to.be.equal("haier");
-        expect(model.capacity).to.be.equal("50 Litres");
+        expect(model.capacity.quantity).to.be.equal("50");
+        expect(model.capacity.units).to.be.equal("Litres");
+        expect(model.capacity_new).to.be.equal("50 Litres");
         expect(model.entity.entity_id).to.be.equal(1347515);
         expect(model.entity.name).to.be.equal("Awdal PHC");
         done();
