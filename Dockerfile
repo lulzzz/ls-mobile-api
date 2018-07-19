@@ -37,7 +37,10 @@ ENV LOGI_HOST=localhost \
 	ES_HOST=localhost \
 	COLLAB_HOST=localhost \
 	MEDIA_HOST=localhost \
-	STATUS_FILE=
+	STATUS_FILE= \
+	APM_SERVER_URL=localhost \
+	SECRET_TOKEN= \
+    SERVICE_NAME=logi-mapi
 
 WORKDIR $NODE_HOME
 
