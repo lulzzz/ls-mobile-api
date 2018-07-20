@@ -8,13 +8,13 @@
 // Add this to the VERY top of the first file loaded in your app
 var apm = require('elastic-apm-node').start({
   // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
-  serviceName: '$SERVICE_NAME',
+  serviceName: 'mapi',
 
   // Use if APM Server requires a token
-  secretToken: '$SECRET_TOKEN',
+  secretToken: '',
 
   // Set custom APM Server URL (default: http://localhost:8200)
-  serverUrl: '$APM_SERVER_URL',
+  serverUrl: 'http://localhost:8200',
 })
 
 
