@@ -30,5 +30,11 @@ module.exports = {
         method: 'GET',
         timeout: 30000,
         req_pld: 'query'
+    },
+    post_feedback:{
+        url: '/feedback',
+        method: 'POST',
+        timeout: 30000,
+        req_pld: 'body'
     }
 };

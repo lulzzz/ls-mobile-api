@@ -18,6 +18,7 @@ router.use('/media',require('./media'));
 router.use('/collaboration*',require('./collaboration'));
 router.use('/configurations*', require('./configuration'));
 router.use('/orders', require('./orders'));
+router.use('/feedback', require('./feedback'));
 
 
 //routes common error handler
